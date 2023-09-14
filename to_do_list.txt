@@ -1,0 +1,3 @@
+UML à faire : 
+- super classe bouton
+- finir personnage
