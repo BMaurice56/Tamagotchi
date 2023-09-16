@@ -5,13 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class Tamagotchi extends ApplicationAdapter {
     SpriteBatch batch;
@@ -22,34 +23,33 @@ public class Tamagotchi extends ApplicationAdapter {
 
     Stage stage;
 
-    TextButton textButton;
+    ImageButton imageButton;
 
     @Override
     public void create() {
 
-        // Définition de la police d'écriture
-        BitmapFont font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
 
         // Création d'un Skin pour définir le style du bouton
         Skin skin = new Skin(); // Vous pouvez personnaliser le style ici
 
         // Définition du style du bouton (TextButtonStyle)
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        skin.add("default", textButtonStyle); // Enregistrez le style sous le nom "default"
-        textButtonStyle.font = font; // Définissez la police du texte ici
+        ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle();
+        skin.add("default", imageButtonStyle); // Enregistrez le style sous le nom "default"
 
-        // Création du bouton
-        textButton = new TextButton("Appuyez sur le bouton", skin);
 
-        textButton.addListener(new InputListener() {
-            @Override
+        imageButton = new ImageButton(skin);
+        imageButton.setSize(200, 50);
+        imageButton.getStyle().imageUp = imageButton.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("play.png"))));
+
+
+        imageButton.addListener(new InputListener() {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                updateButton(textButton, "Appuyez sur le bouton");
+                System.out.println("Press a Button");
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                updateButton(textButton, "Bouton Texte enfoncer");
+                System.out.println("Pressed Image Button");
                 return true;
             }
         });
@@ -60,21 +60,11 @@ public class Tamagotchi extends ApplicationAdapter {
         background = new Texture("background.jpg");
 
         // Ajout du bouton en tant qu'acteur
-        stage.addActor(textButton);
+        stage.addActor(imageButton);
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
 
-    }
-
-    /**
-     * Met à jour le texte du bouton
-     *
-     * @param bouton  Le bouton à mettre à jour
-     * @param message Le nouveau texte
-     */
-    public void updateButton(TextButton bouton, String message) {
-        bouton.setText(message);
     }
 
     // Gère le rendu de l'affichage
@@ -89,7 +79,7 @@ public class Tamagotchi extends ApplicationAdapter {
         screenHeight = Gdx.graphics.getHeight();
 
         // Définie le placement du bouton
-        textButton.setPosition(screenWidth / 2 - textButton.getMinWidth() / 2, screenHeight / 2 - textButton.getMinHeight() / 2);
+        imageButton.setPosition(screenWidth / 2 - imageButton.getMinWidth() / 2, screenHeight / 2 - imageButton.getMinHeight() / 2);
 
         // Dessine l'image de fond
         batch.begin();
