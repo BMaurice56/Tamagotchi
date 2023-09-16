@@ -28,11 +28,10 @@ public class Tamagotchi extends ApplicationAdapter {
     public void create() {
 
         // Définition de la police d'écriture
-        BitmapFont font = new BitmapFont(Gdx.files.internal("police_decriture/police.fnt"));
+        BitmapFont font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
 
         // Création d'un Skin pour définir le style du bouton
         Skin skin = new Skin(); // Vous pouvez personnaliser le style ici
-
 
         // Définition du style du bouton (TextButtonStyle)
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -42,13 +41,14 @@ public class Tamagotchi extends ApplicationAdapter {
         // Création du bouton
         textButton = new TextButton("Appuyez sur le bouton", skin);
 
-        textButton.addListener(new InputListener(){
+        textButton.addListener(new InputListener() {
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 updateButton(textButton, "Appuyez sur le bouton");
             }
+
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 updateButton(textButton, "Bouton Texte enfoncer");
                 return true;
             }
@@ -64,12 +64,13 @@ public class Tamagotchi extends ApplicationAdapter {
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
+
     }
 
     /**
      * Met à jour le texte du bouton
      *
-     * @param bouton textButton à mettre à jour
+     * @param bouton  textButton à mettre à jour
      * @param message nouveau texte
      */
     public void updateButton(TextButton bouton, String message) {
@@ -88,7 +89,7 @@ public class Tamagotchi extends ApplicationAdapter {
         screenHeight = Gdx.graphics.getHeight();
 
         // Définie le placement du bouton
-        textButton.setPosition(screenWidth / 2, screenHeight / 2);
+        textButton.setPosition(screenWidth / 2 - textButton.getMinWidth() / 2, screenHeight / 2 - textButton.getMinHeight() / 2);
 
         // Dessine l'image de fond
         batch.begin();
@@ -124,5 +125,6 @@ public class Tamagotchi extends ApplicationAdapter {
 
         // Appelle la méthode resize du Stage
         stage.getViewport().update(width, height, true);
+
     }
 }
