@@ -70,8 +70,8 @@ public class Tamagotchi extends ApplicationAdapter {
     /**
      * Met à jour le texte du bouton
      *
-     * @param bouton  textButton à mettre à jour
-     * @param message nouveau texte
+     * @param bouton  Le bouton à mettre à jour
+     * @param message Le nouveau texte
      */
     public void updateButton(TextButton bouton, String message) {
         bouton.setText(message);
@@ -125,6 +125,5 @@ public class Tamagotchi extends ApplicationAdapter {
 
         // Appelle la méthode resize du Stage
         stage.getViewport().update(width, height, true);
-
     }
 }
