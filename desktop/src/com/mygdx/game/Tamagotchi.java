@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-public class DesktopLauncher {
+public class Tamagotchi {
 
     public static void main(String[] arg) {
 
@@ -12,7 +12,7 @@ public class DesktopLauncher {
         config.setTitle("Tamagotchi");
         config.setWindowedMode(800, 800);
 
-        Tamagotchi myGdxGame = new Tamagotchi();
+        MyGame myGdxGame = new MyGame();
 
         new Lwjgl3Application(myGdxGame, config);
     }
