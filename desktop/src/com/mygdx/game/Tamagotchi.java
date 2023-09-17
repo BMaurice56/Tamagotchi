@@ -12,7 +12,7 @@ public class Tamagotchi {
         config.setTitle("Tamagotchi");
         config.setWindowedMode(800, 800);
 
-        MyGame myGdxGame = new MyGame();
+        GameStart myGdxGame = new GameStart();
 
         new Lwjgl3Application(myGdxGame, config);
     }
