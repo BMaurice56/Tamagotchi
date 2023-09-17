@@ -12,24 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ScreenMenu implements Screen {
-    private final SpriteBatch batch;
-    private final Texture background;
+    private final SpriteBatch batch = new SpriteBatch();
+    private final Texture background = new Texture("background.jpg");
 
     private float screenWidth, screenHeight;
 
-    private final Stage stage;
+    private final Stage stage = new Stage(new ScreenViewport());
 
-    private final Music musique;
+    private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("Allumer-le-feu.mp3"));
 
-    final Slider volumeSlider;
+    final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
 
     private BoutonImage playbutton, settingsbutton, quitbutton;
 
@@ -40,7 +37,6 @@ public class ScreenMenu implements Screen {
     public ScreenMenu() {
 
         // Musique de fond
-        musique = Gdx.audio.newMusic(Gdx.files.internal("Allumer-le-feu.mp3"));
         musique.setLooping(true);
         //musique.setVolume(0.5f);
         musique.setVolume(0);
@@ -48,19 +44,14 @@ public class ScreenMenu implements Screen {
 
 
         // Création des objets et ajout de l'image de fond
-        stage = new Stage(new ScreenViewport());
-        batch = new SpriteBatch();
-        background = new Texture("background.jpg");
-        volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
         createButton();
         createTable();
         addButtonListeners();
 
-
         volumeSlider.setValue(musique.getVolume());
 
+        // Ajout du menu d'accueil
         stage.addActor(homeTable);
-
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -160,8 +151,7 @@ public class ScreenMenu implements Screen {
         newgamebutton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //((Game) Gdx.app.getApplicationListener()).setScreen(new SelectPlayer_NewGame());
-                System.out.println("toto");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi());
                 return true;
             }
         });
@@ -195,18 +185,19 @@ public class ScreenMenu implements Screen {
 
     public void createButton() {
         // Accueil
-        playbutton = new BoutonImage(new ElementSkin("image"), "play.png", 200, 50);
-        settingsbutton = new BoutonImage(new ElementSkin("image"), "settings.png", 200, 50);
-        quitbutton = new BoutonImage(new ElementSkin("image"), "quit.png", 200, 50);
+        playbutton = new BoutonImage(new MultiSkin("image"), "play.png", 200, 50);
+        settingsbutton = new BoutonImage(new MultiSkin("image"), "settings.png", 200, 50);
+        quitbutton = new BoutonImage(new MultiSkin("image"), "quit.png", 200, 50);
 
         // Gestion de la partie
-        newgamebutton = new TextButton("Nouvelle partie", new ElementSkin("texte"));
-        savegamebutton = new TextButton("partie sauvegardée", new ElementSkin("texte"));
-        backbutton = new TextButton("Retour au centre", new ElementSkin("texte"));
-        backbutton2 = new TextButton("Retour au centre", new ElementSkin("texte"));
+        newgamebutton = new TextButton("Nouvelle partie", new MultiSkin("texte"));
+        savegamebutton = new TextButton("partie sauvegardée", new MultiSkin("texte"));
+        backbutton = new TextButton("Retour au centre", new MultiSkin("texte"));
+        backbutton2 = new TextButton("Retour au centre", new MultiSkin("texte"));
     }
 
     public void createTable() {
+        // Table du menu
         homeTable = new Table();
         homeTable.setFillParent(true);
 
@@ -214,6 +205,7 @@ public class ScreenMenu implements Screen {
         homeTable.add(settingsbutton).row();
         homeTable.add(quitbutton).row();
 
+        // Table nouvelle parti
         partyTable = new Table();
         partyTable.setFillParent(true);
 
@@ -221,11 +213,13 @@ public class ScreenMenu implements Screen {
         partyTable.add(savegamebutton).row();
         partyTable.add(backbutton).row();
 
+        // Table paramètre
         settingsTable = new Table();
         settingsTable.setFillParent(true);
 
         settingsTable.add(volumeSlider).row();
         settingsTable.add(backbutton2).row();
+
     }
 
     public void putTable(Table table) {

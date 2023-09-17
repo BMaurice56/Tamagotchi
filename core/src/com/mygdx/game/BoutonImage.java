@@ -9,11 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class BoutonImage extends ImageButton {
 
+    private final Texture imageTexture;
+
     public BoutonImage(Skin skin, String image, int width, int height) {
         super(skin);
 
-        super.setSize(width, height);
-        super.getStyle().imageUp = super.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(image))));
+        imageTexture = new Texture(Gdx.files.internal(image));
 
+        super.setSize(width, height);
+        super.getStyle().imageUp = super.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(imageTexture));
+
+    }
+
+    // Accesseur pour la texture de l'image
+    public Texture getImageTexture() {
+        return imageTexture;
     }
 }

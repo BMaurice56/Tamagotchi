@@ -2,19 +2,16 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 
-public class ElementSkin extends Skin {
+public class MultiSkin extends Skin {
 
     /**
      * Constructeur
      *
      * @param type String type de button ("texte", "image", "slider");
      */
-    public ElementSkin(String type) throws IllegalArgumentException {
+    public MultiSkin(String type) throws IllegalArgumentException {
         super();
         Object style;
 
