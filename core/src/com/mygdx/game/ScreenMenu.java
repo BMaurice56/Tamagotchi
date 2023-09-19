@@ -190,10 +190,10 @@ public class ScreenMenu implements Screen {
         quitbutton = new BoutonImage(new MultiSkin("image"), "quit.png", 200, 50);
 
         // Gestion de la partie
-        newgamebutton = new TextButton("Nouvelle partie", new MultiSkin("texte"));
-        savegamebutton = new TextButton("partie sauvegardée", new MultiSkin("texte"));
-        backbutton = new TextButton("Retour au centre", new MultiSkin("texte"));
-        backbutton2 = new TextButton("Retour au centre", new MultiSkin("texte"));
+        newgamebutton = new TextButton("Nouvelle partie", new MultiSkin("text"));
+        savegamebutton = new TextButton("partie sauvegardée", new MultiSkin("text"));
+        backbutton = new TextButton("Retour au centre", new MultiSkin("text"));
+        backbutton2 = new TextButton("Retour au centre", new MultiSkin("text"));
     }
 
     public void createTable() {

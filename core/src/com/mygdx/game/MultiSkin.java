@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
@@ -15,7 +16,7 @@ public class MultiSkin extends Skin {
         super();
         Object style;
 
-        if ("texte".equals(type)) {
+        if ("text".equals(type)) {
             // Police d'écriture
             BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
 
@@ -29,6 +30,23 @@ public class MultiSkin extends Skin {
 
         } else if ("slider".equals(type)) {
             style = new Slider.SliderStyle(); // Affectez le style au slider
+
+        } else if ("label".equals(type)) {
+            BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
+
+            Label.LabelStyle labelStyle = new Label.LabelStyle();
+            labelStyle.font = font;
+
+            style = labelStyle;
+
+        } else if ("textfield".equals(type)){
+            BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
+
+            TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+            textFieldStyle.font = font;
+            textFieldStyle.fontColor = new Color(1,1,1,1);
+
+            style = textFieldStyle;
 
         } else {
             throw new IllegalArgumentException("Skin inconnu");

@@ -11,8 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -26,9 +27,11 @@ public class SelectTamagotchi implements Screen {
 
     private final BoutonImage pixelcat, pixeldog, pixeldinosaur, pixelrobot, selectedImage;
 
-    private final ButtonGroup<BoutonImage> buttonGroup;
+    private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
-    private final Table selectTamagotchi;
+    private final Table selectTable;
+
+    private int tamagotchiselectionner;
 
     public SelectTamagotchi() {
 
@@ -38,40 +41,89 @@ public class SelectTamagotchi implements Screen {
         pixeldinosaur = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
         pixelrobot = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
 
-        buttonGroup = new ButtonGroup<>(pixelcat, pixeldog, pixeldinosaur, pixelrobot);
-
-        buttonGroup.setMinCheckCount(1);
-        buttonGroup.setMaxCheckCount(1);
-        buttonGroup.setUncheckLast(false);
-
-        selectTamagotchi = new Table();
-        selectTamagotchi.setFillParent(true);
-
-        selectTamagotchi.add(pixelcat).width(400).height(400);
-        selectTamagotchi.add(pixeldog).width(400).height(400).row();
-        selectTamagotchi.add(pixeldinosaur).width(400).height(400);
-        selectTamagotchi.add(pixelrobot).width(400).height(400).row();
-
         addButtonListeners();
 
-        stage.addActor(selectTamagotchi);
+        selectTable = new Table();
+        selectTable.setFillParent(true);
 
-        selectedImage = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);; // Créez une instance de BoutonImage vide
+        selectTable.add(pixelcat).width(200).height(200).left();
+        selectTable.add(pixeldog).width(200).height(200).left().row();
+        selectTable.add(pixeldinosaur).width(200).height(200).left();
+        selectTable.add(pixelrobot).width(200).height(200).left().row();
+
+
+        selectedImage = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
         selectedImage.setVisible(false); // Par défaut, l'acteur est invisible
-        stage.addActor(selectedImage); // Ajoutez-le à la scène
+
+
+        selectTable.add(selectedImage).width(200).height(200).right().row();
+        Label labelnomTamagotchi = new Label("Nom du Tamagotchi : ", new MultiSkin("label"));
+        selectTable.add(labelnomTamagotchi).right();
+        selectTable.add(nomTamagotchi).right().row();
+
+
+        stage.addActor(selectTable);
+        //stage.addActor(selectedImage);
 
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
     }
 
-    /**
-     * Called when this screen becomes the current screen for a {@link Game}.
-     */
-    @Override
-    public void show() {
+    public void imageSelected(BoutonImage boutonImage) {
+        stage.clear();
 
+        // Copie la texture de boutonImage dans selectedImage
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(boutonImage.getImageTexture()));
+        selectedImage.getStyle().imageUp = selectedImage.getStyle().imageDown = drawable;
+
+        selectedImage.setVisible(true);
+
+        selectTable.getCell(selectedImage).setActor(selectedImage);
+
+
+        stage.addActor(selectTable);
+        stage.draw();
     }
+
+    public void addButtonListeners() {
+        pixelcat.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                imageSelected(pixelcat); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiselectionner = 1;
+                return true;
+            }
+        });
+
+        pixeldog.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                imageSelected(pixeldog); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiselectionner = 2;
+                return true;
+            }
+        });
+
+        pixeldinosaur.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                imageSelected(pixeldinosaur); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiselectionner = 3;
+                return true;
+            }
+        });
+
+        pixelrobot.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                imageSelected(pixelrobot); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiselectionner = 4;
+                return true;
+            }
+        });
+    }
+
 
     /**
      * Called when the screen should render itself.
@@ -88,6 +140,8 @@ public class SelectTamagotchi implements Screen {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
+        //selectedImage.setPosition(screenWidth / 2 - 100, 100);
+        //nameTable.setPosition(screenWidth / 2 - 400, 30);
 
         // Dessine l'image de fond
         batch.begin();
@@ -99,8 +153,8 @@ public class SelectTamagotchi implements Screen {
     }
 
     /**
-     * @param width
-     * @param height
+     * @param width  largeur de l'écran
+     * @param height hauteur de l'écran
      * @see ApplicationListener#resize(int, int)
      */
     @Override
@@ -114,6 +168,14 @@ public class SelectTamagotchi implements Screen {
 
         // Appelle la méthode resize du Stage
         stage.getViewport().update(width, height, true);
+    }
+
+    /**
+     * Called when this screen becomes the current screen for a {@link Game}.
+     */
+    @Override
+    public void show() {
+
     }
 
     /**
@@ -147,55 +209,5 @@ public class SelectTamagotchi implements Screen {
     public void dispose() {
 
     }
-
-    public void imageSelected(BoutonImage boutonImage) {
-        stage.clear();
-
-        // Copie la texture de boutonImage dans selectedImage
-        TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(boutonImage.getImageTexture()));
-        selectedImage.getStyle().imageUp = selectedImage.getStyle().imageDown = drawable;
-
-        selectedImage.setSize(200, 200);
-        selectedImage.setPosition(screenWidth / 2 - 100, 50);
-        selectedImage.setVisible(true);
-
-        stage.addActor(selectTamagotchi);
-        stage.addActor(selectedImage);
-
-        stage.draw();
-    }
-
-    public void addButtonListeners() {
-        pixelcat.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixelcat); // Appel de la méthode avec le bouton sélectionné
-                return true;
-            }
-        });
-
-        pixeldog.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixeldog); // Appel de la méthode avec le bouton sélectionné
-                return true;
-            }
-        });
-
-        pixeldinosaur.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixeldinosaur); // Appel de la méthode avec le bouton sélectionné
-                return true;
-            }
-        });
-
-        pixelrobot.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixelrobot); // Appel de la méthode avec le bouton sélectionné
-                return true;
-            }
-        });
-    }
 }
+
