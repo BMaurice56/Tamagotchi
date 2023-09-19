@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-19T14:21:20.529Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0" etag="IMe3B8GxrMxSA56dytye" version="21.7.5" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-09-19T14:25:56.261Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0" etag="61QWAi3Vf53ieb5ATldg" version="21.7.5" type="github" pages="2">
   <diagram name="Page-1" id="A8WbYLxeXYT_SSvVJtiG">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -73,7 +73,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="iNTnJNL07J0__oHAqCpz-1" value="Interface &lt;i&gt;Personnage&lt;/i&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="330" y="30" width="180" height="104" as="geometry" />
+          <mxGeometry x="330" y="20" width="180" height="104" as="geometry" />
         </mxCell>
         <mxCell id="iNTnJNL07J0__oHAqCpz-2" value="&lt;div&gt;-nom : String&lt;/div&gt;&lt;div&gt;-wallet : int&lt;/div&gt;&lt;div&gt;-panier : ArrayList(Nouriture) &lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="iNTnJNL07J0__oHAqCpz-1" vertex="1">
           <mxGeometry y="26" width="180" height="44" as="geometry" />
@@ -81,7 +81,7 @@
         <mxCell id="iNTnJNL07J0__oHAqCpz-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="iNTnJNL07J0__oHAqCpz-1" vertex="1">
           <mxGeometry y="70" width="180" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="iNTnJNL07J0__oHAqCpz-4" value="+ method(type): type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="iNTnJNL07J0__oHAqCpz-1" vertex="1">
+        <mxCell id="iNTnJNL07J0__oHAqCpz-4" value="+ actionspecial(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="iNTnJNL07J0__oHAqCpz-1" vertex="1">
           <mxGeometry y="78" width="180" height="26" as="geometry" />
         </mxCell>
         <mxCell id="iNTnJNL07J0__oHAqCpz-5" value="Dinosaure" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
