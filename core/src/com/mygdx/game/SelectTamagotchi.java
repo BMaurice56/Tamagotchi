@@ -34,10 +34,9 @@ public class SelectTamagotchi implements Screen {
 
     private Table selectTable;
 
-    private int tamagotchiselectionner;
+    private int tamagotchiSelection;
 
     public SelectTamagotchi() {
-
 
         createButton();
         createTable();
@@ -103,7 +102,7 @@ public class SelectTamagotchi implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelCat); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 1;
+                tamagotchiSelection = 1;
                 return true;
             }
         });
@@ -112,7 +111,7 @@ public class SelectTamagotchi implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelDog); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 2;
+                tamagotchiSelection = 2;
                 return true;
             }
         });
@@ -121,7 +120,7 @@ public class SelectTamagotchi implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelDinosaur); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 3;
+                tamagotchiSelection = 3;
                 return true;
             }
         });
@@ -130,7 +129,7 @@ public class SelectTamagotchi implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelRobot); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 4;
+                tamagotchiSelection = 4;
                 return true;
             }
         });

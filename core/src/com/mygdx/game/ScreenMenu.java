@@ -39,7 +39,7 @@ public class ScreenMenu implements Screen {
 
     public ScreenMenu() {
         // Controller pour les paramètres
-        controllerSettings = new Controller("settings.json");
+        controllerSettings = new Controller();
 
         float son = controllerSettings.getSound();
         volumeSlider.setValue(son);
