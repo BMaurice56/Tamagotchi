@@ -145,14 +145,10 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                playGame();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText()));
                 return true;
             }
         });
-    }
-
-    public void playGame() {
-        System.out.println("toto");
     }
 
     /**
