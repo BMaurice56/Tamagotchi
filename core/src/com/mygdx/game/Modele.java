@@ -19,26 +19,16 @@ public class Modele implements Screen {
 
     private float screenWidth, screenHeight;
 
-    public Modele(int tamagotchi, String nomTamagotchi) {
-        BoutonImage toto = null;
-        switch (tamagotchi) {
-            case 1:
-                 toto = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
+    public Modele(int tamagotchi, String nomTamagotchi, Object save) {
+        if (save != null) {
 
-            case 2:
-                 toto = new BoutonImage(new MultiSkin("image"), "pixeldog.png", 800, 723);
+        } else {
 
-            case 3:
-                 toto = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
-
-            case 4:
-                 toto = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
         }
-
-        stage.addActor(toto);
         System.out.println(nomTamagotchi);
 
     }
+
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
