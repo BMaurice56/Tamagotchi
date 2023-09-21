@@ -34,7 +34,7 @@ public class SelectTamagotchi implements Screen {
 
     private Table selectTable;
 
-    private int tamagotchiSelection;
+    private int tamagotchiSelection, difficultyLevel = 1;
 
     public SelectTamagotchi() {
 
@@ -42,7 +42,7 @@ public class SelectTamagotchi implements Screen {
         createTable();
         addButtonListeners();
 
-        selectedImage.setVisible(false); // Par défaut, l'acteur est invisible
+        nomTamagotchi.setText("Garfield");
 
         stage.addActor(selectTable);
 
@@ -88,7 +88,10 @@ public class SelectTamagotchi implements Screen {
         selectTable.add(pixelDinosaur).width(200).height(200).left();
         selectTable.add(pixelRobot).width(200).height(200).left().row();
 
+        Label labelTamagotchiSelection = new Label("Tamagotchi selectionner : ", new MultiSkin("label"));
+        selectTable.add(labelTamagotchiSelection).left();
         selectTable.add(selectedImage).width(200).height(200).right().row();
+
         Label labelNomTamagotchi = new Label("Nom du Tamagotchi : ", new MultiSkin("label"));
         selectTable.add(labelNomTamagotchi).right();
         selectTable.add(nomTamagotchi).right().row();
@@ -103,6 +106,7 @@ public class SelectTamagotchi implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelCat); // Appel de la méthode avec le bouton sélectionné
                 tamagotchiSelection = 1;
+                nomTamagotchi.setText("Garfield");
                 return true;
             }
         });
@@ -112,6 +116,7 @@ public class SelectTamagotchi implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelDog); // Appel de la méthode avec le bouton sélectionné
                 tamagotchiSelection = 2;
+                nomTamagotchi.setText("Scooby");
                 return true;
             }
         });
@@ -121,6 +126,7 @@ public class SelectTamagotchi implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelDinosaur); // Appel de la méthode avec le bouton sélectionné
                 tamagotchiSelection = 3;
+                nomTamagotchi.setText("Blue");
                 return true;
             }
         });
@@ -130,6 +136,7 @@ public class SelectTamagotchi implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 imageSelected(pixelRobot); // Appel de la méthode avec le bouton sélectionné
                 tamagotchiSelection = 4;
+                nomTamagotchi.setText("Wall-E");
                 return true;
             }
         });
@@ -145,7 +152,7 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText()));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText(), ""));
                 return true;
             }
         });
