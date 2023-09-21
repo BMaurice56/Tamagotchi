@@ -1,6 +1,6 @@
 package com.mygdx.game.Personnage;
-
-public class Animal {
+import java.util.ArrayList;
+public abstract class Animal extends Tamagotchi{
 
     private int vie;
     private  int foods;
@@ -43,6 +43,32 @@ public class Animal {
 
     public int getSleep() {
         return sleep;
+    }
+
+    public void setSleep(int sleep) {
+        this.sleep = sleep;
+    }
+
+    public int getBonheur() {
+        return bonheur;
+    }
+
+    public void setBonheur(int bonheur) {
+        this.bonheur = bonheur;
+    }
+
+    public void Afficher_Attribut(){
+        System.out.println("vie : "+vie +"\nfood : "+foods+"\nhygiene: "+hygiene+"\nsleep: "+sleep+"\nbonheur : "+bonheur);
+    }
+
+    public void travailler(){
+        int bad=-20;
+        if((bonheur+bad)<0){
+            bonheur=0;
+        }else {
+            bonheur+=bad;
+        }
+
     }
 
 }
