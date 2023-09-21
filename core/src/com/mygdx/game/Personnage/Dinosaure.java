@@ -1,8 +1,8 @@
 package com.mygdx.game.Personnage;
 
-public class Dinausore extends Animal {
+public class Dinosaure extends Animal {
 
-    public Dinausore(){
+    public Dinosaure(){
         super();
     }
 

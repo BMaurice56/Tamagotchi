@@ -9,7 +9,8 @@ public abstract class Animal extends Tamagotchi{
     private int bonheur;
 
 
-    public Animal(){
+    public Animal(int difficulty){
+        super(difficulty);
         this.vie=100;
         this.foods=100;
         this.hygiene=100;
