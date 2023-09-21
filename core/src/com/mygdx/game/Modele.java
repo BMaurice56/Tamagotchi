@@ -19,13 +19,13 @@ public class Modele implements Screen {
 
     private float screenWidth, screenHeight;
 
-    public Modele(int tamagotchi, String nomTamagotchi, Object save) {
+    public Modele(int tamagotchi, String nomTamagotchi, int difficulty, Object save) {
         if (save != null) {
 
         } else {
 
         }
-        System.out.println(nomTamagotchi);
+        System.out.println(tamagotchi + " " + nomTamagotchi + " " + difficulty);
 
     }
 

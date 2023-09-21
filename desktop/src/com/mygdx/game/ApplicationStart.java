@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-public class Tamagotchi {
+public class ApplicationStart {
 
     public static void main(String[] arg) {
 

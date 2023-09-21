@@ -26,15 +26,17 @@ public class SelectTamagotchi implements Screen {
 
     private final Stage stage = new Stage(new ScreenViewport());
 
-    private BoutonImage pixelCat, pixelDog, pixelDinosaur, pixelRobot, selectedImage;
+    private BoutonImage pixelCat, pixelDog, pixelDinosaur, pixelRobot, tamagotchiSelected, leftArrow, rightArrow;
 
     private TextButton playButton, backButton;
 
     private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
+    private final Label labelLevelDifficult = new Label("Facile", new MultiSkin("label"));
+
     private Table selectTable;
 
-    private int tamagotchiSelection, difficultyLevel = 1;
+    private int tamagotchiSelection = 1, difficultyLevel = 1;
 
     public SelectTamagotchi() {
 
@@ -55,11 +57,11 @@ public class SelectTamagotchi implements Screen {
 
         // Copie la texture de boutonImage dans selectedImage
         TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(boutonImage.getImageTexture()));
-        selectedImage.getStyle().imageUp = selectedImage.getStyle().imageDown = drawable;
+        tamagotchiSelected.getStyle().imageUp = tamagotchiSelected.getStyle().imageDown = drawable;
 
-        selectedImage.setVisible(true);
+        tamagotchiSelected.setVisible(true);
 
-        selectTable.getCell(selectedImage).setActor(selectedImage);
+        selectTable.getCell(tamagotchiSelected).setActor(tamagotchiSelected);
 
 
         stage.addActor(selectTable);
@@ -73,10 +75,13 @@ public class SelectTamagotchi implements Screen {
         pixelDinosaur = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
         pixelRobot = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
 
-        selectedImage = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
+        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
 
         backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
         playButton = new TextButton("Jouer", new MultiSkin("text"));
+
+        leftArrow = new BoutonImage(new MultiSkin("image"), "leftArrow.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "rightArrow.png", 100, 75);
     }
 
     public void createTable() {
@@ -90,11 +95,18 @@ public class SelectTamagotchi implements Screen {
 
         Label labelTamagotchiSelection = new Label("Tamagotchi selectionner : ", new MultiSkin("label"));
         selectTable.add(labelTamagotchiSelection).left();
-        selectTable.add(selectedImage).width(200).height(200).right().row();
+        selectTable.add(tamagotchiSelected).width(200).height(200).right().row();
 
         Label labelNomTamagotchi = new Label("Nom du Tamagotchi : ", new MultiSkin("label"));
         selectTable.add(labelNomTamagotchi).right();
         selectTable.add(nomTamagotchi).right().row();
+
+        Label labelDifficulty = new Label("Niveau de difficulter : ", new MultiSkin("label"));
+
+        selectTable.add(labelDifficulty).left();
+        selectTable.add(leftArrow).right();
+        selectTable.add(labelLevelDifficult);
+        selectTable.add(rightArrow).left().row();
 
         selectTable.add(backButton);
         selectTable.add(playButton).row();
@@ -152,7 +164,51 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText(), ""));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, ""));
+                return true;
+            }
+        });
+
+        leftArrow.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (difficultyLevel) {
+                    case (1):
+                        labelLevelDifficult.setText("Difficile");
+                        difficultyLevel = 3;
+                        break;
+                    case (2):
+                        labelLevelDifficult.setText("Facile");
+                        difficultyLevel = 1;
+                        break;
+                    case (3):
+                        labelLevelDifficult.setText("Moyen");
+                        difficultyLevel = 2;
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        rightArrow.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (difficultyLevel) {
+                    case 1:
+                        labelLevelDifficult.setText("Moyen");
+                        difficultyLevel = 2;
+                        break;
+                    case 2:
+                        labelLevelDifficult.setText("Difficile");
+                        difficultyLevel = 3;
+                        break;
+                    case 3:
+                        labelLevelDifficult.setText("Facile");
+                        difficultyLevel = 1;
+                        break;
+                }
+
                 return true;
             }
         });
