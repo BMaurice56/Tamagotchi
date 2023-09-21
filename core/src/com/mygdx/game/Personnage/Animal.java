@@ -59,17 +59,30 @@ public abstract class Animal extends Tamagotchi{
     }
 
     public void Afficher_Attribut(){
-        System.out.println("vie : "+vie +"\nfood : "+foods+"\nhygiene: "+hygiene+"\nsleep: "+sleep+"\nbonheur : "+bonheur);
+        System.out.println("vie : "+vie +"\nfood : "+foods+"\nhygiene: "+hygiene+"\nsleep: "+sleep+"\nbonheur : "+bonheur+"\nwallet :"+this.getWallet());
     }
 
     public void travailler(){
-        int bad=-20;
-        if((bonheur+bad)<0){
-            bonheur=0;
-        }else {
-            bonheur+=bad;
-        }
+        long temps = System.currentTimeMillis();
+        int bad=-10;
+        int coins=5+this.getWallet();
 
+        bonheur+=bad;
+        this.setWallet(coins);
+
+
+        while ((temps + 10_000) > System.currentTimeMillis()) {
+            continue;
+        }
+    }
+
+    protected void check(){
+        if(vie<0){
+            vie=0;
+        }
+        if(food<0){
+            food
+        }
     }
 
 }

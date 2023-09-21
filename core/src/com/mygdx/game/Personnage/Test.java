@@ -6,6 +6,8 @@ public class Test {
 
         Dinosaure dino = new Dinosaure();
         dino.setBonheur(19);
+        dino.Afficher_Attribut();
+        System.out.println("\n");
         dino.travailler();
         dino.Afficher_Attribut();
     }
