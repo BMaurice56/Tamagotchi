@@ -68,9 +68,10 @@ public abstract class Animal extends Tamagotchi{
         int coins=5+this.getWallet();
 
         bonheur+=bad;
+        hygiene+=bad+3;
         this.setWallet(coins);
 
-
+        check();
         while ((temps + 10_000) > System.currentTimeMillis()) {
             continue;
         }
@@ -80,8 +81,17 @@ public abstract class Animal extends Tamagotchi{
         if(vie<0){
             vie=0;
         }
-        if(food<0){
-            food
+        if(foods<0){
+            foods=0;
+        }
+        if(hygiene<0){
+            hygiene=0;
+        }
+        if (sleep<0){
+            sleep=0;
+        }
+        if (bonheur<0){
+            bonheur=0;
         }
     }
 

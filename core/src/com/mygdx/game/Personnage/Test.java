@@ -9,6 +9,7 @@ public class Test {
         dino.Afficher_Attribut();
         System.out.println("\n");
         dino.travailler();
+        dino.travailler();
         dino.Afficher_Attribut();
     }
 
