@@ -1,21 +1,22 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class SelectTamagotchi implements Screen {
     private final SpriteBatch batch = new SpriteBatch();
@@ -25,46 +26,25 @@ public class SelectTamagotchi implements Screen {
 
     private final Stage stage = new Stage(new ScreenViewport());
 
-    private final BoutonImage pixelcat, pixeldog, pixeldinosaur, pixelrobot, selectedImage;
+    private BoutonImage pixelCat, pixelDog, pixelDinosaur, pixelRobot, selectedImage;
+
+    private TextButton playButton, backButton;
 
     private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
-    private final Table selectTable;
+    private Table selectTable;
 
-    private int tamagotchiselectionner;
+    private int tamagotchiSelection;
 
     public SelectTamagotchi() {
 
-        // Boutons de selection du Tamagotchi
-        pixelcat = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
-        pixeldog = new BoutonImage(new MultiSkin("image"), "pixeldog.png", 800, 723);
-        pixeldinosaur = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
-        pixelrobot = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
-
+        createButton();
+        createTable();
         addButtonListeners();
 
-        selectTable = new Table();
-        selectTable.setFillParent(true);
-
-        selectTable.add(pixelcat).width(200).height(200).left();
-        selectTable.add(pixeldog).width(200).height(200).left().row();
-        selectTable.add(pixeldinosaur).width(200).height(200).left();
-        selectTable.add(pixelrobot).width(200).height(200).left().row();
-
-
-        selectedImage = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
         selectedImage.setVisible(false); // Par défaut, l'acteur est invisible
 
-
-        selectTable.add(selectedImage).width(200).height(200).right().row();
-        Label labelnomTamagotchi = new Label("Nom du Tamagotchi : ", new MultiSkin("label"));
-        selectTable.add(labelnomTamagotchi).right();
-        selectTable.add(nomTamagotchi).right().row();
-
-
         stage.addActor(selectTable);
-        //stage.addActor(selectedImage);
-
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -86,44 +66,90 @@ public class SelectTamagotchi implements Screen {
         stage.draw();
     }
 
+    public void createButton() {
+        // Boutons de selection du Tamagotchi
+        pixelCat = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
+        pixelDog = new BoutonImage(new MultiSkin("image"), "pixeldog.png", 800, 723);
+        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
+        pixelRobot = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
+
+        selectedImage = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
+
+        backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
+        playButton = new TextButton("Jouer", new MultiSkin("text"));
+    }
+
+    public void createTable() {
+        selectTable = new Table();
+        selectTable.setFillParent(true);
+
+        selectTable.add(pixelCat).width(200).height(200).left();
+        selectTable.add(pixelDog).width(200).height(200).left().row();
+        selectTable.add(pixelDinosaur).width(200).height(200).left();
+        selectTable.add(pixelRobot).width(200).height(200).left().row();
+
+        selectTable.add(selectedImage).width(200).height(200).right().row();
+        Label labelNomTamagotchi = new Label("Nom du Tamagotchi : ", new MultiSkin("label"));
+        selectTable.add(labelNomTamagotchi).right();
+        selectTable.add(nomTamagotchi).right().row();
+
+        selectTable.add(backButton);
+        selectTable.add(playButton).row();
+    }
+
     public void addButtonListeners() {
-        pixelcat.addListener(new InputListener() {
+        pixelCat.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixelcat); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 1;
+                imageSelected(pixelCat); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiSelection = 1;
                 return true;
             }
         });
 
-        pixeldog.addListener(new InputListener() {
+        pixelDog.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixeldog); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 2;
+                imageSelected(pixelDog); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiSelection = 2;
                 return true;
             }
         });
 
-        pixeldinosaur.addListener(new InputListener() {
+        pixelDinosaur.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixeldinosaur); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 3;
+                imageSelected(pixelDinosaur); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiSelection = 3;
                 return true;
             }
         });
 
-        pixelrobot.addListener(new InputListener() {
+        pixelRobot.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                imageSelected(pixelrobot); // Appel de la méthode avec le bouton sélectionné
-                tamagotchiselectionner = 4;
+                imageSelected(pixelRobot); // Appel de la méthode avec le bouton sélectionné
+                tamagotchiSelection = 4;
+                return true;
+            }
+        });
+
+        backButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true));
+                return true;
+            }
+        });
+
+        playButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Modele(tamagotchiSelection, nomTamagotchi.getText()));
                 return true;
             }
         });
     }
-
 
     /**
      * Called when the screen should render itself.
