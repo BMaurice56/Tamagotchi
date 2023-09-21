@@ -6,6 +6,8 @@ public class Test {
 
         Dinausore dino = new Dinausore();
         dino.setBonheur(19);
+        dino.Afficher_Attribut();
+        System.out.println("\n");
         dino.travailler();
         dino.Afficher_Attribut();
     }
