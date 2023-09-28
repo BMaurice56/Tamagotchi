@@ -1,4 +1,5 @@
 package com.mygdx.game.Personnage;
+
 import java.util.ArrayList;
 
 public abstract class Tamagotchi {
@@ -15,6 +16,7 @@ public abstract class Tamagotchi {
     public int getWallet() {
         return wallet;
     }
+
     public void setWallet(int wallet) {
         this.wallet = wallet;
     }
@@ -22,8 +24,9 @@ public abstract class Tamagotchi {
     public ArrayList<Food> getPanier() {
         return panier;
     }
-    public void setPanier(ArrayList<Food> panier) {
-        this.panier = panier;
+
+    public void ajoutPanier(Food nourriture) {
+        panier.add(nourriture);
     }
 
     public int getDifficulty() {
