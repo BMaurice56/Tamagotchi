@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-28T08:43:29.819Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0" etag="cJxEs1p59_5lOyUmK8sN" version="21.8.0" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-09-28T08:49:14.317Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0" etag="vBOb9TztXJDEoIM6RLc3" version="21.8.0" type="github" pages="2">
   <diagram name="Page-1" id="X7pbwGflv3DXX_Mfw_il">
     <mxGraphModel dx="1434" dy="759" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -221,6 +221,27 @@
         </mxCell>
         <mxCell id="Ra2R3u_-MFEMQ_JjcGX7-28" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
           <mxGeometry x="20" y="-260" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hG_oaM2w4RvTraoQ69d7-1" value="Personnage" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-320" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-1" value="Robot" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="560" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-2" value="Animal" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-3" value="Dormir" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-4" value="Laver" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-5" value="Entretient" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="640" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JjhIhBfjrnZO3MgxPuuC-6" value="Recharger" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="500" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
