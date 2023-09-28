@@ -11,11 +11,11 @@ public abstract class Animal extends Tamagotchi{
 
     public Animal(int difficulty){
         super(difficulty);
-        this.vie=100;
-        this.foods=100;
-        this.hygiene=100;
-        this.sleep=100;
-        this.bonheur=100;
+        this.vie=1000;
+        this.foods=1000;
+        this.hygiene=1000;
+        this.sleep=1000;
+        this.bonheur=1000;
     }
 
     public int getVie() {
@@ -63,21 +63,22 @@ public abstract class Animal extends Tamagotchi{
     }
 
     public void travailler(){
+
         long temps = System.currentTimeMillis();
-        int bad=-10;
-        int coins=5+this.getWallet();
-
-        bonheur+=bad;
-        hygiene+=bad+3;
-        this.setWallet(coins);
-
-        check();
-        while ((temps + 10_000) > System.currentTimeMillis()) {
+        while ((temps + 5_000) > System.currentTimeMillis()) {
             continue;
         }
+        this.setWallet(this.getWallet()+50);
+        bonheur-=getDifficulty()*100;
+        hygiene-=getDifficulty()*43;
+        sleep-=getDifficulty()*60;
+
+
+        check();
+
     }
 
-    protected void check(){
+    public void check(){
         if(vie<0){
             vie=0;
         }
@@ -93,6 +94,29 @@ public abstract class Animal extends Tamagotchi{
         if (bonheur<0){
             bonheur=0;
         }
+    }
+
+    public void acheterApple(){
+        int prix= 20;
+        if(getWallet()>=prix){
+            Food app = new Apple();
+            ArrayList<Food> p =  new ArrayList<Food>();
+            p.add(app);
+            setPanier(p);
+            setWallet(getWallet()-prix);
+        }
+    }
+    public void acheterGoldenApple(){
+        int prix = 50;
+        if(getWallet()>= prix){
+            Food gapp = new GoldenApple();
+            ArrayList<Food> p =  new ArrayList<Food>();
+            p.add(gapp);
+            setPanier(p);
+            setWallet(getWallet()-prix);
+        }
+
+
     }
 
 }

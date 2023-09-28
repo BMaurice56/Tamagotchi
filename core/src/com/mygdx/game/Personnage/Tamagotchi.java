@@ -17,4 +17,15 @@ public abstract class Tamagotchi {
     public void setWallet(int wallet) {
         this.wallet = wallet;
     }
+
+    public ArrayList<Food> getPanier() {
+        return panier;
+    }
+    public void setPanier(ArrayList<Food> panier) {
+        this.panier = panier;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
 }
