@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class VueJeu implements Screen {
+public class View implements Screen {
 
     private final SpriteBatch batch = new SpriteBatch();
 
@@ -19,6 +19,11 @@ public class VueJeu implements Screen {
     private final Texture background = new Texture("background.jpg");
 
     private float screenWidth, screenHeight;
+
+    public View() {
+        // Définit le stage comme gestionnaire des entrées
+        Gdx.input.setInputProcessor(stage);
+    }
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
