@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Modele {
 
-    private View view;
+    private ViewAnimal viewAnimal;
 
     private Controller controller;
 
@@ -17,16 +17,20 @@ public class Modele {
         }
         System.out.println(tamagotchi + " " + nomTamagotchi + " " + difficulty);
 
-        view = new View();
+        viewAnimal = new ViewAnimal();
 
-        ((Game) Gdx.app.getApplicationListener()).setScreen(view);
+        ((Game) Gdx.app.getApplicationListener()).setScreen(viewAnimal);
+
+        //jeu();
     }
 
     public void jeu() {
         boolean exit = false;
 
+
+
         while (!exit) {
-            System.out.println("toto");
+            System.out.println(Gdx.graphics.getDeltaTime());
         }
     }
 

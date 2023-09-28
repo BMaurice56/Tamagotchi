@@ -8,22 +8,39 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class View implements Screen {
+public class ViewAnimal implements Screen {
 
     private final SpriteBatch batch = new SpriteBatch();
 
     private final Stage stage = new Stage(new ScreenViewport());
 
-    private final Texture background = new Texture("background.jpg");
+    private Texture livingRoom, kitchen, bathroom, garden;
 
     private float screenWidth, screenHeight;
 
-    public View() {
+    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable;
+
+    private ImageButton leftArrow, rightArrow, settings;
+
+    private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
+
+    private ProgressBar life, food, sleeping, washing, happiness;
+
+    private int money, apple, goldenApple;
+
+
+    public ViewAnimal() {
+
+        createTexture();
+        createButton();
+
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
     }
+
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
@@ -53,7 +70,7 @@ public class View implements Screen {
 
         // Dessine l'image de fond
         batch.begin();
-        batch.draw(background, 0, 0, screenWidth, screenHeight);
+        batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
         batch.end();
 
         // Dessine le stage
@@ -109,4 +126,30 @@ public class View implements Screen {
     public void dispose() {
 
     }
+
+    /**
+     * Instancie les textures
+     */
+    public void createTexture() {
+        livingRoom = new Texture("livingRoom.jpg");
+        kitchen = new Texture("kitchen.jpg");
+        bathroom = new Texture("bathroom.jpg");
+        garden = new Texture("garden.png");
+    }
+
+    public void createButton() {
+        leftArrow = new BoutonImage(new MultiSkin("image"), "leftArrow.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "rightArrow.png", 100, 75);
+        settings = new BoutonImage(new MultiSkin("image"), "settingsSmall.png", 70, 70);
+        sleep = new TextButton("Dormir", new MultiSkin("text"));
+        work = new TextButton("Travailler", new MultiSkin("text"));
+        wash = new TextButton("Se laver", new MultiSkin("text"));
+        eat = new TextButton("Manger", new MultiSkin("text"));
+        buy = new TextButton("Acheter", new MultiSkin("text"));
+        play = new TextButton("Jouer", new MultiSkin("text"));
+        settings2 = new TextButton("Settings", new MultiSkin("text"));
+        home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
+        resume = new TextButton("Reprise", new MultiSkin("text"));
+    }
+
 }

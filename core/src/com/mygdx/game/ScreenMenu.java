@@ -27,7 +27,7 @@ public class ScreenMenu implements Screen {
 
     private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("Allumer-le-feu.mp3"));
 
-    final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
+    private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
 
     private BoutonImage playButton, settingsButton, quitButton;
 

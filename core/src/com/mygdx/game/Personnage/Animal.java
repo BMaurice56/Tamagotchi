@@ -104,6 +104,7 @@ public abstract class Animal extends Tamagotchi{
             setWallet(getWallet()-prix);
         }
     }
+
     public void acheterGoldenApple(){
         int prix = 50;
         if(getWallet()>=prix){
