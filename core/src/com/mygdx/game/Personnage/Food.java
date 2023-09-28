@@ -8,4 +8,12 @@ public class Food {
         this.name=name;
         this.point=point;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPoint() {
+        return point;
+    }
 }

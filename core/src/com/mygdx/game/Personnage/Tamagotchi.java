@@ -28,6 +28,7 @@ public abstract class Tamagotchi {
     public void ajoutPanier(Food nourriture) {
         panier.add(nourriture);
     }
+    public void removePanier(int i){panier.remove(i);}
 
     public int getDifficulty() {
         return difficulty;
