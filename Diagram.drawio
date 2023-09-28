@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-09-28T08:55:09.922Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="ivwAE-AKqaRS_iNVG8V1" version="21.8.2" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-09-28T12:50:27.798Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="Bx2_TKpUpNIXC8oU_kKF" version="21.8.0" type="github" pages="2">
   <diagram name="Page-1" id="A8WbYLxeXYT_SSvVJtiG">
-    <mxGraphModel dx="1050" dy="587" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -68,7 +68,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="AY7ozsb0nTxLQEQO-qp8" name="Page-2">
-    <mxGraphModel dx="1518" dy="691" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -117,7 +117,7 @@
         <mxCell id="iNTnJNL07J0__oHAqCpz-15" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="iNTnJNL07J0__oHAqCpz-13" vertex="1">
           <mxGeometry y="106" width="230" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="iNTnJNL07J0__oHAqCpz-16" value="&lt;div&gt;+getVie() : int&lt;br&gt;&lt;/div&gt;&lt;div&gt;+setVie(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getFoods() : int&lt;br&gt;&lt;/div&gt;+setFoods(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getHygiene : int&lt;br&gt;&lt;/div&gt;+setHygiene(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getSleep() : int&lt;br&gt;&lt;/div&gt;+setSleep(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getBonheurs() : int&lt;br&gt;&lt;/div&gt;+setBonheurs(int) : void&lt;/div&gt;&lt;div&gt;+check(): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+manger() : void&lt;/div&gt;&lt;div&gt;+dormir() : void&lt;/div&gt;&lt;div&gt;+laver() : void&lt;/div&gt;&lt;div&gt;+jouer() : void&lt;/div&gt;&lt;div&gt;+travailler() : void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+acheter(Apple):void&lt;/div&gt;&lt;div&gt;+ acheter(GoldenApple) : void&lt;/div&gt;&lt;div&gt;#check&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="iNTnJNL07J0__oHAqCpz-13" vertex="1">
+        <mxCell id="iNTnJNL07J0__oHAqCpz-16" value="&lt;div&gt;+getVie() : int&lt;br&gt;&lt;/div&gt;&lt;div&gt;+setVie(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getFoods() : int&lt;br&gt;&lt;/div&gt;+setFoods(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getHygiene : int&lt;br&gt;&lt;/div&gt;+setHygiene(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getSleep() : int&lt;br&gt;&lt;/div&gt;+setSleep(int) : void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+getBonheurs() : int&lt;br&gt;&lt;/div&gt;+setBonheurs(int) : void&lt;/div&gt;&lt;div&gt;+check(): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+manger() : void&lt;/div&gt;&lt;div&gt;+dormir() : void&lt;/div&gt;&lt;div&gt;+laver() : void&lt;/div&gt;&lt;div&gt;+jouer() : void&lt;/div&gt;&lt;div&gt;+travailler() : void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+acheter(Apple):void&lt;/div&gt;&lt;div&gt;+ acheter(GoldenApple) : void&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="iNTnJNL07J0__oHAqCpz-13" vertex="1">
           <mxGeometry y="114" width="230" height="306" as="geometry" />
         </mxCell>
         <mxCell id="iNTnJNL07J0__oHAqCpz-18" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="iNTnJNL07J0__oHAqCpz-1" target="iNTnJNL07J0__oHAqCpz-9" edge="1">
