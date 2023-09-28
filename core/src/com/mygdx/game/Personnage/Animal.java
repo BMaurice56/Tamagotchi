@@ -1,5 +1,6 @@
 package com.mygdx.game.Personnage;
 import java.util.ArrayList;
+import java.util.Random;
 public abstract class Animal extends Tamagotchi{
 
     private int vie;
@@ -9,7 +10,7 @@ public abstract class Animal extends Tamagotchi{
     private int bonheur;
 
 
-    public Animal(int difficulty){
+    public Animal(int difficulty){ //constructeur on initialize à 1000 tout les attribut sauf son porte mannai
         super(difficulty);
         this.vie=1000;
         this.foods=1000;
@@ -113,6 +114,48 @@ public abstract class Animal extends Tamagotchi{
             setWallet(getWallet()-prix);
         }
     }
+
+    /**
+     *  Auteur : Arthur
+     *  @param food qui prends apple ou golden apple
+     *  description : suprimme food du panier et y ajoute la valeur de point associer
+     */
+    public void manger(String food){
+        for (int i=0;i<getPanier().size();i++){ //parcour l'attribut panier
+            Food food1 = getPanier().get(i); //el actu
+            if (food.equals(food1.getName())){ //quand trouver
+                removePanier(i); //on suprimme l'element dans la liste
+                foods+=food1.getPoint();
+                long temps = System.currentTimeMillis();
+                while ((temps + 5_000) > System.currentTimeMillis()) { //on attends 5 seconde
+                    continue;
+                }
+                return; //on par de la methode
+            }
+        }
+    }
+
+
+    /**
+     * Auteur : Arthur
+     * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
+     */
+    public void dormir() {
+
+        long temps = System.currentTimeMillis();
+        Random random = new Random();
+
+        int interval = random.nextInt(3001); //nbr entre 0 et 3000 inclus
+        while ((temps + 15_000 + interval) > System.currentTimeMillis()) { //on attend entre 15 et 18 secondes
+            continue;
+        }
+        if (sleep<=200){ //si sleep est entre 200 incul et 0
+            setSleep(900-getDifficulty()*100); //som sommeil sera 800 ou 700  ou 600  en fonction de la difficulté
+        }else {
+            setSleep(1000); // sinon son sommeil va au max
+        }
+    }
+
 
 
  }
