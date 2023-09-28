@@ -99,24 +99,19 @@ public abstract class Animal extends Tamagotchi{
     public void acheterApple(){
         int prix= 20;
         if(getWallet()>=prix){
-            Food app = new Apple();
-            ArrayList<Food> p =  new ArrayList<Food>();
-            p.add(app);
-            setPanier(p);
+            Food f = new Apple();
+            ajoutPanier(f);
             setWallet(getWallet()-prix);
         }
     }
     public void acheterGoldenApple(){
         int prix = 50;
-        if(getWallet()>= prix){
-            Food gapp = new GoldenApple();
-            ArrayList<Food> p =  new ArrayList<Food>();
-            p.add(gapp);
-            setPanier(p);
+        if(getWallet()>=prix){
+            Food f = new GoldenApple();
+            ajoutPanier(f);
             setWallet(getWallet()-prix);
         }
-
-
     }
 
-}
+
+ }
