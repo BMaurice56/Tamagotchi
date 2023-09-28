@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-28T08:54:04.523Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0" etag="TW-SymEhXAq4bKM96aYU" version="21.8.0" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-09-28T09:17:06.994Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0" etag="dbUzUpUHpIgGV-n4uD9y" version="21.8.0" type="github" pages="2">
   <diagram name="Page-1" id="X7pbwGflv3DXX_Mfw_il">
     <mxGraphModel dx="1434" dy="759" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -195,7 +195,7 @@
         <mxCell id="Ra2R3u_-MFEMQ_JjcGX7-22" value="Arrêter de travailler" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-130" y="-120" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ra2R3u_-MFEMQ_JjcGX7-23" value="Choisir le travaille" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Ra2R3u_-MFEMQ_JjcGX7-23" value="Choisir le travail" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-130" y="-260" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Ra2R3u_-MFEMQ_JjcGX7-24" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ra2R3u_-MFEMQ_JjcGX7-6" target="Ra2R3u_-MFEMQ_JjcGX7-23">
