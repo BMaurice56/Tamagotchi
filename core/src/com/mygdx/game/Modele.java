@@ -22,5 +22,12 @@ public class Modele {
         ((Game) Gdx.app.getApplicationListener()).setScreen(view);
     }
 
+    public void jeu() {
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("toto");
+        }
+    }
 
 }

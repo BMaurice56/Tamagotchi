@@ -8,6 +8,7 @@ public abstract class Tamagotchi {
     private int difficulty;
 
     public Tamagotchi(int difficulty) {
+        panier = new ArrayList<>();
         this.difficulty = difficulty;
     }
 
