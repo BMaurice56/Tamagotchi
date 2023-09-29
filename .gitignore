@@ -5,6 +5,7 @@
 *.ear
 hs_err_pid*
 
+
 ## Robovm
 /ios/robovm-build/
 
@@ -90,7 +91,7 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-
+/com/mygdx/game/Exemple progress bar
 /local.properties
 .gradle/
 gradle-app.setting
