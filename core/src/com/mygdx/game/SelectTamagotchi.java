@@ -52,6 +52,11 @@ public class SelectTamagotchi implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Change l'image du tamagotchi sélectionné
+     *
+     * @param boutonImage Tamagotchi sélectionné
+     */
     public void imageSelected(BoutonImage boutonImage) {
         stage.clear();
 
@@ -168,7 +173,7 @@ public class SelectTamagotchi implements Screen {
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-                new Modele(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, "");
+                new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, "");
                 return true;
             }
         });
@@ -232,9 +237,6 @@ public class SelectTamagotchi implements Screen {
         // Récupère les dimensions de la fenêtre
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-
-        //selectedImage.setPosition(screenWidth / 2 - 100, 100);
-        //nameTable.setPosition(screenWidth / 2 - 400, 30);
 
         // Dessine l'image de fond
         batch.begin();
@@ -300,7 +302,8 @@ public class SelectTamagotchi implements Screen {
      */
     @Override
     public void dispose() {
-
+        batch.dispose();
+        stage.dispose();
     }
 }
 

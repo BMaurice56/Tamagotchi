@@ -35,12 +35,12 @@ public class ScreenMenu implements Screen {
 
     private Table homeTable, partyTable, settingsTable;
 
-    private final Controller controllerSettings;
+    private final Modele controllerSettings;
 
 
     public ScreenMenu() {
         // Controller pour les paramètres
-        controllerSettings = new Controller();
+        controllerSettings = new Modele();
 
         float son = controllerSettings.getSound();
         volumeSlider.setValue(son);

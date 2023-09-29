@@ -8,15 +8,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ViewAnimal implements Screen {
 
-    private final SpriteBatch batch = new SpriteBatch();
+    private SpriteBatch batch = new SpriteBatch();
 
     private final Stage stage = new Stage(new ScreenViewport());
 
@@ -32,32 +33,32 @@ public class ViewAnimal implements Screen {
 
     private ProgressBar life, food, sleeping, washing, happiness;
 
-    private int money, apple, goldenApple;
+    private int money, apple, goldenApple, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
 
 
     public ViewAnimal() {
 
-        int width = 100;
-
-        int height = 20;
-
-
-        life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-
-        life.getStyle().background = Utils.getColoredDrawable(width, height, Color.RED);
-        life.getStyle().knob = Utils.getColoredDrawable(0, height, Color.GREEN);
-        life.getStyle().knobBefore = Utils.getColoredDrawable(width, height, Color.GREEN);
-
-        life.setPosition(450, 450);
-        life.setAnimateDuration(0.0f);
-        life.setValue(200f);
-
-        life.setSize(width, height);
-
         createTexture();
         createButton();
+        createProgressBar();
+        ajoutListeners();
+
+        float progressBarValue = 500f;
+
+        life.setValue(200f);
+        food.setValue(progressBarValue);
+        sleeping.setValue(progressBarValue);
+        washing.setValue(progressBarValue);
+        happiness.setValue(progressBarValue);
 
         stage.addActor(life);
+        stage.addActor(food);
+        stage.addActor(sleeping);
+        stage.addActor(washing);
+        stage.addActor(happiness);
+        stage.addActor(leftArrow);
+        stage.addActor(rightArrow);
+
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -87,12 +88,50 @@ public class ViewAnimal implements Screen {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        //selectedImage.setPosition(screenWidth / 2 - 100, 100);
-        //nameTable.setPosition(screenWidth / 2 - 400, 30);
+        // Flèche de changement d'écran
+        leftArrow.setPosition(5, screenHeight / 2);
+        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2);
+
+
+        // Taille des bars de progression
+        widthProgressbar = (int) (screenWidth / 6);
+        heightProgressBar = (int) (screenHeight / 30);
+
+        life.setSize(widthProgressbar, heightProgressBar);
+        food.setSize(widthProgressbar, heightProgressBar);
+        sleeping.setSize(widthProgressbar, heightProgressBar);
+        washing.setSize(widthProgressbar, heightProgressBar);
+        happiness.setSize(widthProgressbar, heightProgressBar);
+
+
+        // Position des bars de progressions
+        float shift = - heightProgressBar - 10f;
+        float X = 10f;
+        float Y = screenHeight ;
+
+        life.setPosition(X, Y + shift);
+        food.setPosition(X, Y + shift * 2);
+        sleeping.setPosition(X, Y + shift * 3);
+        washing.setPosition(X, Y + shift * 4);
+        happiness.setPosition(X, Y + shift * 5);
 
         // Dessine l'image de fond
         batch.begin();
-        //batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
+        switch (screen) {
+            case 1:
+                batch.draw(garden, 0, 0, screenWidth, screenHeight);
+                break;
+            case 2:
+                batch.draw(kitchen, 0, 0, screenWidth, screenHeight);
+                break;
+            case 3:
+                batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
+                break;
+            case 4:
+                batch.draw(bathroom, 0, 0, screenWidth, screenHeight);
+                break;
+            // Ajoutez d'autres cas pour d'autres images de fond si nécessaire
+        }
         batch.end();
 
         // Dessine le stage
@@ -146,7 +185,8 @@ public class ViewAnimal implements Screen {
      */
     @Override
     public void dispose() {
-
+        batch.dispose();
+        stage.dispose();
     }
 
     /**
@@ -174,4 +214,76 @@ public class ViewAnimal implements Screen {
         resume = new TextButton("Reprise", new MultiSkin("text"));
     }
 
+    public void createProgressBar() {
+
+        // Instanciation des bars de progressions
+        life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        food = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        sleeping = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        washing = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        happiness = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+
+        life.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        life.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        life.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
+        food.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        food.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        food.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
+        sleeping.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        sleeping.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        sleeping.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
+        washing.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        washing.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        washing.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
+        happiness.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        happiness.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        happiness.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
+    }
+
+    public void ajoutListeners() {
+        leftArrow.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                leftArrowClick();
+                return true;
+            }
+        });
+
+        rightArrow.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                rightArrowClick();
+                return true;
+            }
+        });
+    }
+
+    public void leftArrowClick() {
+        screen -= 1;
+        switch (screen) {
+            case (1):
+                leftArrow.setVisible(false);
+                break;
+            case (3):
+                rightArrow.setVisible(true);
+                break;
+        }
+    }
+
+    public void rightArrowClick() {
+        screen += 1;
+        switch (screen) {
+            case (2):
+                leftArrow.setVisible(true);
+                break;
+            case (4):
+                rightArrow.setVisible(false);
+                break;
+        }
+    }
 }
