@@ -91,7 +91,7 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-/com/mygdx/game/Exemple progress bar
+core/src/com/mygdx/game/Exemple progress bar/*
 /local.properties
 .gradle/
 gradle-app.setting
