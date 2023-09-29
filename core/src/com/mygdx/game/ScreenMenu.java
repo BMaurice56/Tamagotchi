@@ -16,33 +16,45 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-
+/**
+ * Classe du menu d'accueil du jeu
+ */
 public class ScreenMenu implements Screen {
+    // https://gamedev.stackexchange.com/questions/121316/what-is-the-difference-between-sprite-and-spritebatch-specifically-in-the-conte/121340
     private final SpriteBatch batch = new SpriteBatch();
+
+    // Arrière-plan
     private final Texture background = new Texture("images/background.jpg");
 
+    // Taille de la fenêtre
     private float screenWidth, screenHeight;
 
+    // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
 
+    // Musique du jeu
     private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("musics/Allumer-le-feu.mp3"));
 
+    // Slider qui gère le niveau du son
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
 
     private BoutonImage playButton, settingsButton, quitButton;
 
     private TextButton newGameButton, saveGameButton, backButton, backButton2;
 
+    // Table qui gère le placement des objets sur la fenêtre
     private Table homeTable, partyTable, settingsTable;
 
-    private final Modele controllerSettings;
+    // Modèle du jeu
+    private final Modele modele;
 
-
+    /**
+     * Constructeur
+     */
     public ScreenMenu() {
-        // Controller pour les paramètres
-        controllerSettings = new Modele();
+        modele = new Modele();
 
-        float son = controllerSettings.getSound();
+        float son = modele.getSound();
         volumeSlider.setValue(son);
 
         musique.setVolume(son);
@@ -61,7 +73,8 @@ public class ScreenMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    public ScreenMenu(boolean menuGestionGame) {
+    // Deuxième constructeur
+    public ScreenMenu(boolean ignoredMenuGestionGame) {
         this();
         putTable(partyTable);
     }
@@ -73,7 +86,11 @@ public class ScreenMenu implements Screen {
     public void show() {
     }
 
-    // Gère le rendu de l'affichage
+    /**
+     * Called when the screen should render itself.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         // Efface l'écran
@@ -93,6 +110,7 @@ public class ScreenMenu implements Screen {
         stage.draw();
     }
 
+
     @Override
     public void dispose() {
         batch.dispose();
@@ -101,7 +119,6 @@ public class ScreenMenu implements Screen {
 
     /**
      * Méthode appelée lorsque la fenêtre est redimensionnée
-     * Met à jour l'affichage
      *
      * @param width  la nouvelle largeur en pixels
      * @param height la nouvelle hauteur en pixels
@@ -140,6 +157,9 @@ public class ScreenMenu implements Screen {
     public void hide() {
     }
 
+    /**
+     * Instancie les boutons
+     */
     public void createButton() {
         // Accueil
         playButton = new BoutonImage(new MultiSkin("image"), "images/play.png", 200, 50);
@@ -153,6 +173,9 @@ public class ScreenMenu implements Screen {
         backButton2 = new TextButton("Retour au centre", new MultiSkin("text"));
     }
 
+    /**
+     * Instancie les tables
+     */
     public void createTable() {
         // Table du menu
         homeTable = new Table();
@@ -179,6 +202,9 @@ public class ScreenMenu implements Screen {
 
     }
 
+    /**
+     * Ajoutes les écouteurs des boutons
+     */
     public void addButtonListeners() {
         playButton.addListener(new InputListener() {
             @Override
@@ -224,7 +250,7 @@ public class ScreenMenu implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 float son = volumeSlider.getValue();
 
-                controllerSettings.setSound(son);
+                modele.setSound(son);
 
                 putTable(homeTable);
                 return true;
@@ -240,7 +266,11 @@ public class ScreenMenu implements Screen {
         });
     }
 
-
+    /**
+     * Remplace la table affichée à l'écran
+     *
+     * @param table la table voulu
+     */
     public void putTable(Table table) {
         stage.clear();
         stage.addActor(table);

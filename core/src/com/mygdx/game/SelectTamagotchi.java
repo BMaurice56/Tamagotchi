@@ -18,18 +18,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+/**
+ * Classe qui permet de sélectionner le Tamagotchi
+ */
 public class SelectTamagotchi implements Screen {
+    // https://gamedev.stackexchange.com/questions/121316/what-is-the-difference-between-sprite-and-spritebatch-specifically-in-the-conte/121340
     private final SpriteBatch batch = new SpriteBatch();
+
+    // Arrière-plan
     private final Texture background = new Texture("images/background.jpg");
 
+    // Taille de la fenêtre
     private float screenWidth, screenHeight;
 
+    // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
 
     private BoutonImage pixelCat, pixelDog, pixelDinosaur, pixelRobot, tamagotchiSelected, leftArrow, rightArrow;
 
     private TextButton playButton, backButton;
 
+    // Zone de texte
     private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
     private final Label labelLevelDifficult = new Label("Facile", new MultiSkin("label"));
@@ -38,6 +47,9 @@ public class SelectTamagotchi implements Screen {
 
     private int tamagotchiSelection = 1, difficultyLevel = 1;
 
+    /**
+     * Constructeur
+     */
     public SelectTamagotchi() {
 
         createButton();
@@ -58,21 +70,14 @@ public class SelectTamagotchi implements Screen {
      * @param boutonImage Tamagotchi sélectionné
      */
     public void imageSelected(BoutonImage boutonImage) {
-        stage.clear();
-
         // Copie la texture de boutonImage dans selectedImage
         TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(boutonImage.getImageTexture()));
         tamagotchiSelected.getStyle().imageUp = tamagotchiSelected.getStyle().imageDown = drawable;
-
-        tamagotchiSelected.setVisible(true);
-
-        selectTable.getCell(tamagotchiSelected).setActor(tamagotchiSelected);
-
-
-        stage.addActor(selectTable);
-        stage.draw();
     }
 
+    /**
+     * Instancie les boutons
+     */
     public void createButton() {
         // Boutons de selection du Tamagotchi
         pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelcat.png", 920, 1104);
@@ -89,6 +94,9 @@ public class SelectTamagotchi implements Screen {
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
     }
 
+    /**
+     * Instancie les tables
+     */
     public void createTable() {
         selectTable = new Table();
         selectTable.setFillParent(true);
@@ -117,6 +125,9 @@ public class SelectTamagotchi implements Screen {
         selectTable.add(playButton).row();
     }
 
+    /**
+     * Ajoute les écouteurs sur les boutons
+     */
     public void addButtonListeners() {
         pixelCat.addListener(new InputListener() {
             @Override
@@ -248,6 +259,8 @@ public class SelectTamagotchi implements Screen {
     }
 
     /**
+     * Méthode appelée quand la fenêtre est redimensionnée
+     *
      * @param width  largeur de l'écran
      * @param height hauteur de l'écran
      * @see ApplicationListener#resize(int, int)

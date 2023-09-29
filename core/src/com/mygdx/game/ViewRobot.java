@@ -1,8 +1,8 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ApplicationListener;
 
 public class ViewRobot implements Screen {
     /**

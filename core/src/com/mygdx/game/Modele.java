@@ -10,8 +10,10 @@ import com.badlogic.gdx.utils.JsonReader;
  */
 public class Modele {
 
+    // Json object
     JsonValue base;
 
+    // Gestionnaire de fichier
     FileHandle file;
 
     String emplacement = "core/src/com/mygdx/game/";
@@ -21,8 +23,9 @@ public class Modele {
      */
     public Modele() {
 
-        // Utilisez le chemin complet du fichier
+        // Lecteur de fichier
         JsonReader jsonReader = new JsonReader();
+
         file = new FileHandle(emplacement + "settings.json");
 
         // Lecture du fichier de paramètre json
@@ -53,7 +56,7 @@ public class Modele {
 
 
     /**
-     * Vérifie si le nom est présent dans le fichier json
+     * Vérifie si une clef est présent dans le fichier json
      *
      * @param name nom
      * @return boolean true si contient le nom

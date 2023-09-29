@@ -2,10 +2,16 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+/**
+ * Classe MultiSkin qui permet de créer une peau pour différents types de bouton ou de texte
+ * évite la redondance de toutes ces étapes dans le code
+ */
 public class MultiSkin extends Skin {
+    // Police d'écriture
+    BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
 
     /**
      * Constructeur
@@ -13,44 +19,48 @@ public class MultiSkin extends Skin {
      * @param type String type de button ("texte", "image", "slider");
      */
     public MultiSkin(String type) throws IllegalArgumentException {
+        // Appelle du constructeur de la classe mère
         super();
+
+        // Stock le style
         Object style;
 
-        if ("text".equals(type)) {
-            // Police d'écriture
-            BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
+        // Compare le type de skin voulu
+        switch (type) {
+            case ("text"):
+                TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+                textButtonStyle.font = font;
 
-            // Définition du style du bouton (TextButtonStyle)
-            TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-            textButtonStyle.font = font; // Définissez la police du texte ici
-            style = textButtonStyle; // Affectez le style au bouton texte
+                style = textButtonStyle;
+                break;
 
-        } else if ("image".equals(type)) {
-            style = new ImageButton.ImageButtonStyle(); // Affectez le style au bouton image
+            case ("image"):
+                style = new ImageButton.ImageButtonStyle();
+                break;
 
-        } else if ("slider".equals(type)) {
-            style = new Slider.SliderStyle(); // Affectez le style au slider
+            case ("slider"):
+                style = new Slider.SliderStyle();
+                break;
 
-        } else if ("label".equals(type)) {
-            BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
+            case ("label"):
+                Label.LabelStyle labelStyle = new Label.LabelStyle();
+                labelStyle.font = font;
 
-            Label.LabelStyle labelStyle = new Label.LabelStyle();
-            labelStyle.font = font;
+                style = labelStyle;
+                break;
 
-            style = labelStyle;
+            case ("textfield"):
+                TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+                textFieldStyle.font = font;
+                textFieldStyle.fontColor = new Color(1, 1, 1, 1);
 
-        } else if ("textfield".equals(type)){
-            BitmapFont font = new BitmapFont(Gdx.files.internal("font/font2.fnt"));
+                style = textFieldStyle;
+                break;
 
-            TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-            textFieldStyle.font = font;
-            textFieldStyle.fontColor = new Color(1,1,1,1);
-
-            style = textFieldStyle;
-
-        } else {
-            throw new IllegalArgumentException("Skin inconnu");
+            default:
+                throw new IllegalArgumentException("Skin inconnu");
         }
+
 
         super.add("default", style);
     }

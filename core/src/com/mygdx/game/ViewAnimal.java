@@ -1,41 +1,50 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Vue du jeu
+ */
 public class ViewAnimal implements Screen {
-
+    // https://gamedev.stackexchange.com/questions/121316/what-is-the-difference-between-sprite-and-spritebatch-specifically-in-the-conte/121340
     private SpriteBatch batch = new SpriteBatch();
 
+    // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
 
     private Texture livingRoom, kitchen, bathroom, garden;
 
+    // Taille de la fenêtre
     private float screenWidth, screenHeight;
 
+    // Table qui gère le placement des objets sur la fenêtre
     private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable;
 
     private ImageButton leftArrow, rightArrow, settings;
 
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
+    // Barres de progressions
     private ProgressBar life, food, sleeping, washing, happiness;
 
     private int money, apple, goldenApple, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
 
 
+    /**
+     * Constructeur
+     */
     public ViewAnimal() {
 
         createTexture();
@@ -93,7 +102,7 @@ public class ViewAnimal implements Screen {
         rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2);
 
 
-        // Taille des bars de progression
+        // Taille des barres de progression
         widthProgressbar = (int) (screenWidth / 6);
         heightProgressBar = (int) (screenHeight / 30);
 
@@ -104,10 +113,10 @@ public class ViewAnimal implements Screen {
         happiness.setSize(widthProgressbar, heightProgressBar);
 
 
-        // Position des bars de progressions
-        float shift = - heightProgressBar - 10f;
+        // Position des barres de progressions
+        float shift = -heightProgressBar - 10f;
         float X = 10f;
-        float Y = screenHeight ;
+        float Y = screenHeight;
 
         life.setPosition(X, Y + shift);
         food.setPosition(X, Y + shift * 2);
@@ -139,6 +148,8 @@ public class ViewAnimal implements Screen {
     }
 
     /**
+     * Méthode appelée quand la fenêtre est redimensionnée
+     *
      * @param width
      * @param height
      * @see ApplicationListener#resize(int, int)
@@ -199,6 +210,9 @@ public class ViewAnimal implements Screen {
         garden = new Texture("images/garden.png");
     }
 
+    /**
+     * Instancie les boutons
+     */
     public void createButton() {
         leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
@@ -214,9 +228,11 @@ public class ViewAnimal implements Screen {
         resume = new TextButton("Reprise", new MultiSkin("text"));
     }
 
+    /**
+     * Instancie les barres de progression
+     */
     public void createProgressBar() {
 
-        // Instanciation des bars de progressions
         life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         food = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         sleeping = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
@@ -245,6 +261,9 @@ public class ViewAnimal implements Screen {
 
     }
 
+    /**
+     * Ajoutes les écouteurs des boutons
+     */
     public void ajoutListeners() {
         leftArrow.addListener(new InputListener() {
             @Override
@@ -263,6 +282,9 @@ public class ViewAnimal implements Screen {
         });
     }
 
+    /**
+     * Action de la flèche gauche
+     */
     public void leftArrowClick() {
         screen -= 1;
         switch (screen) {
@@ -275,6 +297,9 @@ public class ViewAnimal implements Screen {
         }
     }
 
+    /**
+     * Action de la flèche droite
+     */
     public void rightArrowClick() {
         screen += 1;
         switch (screen) {

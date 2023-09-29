@@ -3,8 +3,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -18,14 +18,15 @@ public class Utils {
 	private Utils() {}
 	
 	/**
-	 * Creates an image of determined size filled with determined color.
+	 * Crée une image avec la taille / couleur voulue
 	 * 
-	 * @param width of an image.
-	 * @param height of an image.
-	 * @param color of an image fill.
-	 * @return {@link Drawable} of determined size filled with determined color.
+	 * @param width longueur de l'image
+	 * @param height largeur de l'image
+	 * @param color couleur de l'image
+	 * @return {@link Drawable} avec la taille et la couleur voulue
 	 */
 	public static Drawable getColoredDrawable(int width, int height, Color color) {
+		// Crée une pixelMap
 		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
 		pixmap.setColor(color);
 		pixmap.fill();
