@@ -4,11 +4,14 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ViewAnimal implements Screen {
@@ -34,8 +37,27 @@ public class ViewAnimal implements Screen {
 
     public ViewAnimal() {
 
+        int width = 100;
+
+        int height = 20;
+
+
+        life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+
+        life.getStyle().background = Utils.getColoredDrawable(width, height, Color.RED);
+        life.getStyle().knob = Utils.getColoredDrawable(0, height, Color.GREEN);
+        life.getStyle().knobBefore = Utils.getColoredDrawable(width, height, Color.GREEN);
+
+        life.setPosition(450, 450);
+        life.setAnimateDuration(0.0f);
+        life.setValue(200f);
+
+        life.setSize(width, height);
+
         createTexture();
         createButton();
+
+        stage.addActor(life);
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -70,7 +92,7 @@ public class ViewAnimal implements Screen {
 
         // Dessine l'image de fond
         batch.begin();
-        batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
+        //batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
         batch.end();
 
         // Dessine le stage
@@ -131,16 +153,16 @@ public class ViewAnimal implements Screen {
      * Instancie les textures
      */
     public void createTexture() {
-        livingRoom = new Texture("livingRoom.jpg");
-        kitchen = new Texture("kitchen.jpg");
-        bathroom = new Texture("bathroom.jpg");
-        garden = new Texture("garden.png");
+        livingRoom = new Texture("images/livingRoom.jpg");
+        kitchen = new Texture("images/kitchen.jpg");
+        bathroom = new Texture("images/bathroom.jpg");
+        garden = new Texture("images/garden.png");
     }
 
     public void createButton() {
-        leftArrow = new BoutonImage(new MultiSkin("image"), "leftArrow.png", 100, 75);
-        rightArrow = new BoutonImage(new MultiSkin("image"), "rightArrow.png", 100, 75);
-        settings = new BoutonImage(new MultiSkin("image"), "settingsSmall.png", 70, 70);
+        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
+        settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
         sleep = new TextButton("Dormir", new MultiSkin("text"));
         work = new TextButton("Travailler", new MultiSkin("text"));
         wash = new TextButton("Se laver", new MultiSkin("text"));

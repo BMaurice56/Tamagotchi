@@ -19,13 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class ScreenMenu implements Screen {
     private final SpriteBatch batch = new SpriteBatch();
-    private final Texture background = new Texture("background.jpg");
+    private final Texture background = new Texture("images/background.jpg");
 
     private float screenWidth, screenHeight;
 
     private final Stage stage = new Stage(new ScreenViewport());
 
-    private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("Allumer-le-feu.mp3"));
+    private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("musics/Allumer-le-feu.mp3"));
 
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
 
@@ -142,9 +142,9 @@ public class ScreenMenu implements Screen {
 
     public void createButton() {
         // Accueil
-        playButton = new BoutonImage(new MultiSkin("image"), "play.png", 200, 50);
-        settingsButton = new BoutonImage(new MultiSkin("image"), "settings.png", 200, 50);
-        quitButton = new BoutonImage(new MultiSkin("image"), "quit.png", 200, 50);
+        playButton = new BoutonImage(new MultiSkin("image"), "images/play.png", 200, 50);
+        settingsButton = new BoutonImage(new MultiSkin("image"), "images/settings.png", 200, 50);
+        quitButton = new BoutonImage(new MultiSkin("image"), "images/quit.png", 200, 50);
 
         // Gestion de la partie
         newGameButton = new TextButton("Nouvelle partie", new MultiSkin("text"));

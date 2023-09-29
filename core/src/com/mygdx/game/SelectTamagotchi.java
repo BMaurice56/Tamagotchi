@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class SelectTamagotchi implements Screen {
     private final SpriteBatch batch = new SpriteBatch();
-    private final Texture background = new Texture("background.jpg");
+    private final Texture background = new Texture("images/background.jpg");
 
     private float screenWidth, screenHeight;
 
@@ -70,18 +70,18 @@ public class SelectTamagotchi implements Screen {
 
     public void createButton() {
         // Boutons de selection du Tamagotchi
-        pixelCat = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
-        pixelDog = new BoutonImage(new MultiSkin("image"), "pixeldog.png", 800, 723);
-        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "pixeldinosaur.png", 1240, 1240);
-        pixelRobot = new BoutonImage(new MultiSkin("image"), "pixelrobot.png", 1200, 800);
+        pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelcat.png", 920, 1104);
+        pixelDog = new BoutonImage(new MultiSkin("image"), "images/pixeldog.png", 800, 723);
+        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "images/pixeldinosaur.png", 1240, 1240);
+        pixelRobot = new BoutonImage(new MultiSkin("image"), "images/pixelrobot.png", 1200, 800);
 
-        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "pixelcat.png", 920, 1104);
+        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "images/pixelcat.png", 920, 1104);
 
         backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
         playButton = new TextButton("Jouer", new MultiSkin("text"));
 
-        leftArrow = new BoutonImage(new MultiSkin("image"), "leftArrow.png", 100, 75);
-        rightArrow = new BoutonImage(new MultiSkin("image"), "rightArrow.png", 100, 75);
+        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
     }
 
     public void createTable() {
