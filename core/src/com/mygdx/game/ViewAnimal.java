@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class ViewAnimal implements Screen {
     // https://gamedev.stackexchange.com/questions/121316/what-is-the-difference-between-sprite-and-spritebatch-specifically-in-the-conte/121340
-    private SpriteBatch batch = new SpriteBatch();
+    private final SpriteBatch batch = new SpriteBatch();
 
     // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
@@ -30,7 +30,7 @@ public class ViewAnimal implements Screen {
     private float screenWidth, screenHeight;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable;
+    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable;
 
     private ImageButton leftArrow, rightArrow, settings;
 
@@ -39,17 +39,17 @@ public class ViewAnimal implements Screen {
     // Barres de progressions
     private ProgressBar life, food, sleeping, washing, happiness;
 
-    private int money, apple, goldenApple, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
+    private int money = 10000, apple = 3, goldenApple = 2, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
 
 
     /**
      * Constructeur
      */
     public ViewAnimal() {
-
         createTexture();
         createButton();
         createProgressBar();
+        createTable();
         ajoutListeners();
 
         float progressBarValue = 500f;
@@ -60,14 +60,7 @@ public class ViewAnimal implements Screen {
         washing.setValue(progressBarValue);
         happiness.setValue(progressBarValue);
 
-        stage.addActor(life);
-        stage.addActor(food);
-        stage.addActor(sleeping);
-        stage.addActor(washing);
-        stage.addActor(happiness);
-        stage.addActor(leftArrow);
-        stage.addActor(rightArrow);
-
+        putTable(livingRoomTable);
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -101,6 +94,8 @@ public class ViewAnimal implements Screen {
         leftArrow.setPosition(5, screenHeight / 2);
         rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2);
 
+        // Paramètre
+        settings.setPosition(10, 10);
 
         // Taille des barres de progression
         widthProgressbar = (int) (screenWidth / 6);
@@ -123,6 +118,12 @@ public class ViewAnimal implements Screen {
         sleeping.setPosition(X, Y + shift * 3);
         washing.setPosition(X, Y + shift * 4);
         happiness.setPosition(X, Y + shift * 5);
+
+        // Position des tables
+        livingRoomTable.setPosition(screenWidth - 200, 20);
+        kitchenTable.setPosition(screenWidth - 175, 20);
+        bathroomTable.setPosition(screenWidth - 150, 20);
+        gardenTable.setPosition(screenWidth - 150, 20);
 
         // Dessine l'image de fond
         batch.begin();
@@ -217,15 +218,15 @@ public class ViewAnimal implements Screen {
         leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
         settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
-        sleep = new TextButton("Dormir", new MultiSkin("text"));
+        sleep = new TextButton("Dormir  ", new MultiSkin("text"));
         work = new TextButton("Travailler", new MultiSkin("text"));
         wash = new TextButton("Se laver", new MultiSkin("text"));
-        eat = new TextButton("Manger", new MultiSkin("text"));
+        eat = new TextButton("Manger  ", new MultiSkin("text"));
         buy = new TextButton("Acheter", new MultiSkin("text"));
         play = new TextButton("Jouer", new MultiSkin("text"));
+        resume = new TextButton("Reprise", new MultiSkin("text"));
         settings2 = new TextButton("Settings", new MultiSkin("text"));
         home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
-        resume = new TextButton("Reprise", new MultiSkin("text"));
     }
 
     /**
@@ -261,6 +262,29 @@ public class ViewAnimal implements Screen {
 
     }
 
+    public void createTable() {
+        settingsTable = new Table();
+        settingsTable.setFillParent(true);
+
+        settingsTable.add(resume).row();
+        settingsTable.add(settings2).row();
+        settingsTable.add(home).row();
+
+        livingRoomTable = new Table();
+        livingRoomTable.add(sleep);
+        livingRoomTable.add(work).row();
+
+        bathroomTable = new Table();
+        bathroomTable.add(wash).row();
+
+        kitchenTable = new Table();
+        kitchenTable.add(eat);
+        kitchenTable.add(buy).row();
+
+        gardenTable = new Table();
+        gardenTable.add(play).row();
+    }
+
     /**
      * Ajoutes les écouteurs des boutons
      */
@@ -280,6 +304,44 @@ public class ViewAnimal implements Screen {
                 return true;
             }
         });
+
+        settings.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                stage.clear();
+                stage.addActor(settingsTable);
+                return true;
+            }
+        });
+
+        resume.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (screen) {
+                    case (1):
+                        putTable(gardenTable);
+                        break;
+                    case (2):
+                        putTable(kitchenTable);
+                        break;
+                    case (3):
+                        putTable(livingRoomTable);
+                        break;
+                    case (4):
+                        putTable(bathroomTable);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        home.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
+                return true;
+            }
+        });
     }
 
     /**
@@ -289,10 +351,17 @@ public class ViewAnimal implements Screen {
         screen -= 1;
         switch (screen) {
             case (1):
+                putTable(gardenTable);
                 leftArrow.setVisible(false);
                 break;
+
+            case (2):
+                putTable(kitchenTable);
+                break;
+
             case (3):
                 rightArrow.setVisible(true);
+                putTable(livingRoomTable);
                 break;
         }
     }
@@ -305,10 +374,37 @@ public class ViewAnimal implements Screen {
         switch (screen) {
             case (2):
                 leftArrow.setVisible(true);
+                putTable(kitchenTable);
                 break;
+
+            case (3):
+                putTable(livingRoomTable);
+                break;
+
             case (4):
                 rightArrow.setVisible(false);
+                putTable(bathroomTable);
                 break;
         }
+    }
+
+    /**
+     * Méthode qui remet la table de jeu
+     */
+    public void putGameTable() {
+        stage.clear();
+        stage.addActor(life);
+        stage.addActor(food);
+        stage.addActor(sleeping);
+        stage.addActor(washing);
+        stage.addActor(happiness);
+        stage.addActor(leftArrow);
+        stage.addActor(rightArrow);
+        stage.addActor(settings);
+    }
+
+    public void putTable(Table table) {
+        putGameTable();
+        stage.addActor(table);
     }
 }
