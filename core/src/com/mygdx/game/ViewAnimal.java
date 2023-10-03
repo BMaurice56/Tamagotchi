@@ -30,25 +30,28 @@ public class ViewAnimal implements Screen {
     private float screenWidth, screenHeight;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable;
+    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable, informationTable;
 
-    private ImageButton leftArrow, rightArrow, settings;
+    private ImageButton leftArrow, rightArrow, settings, heartImage, foodImage, sleepImage, soapImage, happyImage, appleImage, goldenAppleImage, moneyImage;
 
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
     private ProgressBar life, food, sleeping, washing, happiness;
 
-    private int money = 10000, apple = 3, goldenApple = 2, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
+    private int money = 10000, apple = 300, goldenApple = 200, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
+
+    private Label moneyLabel, appleLabel, goldenAppleLabel;
 
 
     /**
      * Constructeur
      */
     public ViewAnimal() {
-        createTexture();
         createButton();
+        createTexture();
         createProgressBar();
+        createLabel();
         createTable();
         ajoutListeners();
 
@@ -66,14 +69,6 @@ public class ViewAnimal implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-
-    /**
-     * Called when this screen becomes the current screen for a {@link Game}.
-     */
-    @Override
-    public void show() {
-
-    }
 
     /**
      * Called when the screen should render itself.
@@ -107,23 +102,16 @@ public class ViewAnimal implements Screen {
         washing.setSize(widthProgressbar, heightProgressBar);
         happiness.setSize(widthProgressbar, heightProgressBar);
 
-
-        // Position des barres de progressions
-        float shift = -heightProgressBar - 10f;
-        float X = 10f;
-        float Y = screenHeight;
-
-        life.setPosition(X, Y + shift);
-        food.setPosition(X, Y + shift * 2);
-        sleeping.setPosition(X, Y + shift * 3);
-        washing.setPosition(X, Y + shift * 4);
-        happiness.setPosition(X, Y + shift * 5);
+        // Position de la table d'information
+        informationTable.setPosition(450, 450);
 
         // Position des tables
-        livingRoomTable.setPosition(screenWidth - 200, 20);
-        kitchenTable.setPosition(screenWidth - 175, 20);
-        bathroomTable.setPosition(screenWidth - 150, 20);
-        gardenTable.setPosition(screenWidth - 150, 20);
+        livingRoomTable.setPosition(screenWidth - 200, 30);
+        kitchenTable.setPosition(screenWidth - 175, 30);
+        bathroomTable.setPosition(screenWidth - 150, 30);
+        gardenTable.setPosition(screenWidth - 150, 30);
+        informationTable.setPosition(160, screenHeight - 180);
+
 
         // Dessine l'image de fond
         batch.begin();
@@ -149,59 +137,6 @@ public class ViewAnimal implements Screen {
     }
 
     /**
-     * Méthode appelée quand la fenêtre est redimensionnée
-     *
-     * @param width
-     * @param height
-     * @see ApplicationListener#resize(int, int)
-     */
-    @Override
-    public void resize(int width, int height) {
-        // Met à jour les nouvelles dimensions de la fenêtre
-        screenWidth = width;
-        screenHeight = height;
-
-        // Met à jour la projection du SpriteBatch
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
-
-        // Appelle la méthode resize du Stage
-        stage.getViewport().update(width, height, true);
-    }
-
-    /**
-     * @see ApplicationListener#pause()
-     */
-    @Override
-    public void pause() {
-
-    }
-
-    /**
-     * @see ApplicationListener#resume()
-     */
-    @Override
-    public void resume() {
-
-    }
-
-    /**
-     * Called when this screen is no longer the current screen for a {@link Game}.
-     */
-    @Override
-    public void hide() {
-
-    }
-
-    /**
-     * Called when this screen should release all resources.
-     */
-    @Override
-    public void dispose() {
-        batch.dispose();
-        stage.dispose();
-    }
-
-    /**
      * Instancie les textures
      */
     public void createTexture() {
@@ -218,6 +153,17 @@ public class ViewAnimal implements Screen {
         leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
         settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
+
+        heartImage = new BoutonImage(new MultiSkin("image"), "images/heart.png", 225, 225);
+        foodImage = new BoutonImage(new MultiSkin("image"), "images/food.png", 225, 225);
+        sleepImage = new BoutonImage(new MultiSkin("image"), "images/sleep.png", 225, 225);
+        soapImage = new BoutonImage(new MultiSkin("image"), "images/soap.png", 225, 225);
+        happyImage = new BoutonImage(new MultiSkin("image"), "images/happy.png", 225, 225);
+
+        appleImage = new BoutonImage(new MultiSkin("image"), "images/apple.png", 225, 225);
+        goldenAppleImage = new BoutonImage(new MultiSkin("image"), "images/goldenApple.png", 225, 225);
+        moneyImage = new BoutonImage(new MultiSkin("image"), "images/money.png", 225, 225);
+
         sleep = new TextButton("Dormir  ", new MultiSkin("text"));
         work = new TextButton("Travailler", new MultiSkin("text"));
         wash = new TextButton("Se laver", new MultiSkin("text"));
@@ -233,7 +179,6 @@ public class ViewAnimal implements Screen {
      * Instancie les barres de progression
      */
     public void createProgressBar() {
-
         life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         food = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         sleeping = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
@@ -262,6 +207,9 @@ public class ViewAnimal implements Screen {
 
     }
 
+    /**
+     * Instancie les Tables
+     */
     public void createTable() {
         settingsTable = new Table();
         settingsTable.setFillParent(true);
@@ -283,6 +231,45 @@ public class ViewAnimal implements Screen {
 
         gardenTable = new Table();
         gardenTable.add(play).row();
+
+        float widthImage = 50f, heightImage = 50f;
+
+        informationTable = new Table();
+        informationTable.add(heartImage).width(widthImage).height(heightImage);
+        informationTable.add(life).row();
+
+        informationTable.add(foodImage).width(widthImage).height(heightImage);
+        informationTable.add(food).row();
+
+        informationTable.add(sleepImage).width(widthImage).height(heightImage);
+        informationTable.add(sleeping).row();
+
+        informationTable.add(soapImage).width(widthImage).height(heightImage);
+        informationTable.add(washing).row();
+
+        informationTable.add(happyImage).width(widthImage).height(heightImage);
+        informationTable.add(happiness).row();
+
+        informationTable.add(moneyImage).width(widthImage).height(heightImage);
+        informationTable.add(moneyLabel).row();
+
+        informationTable.add(appleImage).width(widthImage).height(heightImage);
+        informationTable.add(appleLabel);
+        informationTable.add(goldenAppleImage).width(widthImage).height(heightImage);
+        informationTable.add(goldenAppleLabel).row();
+    }
+
+    /**
+     * Instancie les Labels
+     */
+    public void createLabel() {
+        moneyLabel = new Label("", new MultiSkin("label"));
+        appleLabel = new Label("", new MultiSkin("label"));
+        goldenAppleLabel = new Label("", new MultiSkin("label"));
+
+        setAmountLabel("money", money);
+        setAmountLabel("apple", apple);
+        setAmountLabel("goldenApple", goldenApple);
     }
 
     /**
@@ -389,22 +376,110 @@ public class ViewAnimal implements Screen {
     }
 
     /**
-     * Méthode qui remet la table de jeu
+     * Méthode qui affiche la table de jeu
      */
     public void putGameTable() {
         stage.clear();
-        stage.addActor(life);
-        stage.addActor(food);
-        stage.addActor(sleeping);
-        stage.addActor(washing);
-        stage.addActor(happiness);
+        stage.addActor(informationTable);
         stage.addActor(leftArrow);
         stage.addActor(rightArrow);
         stage.addActor(settings);
     }
 
+    /**
+     * Met la table voulue sur l'écran
+     *
+     * @param table Table souhaitée
+     */
     public void putTable(Table table) {
         putGameTable();
         stage.addActor(table);
     }
+
+    /**
+     * Méthode qui définit le montant des labels
+     *
+     * @param label  Label voulu
+     * @param amount Montant voulu
+     * @throws IllegalArgumentException Si label inconnu
+     */
+    public void setAmountLabel(String label, int amount) throws IllegalArgumentException {
+        String value = amount + " ";
+
+        switch (label) {
+            case ("money"):
+                moneyLabel.setText(value);
+                break;
+            case ("apple"):
+                appleLabel.setText(value);
+                break;
+            case ("goldenApple"):
+                goldenAppleLabel.setText(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Nom de label inconnu");
+        }
+    }
+
+    /**
+     * Méthode appelée quand la fenêtre est redimensionnée
+     *
+     * @param width  largeur
+     * @param height hauteur
+     * @see ApplicationListener#resize(int, int)
+     */
+    @Override
+    public void resize(int width, int height) {
+        // Met à jour les nouvelles dimensions de la fenêtre
+        screenWidth = width;
+        screenHeight = height;
+
+        // Met à jour la projection du SpriteBatch
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
+
+        // Appelle la méthode resize du Stage
+        stage.getViewport().update(width, height, true);
+    }
+
+    /**
+     * @see ApplicationListener#pause()
+     */
+    @Override
+    public void pause() {
+
+    }
+
+    /**
+     * @see ApplicationListener#resume()
+     */
+    @Override
+    public void resume() {
+
+    }
+
+    /**
+     * Called when this screen is no longer the current screen for a {@link Game}.
+     */
+    @Override
+    public void hide() {
+
+    }
+
+    /**
+     * Called when this screen becomes the current screen for a {@link Game}.
+     */
+    @Override
+    public void show() {
+
+    }
+
+    /**
+     * Called when this screen should release all resources.
+     */
+    @Override
+    public void dispose() {
+        batch.dispose();
+        stage.dispose();
+    }
+
 }
