@@ -43,11 +43,14 @@ public class ViewAnimal implements Screen {
 
     private Label moneyLabel, appleLabel, goldenAppleLabel;
 
+    private Controller controller;
+
 
     /**
      * Constructeur
      */
-    public ViewAnimal() {
+    public ViewAnimal(Controller controller) {
+        this.controller = controller;
         createButton();
         createTexture();
         createProgressBar();
@@ -329,6 +332,55 @@ public class ViewAnimal implements Screen {
                 return true;
             }
         });
+
+        sleep.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.sleep();
+                return true;
+            }
+        });
+
+        work.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.work();
+                return true;
+            }
+        });
+
+        wash.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.wash();
+                return true;
+            }
+        });
+
+
+        eat.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.eat();
+                return true;
+            }
+        });
+
+        buy.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.buy();
+                return true;
+            }
+        });
+
+        play.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.play();
+                return true;
+            }
+        });
     }
 
     /**
@@ -418,6 +470,39 @@ public class ViewAnimal implements Screen {
                 break;
             default:
                 throw new IllegalArgumentException("Nom de label inconnu");
+        }
+    }
+
+    /**
+     * Méthode qui définit le niveau des barres de progression
+     *
+     * @param progressBar Barre de progression voulu
+     * @param amount      niveau voulu
+     * @throws IllegalArgumentException Si barre de progression inconnue
+     */
+    public void setAmountProgressBar(String progressBar, float amount) throws IllegalArgumentException {
+        switch (progressBar) {
+            case ("life"):
+                life.setValue(amount);
+                break;
+
+            case ("food"):
+                food.setValue(amount);
+                break;
+
+            case ("sleep"):
+                sleeping.setValue(amount);
+                break;
+
+            case ("wash"):
+                washing.setValue(amount);
+                break;
+
+            case ("happy"):
+                happiness.setValue(amount);
+                break;
+            default:
+                throw new IllegalArgumentException("Nom de barre de progression inconnu");
         }
     }
 

@@ -29,9 +29,36 @@ public class Controller {
         }
         System.out.println(tamagotchi + " " + nomTamagotchi + " " + difficulty);
 
-        viewAnimal = new ViewAnimal();
+        viewAnimal = new ViewAnimal(this);
 
         ((Game) Gdx.app.getApplicationListener()).setScreen(viewAnimal);
 
+    }
+
+
+    public void setAmountLabel(String label, int amount) {
+        viewAnimal.setAmountLabel(label, amount);
+    }
+
+    public void setAmountProgressBar(String progressBar, float amount) {
+        viewAnimal.setAmountProgressBar(progressBar, amount);
+    }
+
+    public void sleep() {
+    }
+
+    public void work() {
+    }
+
+    public void wash() {
+    }
+
+    public void eat() {
+    }
+
+    public void buy() {
+    }
+
+    public void play() {
     }
 }
