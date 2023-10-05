@@ -65,6 +65,10 @@ public abstract class Animal extends Tamagotchi {
         this.happiness = happiness;
     }
 
+    public void Afficher_Attribut() {
+        System.out.println("vie : " + life + "\nfood : " + foods + "\nhygiene: " + hygiene + "\nsleep: " + sleep + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
+    }
+
     /**
      * Travaille pendant 12 secondes pour gagner de l'argent
      *
@@ -135,7 +139,6 @@ public abstract class Animal extends Tamagotchi {
      * supprime food du panier et y ajoute la valeur de point associer
      *
      * @param food apple or golden apple
-     *
      * @modif change l'attribut foods , bonheur
      */
     public void manger(String food) {

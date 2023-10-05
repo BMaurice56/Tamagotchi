@@ -328,6 +328,7 @@ public class ViewAnimal implements Screen {
         home.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.stopGame();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
                 return true;
             }

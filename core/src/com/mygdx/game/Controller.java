@@ -74,4 +74,8 @@ public class Controller {
 
     public void play() {
     }
+
+    public void stopGame() {
+        flag.set(true);
+    }
 }
