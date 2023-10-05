@@ -37,7 +37,7 @@ public class ViewAnimal implements Screen {
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
-    private ProgressBar life, food, sleeping, washing, happiness;
+    private ProgressBar life, food, sleeping, hygiene, happiness;
 
     private int money = 10000, apple = 300, goldenApple = 200, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
 
@@ -63,7 +63,7 @@ public class ViewAnimal implements Screen {
         life.setValue(200f);
         food.setValue(progressBarValue);
         sleeping.setValue(progressBarValue);
-        washing.setValue(progressBarValue);
+        hygiene.setValue(progressBarValue);
         happiness.setValue(progressBarValue);
 
         putTable(livingRoomTable);
@@ -102,7 +102,7 @@ public class ViewAnimal implements Screen {
         life.setSize(widthProgressbar, heightProgressBar);
         food.setSize(widthProgressbar, heightProgressBar);
         sleeping.setSize(widthProgressbar, heightProgressBar);
-        washing.setSize(widthProgressbar, heightProgressBar);
+        hygiene.setSize(widthProgressbar, heightProgressBar);
         happiness.setSize(widthProgressbar, heightProgressBar);
 
         // Position de la table d'information
@@ -185,7 +185,7 @@ public class ViewAnimal implements Screen {
         life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         food = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         sleeping = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-        washing = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        hygiene = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
         happiness = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
 
         life.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
@@ -200,9 +200,9 @@ public class ViewAnimal implements Screen {
         sleeping.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
         sleeping.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        washing.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        washing.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        washing.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        hygiene.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        hygiene.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        hygiene.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
         happiness.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
         happiness.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
@@ -248,7 +248,7 @@ public class ViewAnimal implements Screen {
         informationTable.add(sleeping).row();
 
         informationTable.add(soapImage).width(widthImage).height(heightImage);
-        informationTable.add(washing).row();
+        informationTable.add(hygiene).row();
 
         informationTable.add(happyImage).width(widthImage).height(heightImage);
         informationTable.add(happiness).row();
@@ -495,7 +495,7 @@ public class ViewAnimal implements Screen {
                 break;
 
             case ("wash"):
-                washing.setValue(amount);
+                hygiene.setValue(amount);
                 break;
 
             case ("happy"):

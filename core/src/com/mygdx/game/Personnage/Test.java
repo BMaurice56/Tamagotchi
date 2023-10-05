@@ -7,15 +7,15 @@ public class Test {
         Chien PL = new Chien(1);
         PL.setWallet(300);
         PL.setFoods(700);
-        PL.setBonheur(99);
+        PL.setHappiness(99);
         PL.setSleep(201);
         PL.setHygiene(50);
 
         PL.Afficher_Attribut();
 
-        PL.acheterGoldenApple();
-        PL.acheterApple();
-        PL.acheterGoldenApple();
+        PL.buyGoldenApple();
+        PL.buyApple();
+        PL.buyGoldenApple();
         System.out.println("panier "+PL.getBasket());
         PL.manger("Apple");
         System.out.println("panier "+PL.getBasket());
