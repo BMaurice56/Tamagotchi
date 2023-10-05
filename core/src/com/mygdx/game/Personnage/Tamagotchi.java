@@ -3,13 +3,13 @@ package com.mygdx.game.Personnage;
 import java.util.ArrayList;
 
 public abstract class Tamagotchi {
-    private ArrayList<Food> panier;
+    private ArrayList<Food> basket;
     private int wallet;
 
     private int difficulty;
 
     public Tamagotchi(int difficulty) {
-        panier = new ArrayList<>();
+        basket = new ArrayList<>();
         this.difficulty = difficulty;
     }
 
@@ -21,14 +21,15 @@ public abstract class Tamagotchi {
         this.wallet = wallet;
     }
 
-    public ArrayList<Food> getPanier() {
-        return panier;
+    public ArrayList<Food> getBasket() {
+        return basket;
     }
 
-    public void ajoutPanier(Food nourriture) {
-        panier.add(nourriture);
+    public void addBasket(Food nourriture) {
+        basket.add(nourriture);
     }
-    public void removePanier(int i){panier.remove(i);}
+    public void removePanier(int i){
+        basket.remove(i);}
 
     public int getDifficulty() {
         return difficulty;
