@@ -4,19 +4,24 @@ public class Test {
 
     public static void main(String[] args) {
 
-        Dinosaure dino = new Dinosaure(1);
-        dino.setWallet(100);
-        dino.setFoods(700);
-        dino.setBonheur(650);
-        dino.setSleep(201);
+        Chien PL = new Chien(1);
+        PL.setWallet(300);
+        PL.setFoods(700);
+        PL.setBonheur(99);
+        PL.setSleep(201);
+        PL.setHygiene(50);
 
-        dino.Afficher_Attribut();
+        PL.Afficher_Attribut();
 
+        PL.acheterGoldenApple();
+        PL.acheterApple();
+        PL.acheterGoldenApple();
+        System.out.println("panier "+PL.getBasket());
+        PL.manger("Apple");
+        System.out.println("panier "+PL.getBasket());
 
-
-        dino.dormir();
         System.out.println("\n");
-        dino.Afficher_Attribut();
+        PL.Afficher_Attribut();
     }
 
 }
