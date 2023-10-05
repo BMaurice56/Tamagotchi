@@ -109,17 +109,19 @@ public abstract class Animal extends Tamagotchi {
         if (happiness < 0) {
             happiness = 0;
         }
+        if (foods>1000){
+            foods=1000;
+        }
     }
 
     /**
      * buy an apple
      */
     public void buyApple() {
-        int prix = 20;
-        if (getWallet() >= prix) {
-            Food f = new Apple();
+        Food f = new Apple();
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
-            setWallet(getWallet() - prix);
+            setWallet(getWallet() - f.getPrice());
         }
     }
 
@@ -127,11 +129,10 @@ public abstract class Animal extends Tamagotchi {
      * buy a golden apple
      */
     public void buyGoldenApple() {
-        int prix = 50;
-        if (getWallet() >= prix) {
-            Food f = new GoldenApple();
+        Food f = new GoldenApple();
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
-            setWallet(getWallet() - prix);
+            setWallet(getWallet() - f.getPrice());
         }
     }
 
@@ -160,7 +161,8 @@ public abstract class Animal extends Tamagotchi {
                 if (happiness > 1000) {
                     setHappiness(1000);
                 }
-                return; //on par de la methode
+                check();
+                return; //on part de la methode
             }
         }
     }
