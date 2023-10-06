@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Vue du jeu
  */
@@ -30,7 +32,7 @@ public class ViewAnimal implements Screen {
     private float screenWidth, screenHeight;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable, informationTable;
+    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable;
 
     private ImageButton leftArrow, rightArrow, settings, heartImage, foodImage, sleepImage, soapImage, happyImage, appleImage, goldenAppleImage, moneyImage;
 
@@ -39,17 +41,26 @@ public class ViewAnimal implements Screen {
     // Barres de progressions
     private ProgressBar life, food, sleeping, hygiene, happiness;
 
-    private int money = 10000, apple = 300, goldenApple = 200, screen = 3, widthProgressbar = 100, heightProgressBar = 20;
+    private int screen = 3, widthProgressbar, heightProgressBar, compteur;
 
     private Label moneyLabel, appleLabel, goldenAppleLabel;
 
-    private Controller controller;
+    private final Controller controller;
 
 
     /**
      * Constructeur
      */
     public ViewAnimal(Controller controller) {
+        // Récupère les dimensions de la fenêtre
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
+        // Taille des barres de progression
+        widthProgressbar = (int) (screenWidth / 6);
+        heightProgressBar = (int) (screenHeight / 30);
+
+        // Définit le controller et instancie les différents éléments
         this.controller = controller;
         createButton();
         createTexture();
@@ -58,14 +69,10 @@ public class ViewAnimal implements Screen {
         createTable();
         ajoutListeners();
 
-        float progressBarValue = 500f;
+        // Positionne les éléments
+        posAndSizeElement();
 
-        life.setValue(200f);
-        food.setValue(progressBarValue);
-        sleeping.setValue(progressBarValue);
-        hygiene.setValue(progressBarValue);
-        happiness.setValue(progressBarValue);
-
+        // Affiche la table de jeu
         putTable(livingRoomTable);
 
         // Définit le stage comme gestionnaire des entrées
@@ -83,38 +90,6 @@ public class ViewAnimal implements Screen {
         // Efface l'écran
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Récupère les dimensions de la fenêtre
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
-
-        // Flèche de changement d'écran
-        leftArrow.setPosition(5, screenHeight / 2);
-        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2);
-
-        // Paramètre
-        settings.setPosition(10, 10);
-
-        // Taille des barres de progression
-        widthProgressbar = (int) (screenWidth / 6);
-        heightProgressBar = (int) (screenHeight / 30);
-
-        life.setSize(widthProgressbar, heightProgressBar);
-        food.setSize(widthProgressbar, heightProgressBar);
-        sleeping.setSize(widthProgressbar, heightProgressBar);
-        hygiene.setSize(widthProgressbar, heightProgressBar);
-        happiness.setSize(widthProgressbar, heightProgressBar);
-
-        // Position de la table d'information
-        informationTable.setPosition(450, 450);
-
-        // Position des tables
-        livingRoomTable.setPosition(screenWidth - 200, 30);
-        kitchenTable.setPosition(screenWidth - 175, 30);
-        bathroomTable.setPosition(screenWidth - 150, 30);
-        gardenTable.setPosition(screenWidth - 150, 30);
-        informationTable.setPosition(160, screenHeight - 180);
-
 
         // Dessine l'image de fond
         batch.begin();
@@ -182,32 +157,37 @@ public class ViewAnimal implements Screen {
      * Instancie les barres de progression
      */
     public void createProgressBar() {
-        life = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-        food = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-        sleeping = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-        hygiene = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
-        happiness = new ProgressBar(0f, 1000f, 1f, false, new ProgressBar.ProgressBarStyle());
+        ProgressBar.ProgressBarStyle lifeProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        ProgressBar.ProgressBarStyle foodProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        ProgressBar.ProgressBarStyle sleepingProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        ProgressBar.ProgressBarStyle hygieneProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        ProgressBar.ProgressBarStyle happinessProgressBarStyle = new ProgressBar.ProgressBarStyle();
 
-        life.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        life.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        life.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        lifeProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        lifeProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        lifeProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        food.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        food.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        food.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        foodProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        foodProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        foodProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        sleeping.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        sleeping.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        sleeping.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        sleepingProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        sleepingProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        sleepingProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        hygiene.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        hygiene.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        hygiene.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        hygieneProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        hygieneProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        hygieneProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        happiness.getStyle().background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
-        happiness.getStyle().knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
-        happiness.getStyle().knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+        happinessProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        happinessProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        happinessProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
+        life = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
+        food = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
+        sleeping = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
+        hygiene = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
+        happiness = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
     }
 
     /**
@@ -234,45 +214,15 @@ public class ViewAnimal implements Screen {
 
         gardenTable = new Table();
         gardenTable.add(play).row();
-
-        float widthImage = 50f, heightImage = 50f;
-
-        informationTable = new Table();
-        informationTable.add(heartImage).width(widthImage).height(heightImage);
-        informationTable.add(life).row();
-
-        informationTable.add(foodImage).width(widthImage).height(heightImage);
-        informationTable.add(food).row();
-
-        informationTable.add(sleepImage).width(widthImage).height(heightImage);
-        informationTable.add(sleeping).row();
-
-        informationTable.add(soapImage).width(widthImage).height(heightImage);
-        informationTable.add(hygiene).row();
-
-        informationTable.add(happyImage).width(widthImage).height(heightImage);
-        informationTable.add(happiness).row();
-
-        informationTable.add(moneyImage).width(widthImage).height(heightImage);
-        informationTable.add(moneyLabel).row();
-
-        informationTable.add(appleImage).width(widthImage).height(heightImage);
-        informationTable.add(appleLabel);
-        informationTable.add(goldenAppleImage).width(widthImage).height(heightImage);
-        informationTable.add(goldenAppleLabel).row();
     }
 
     /**
      * Instancie les Labels
      */
     public void createLabel() {
-        moneyLabel = new Label("", new MultiSkin("label"));
-        appleLabel = new Label("", new MultiSkin("label"));
-        goldenAppleLabel = new Label("", new MultiSkin("label"));
-
-        setAmountLabel("money", money);
-        setAmountLabel("apple", apple);
-        setAmountLabel("goldenApple", goldenApple);
+        moneyLabel = new Label("0", new MultiSkin("label"));
+        appleLabel = new Label("0", new MultiSkin("label"));
+        goldenAppleLabel = new Label("0", new MultiSkin("label"));
     }
 
     /**
@@ -433,10 +383,28 @@ public class ViewAnimal implements Screen {
      */
     public void putGameTable() {
         stage.clear();
-        stage.addActor(informationTable);
         stage.addActor(leftArrow);
         stage.addActor(rightArrow);
         stage.addActor(settings);
+        stage.addActor(life);
+        stage.addActor(heartImage);
+        stage.addActor(foodImage);
+        stage.addActor(sleepImage);
+        stage.addActor(soapImage);
+        stage.addActor(happyImage);
+        stage.addActor(moneyImage);
+        stage.addActor(appleImage);
+        stage.addActor(goldenAppleImage);
+
+        stage.addActor(life);
+        stage.addActor(food);
+        stage.addActor(sleeping);
+        stage.addActor(hygiene);
+        stage.addActor(happiness);
+
+        stage.addActor(moneyLabel);
+        stage.addActor(appleLabel);
+        stage.addActor(goldenAppleLabel);
     }
 
     /**
@@ -508,6 +476,75 @@ public class ViewAnimal implements Screen {
     }
 
     /**
+     * Place les éléments sur l'écran
+     * Réajuste la taille de certains éléments selon la taille de l'écran
+     */
+    public void posAndSizeElement() {
+        // Taille des barres de progression
+        life.setSize(widthProgressbar, heightProgressBar);
+        food.setSize(widthProgressbar, heightProgressBar);
+        sleeping.setSize(widthProgressbar, heightProgressBar);
+        hygiene.setSize(widthProgressbar, heightProgressBar);
+        happiness.setSize(widthProgressbar, heightProgressBar);
+
+        // Taille des images
+        float widthImage = 50f, heightImage = 50f;
+
+        heartImage.setSize(widthImage, heightImage);
+        foodImage.setSize(widthImage, heightImage);
+        sleepImage.setSize(widthImage, heightImage);
+        soapImage.setSize(widthImage, heightImage);
+        happyImage.setSize(widthImage, heightImage);
+        moneyImage.setSize(widthImage, heightImage);
+        appleImage.setSize(widthImage, heightImage);
+        goldenAppleImage.setSize(widthImage, heightImage);
+
+        // Flèche de changement d'écran
+
+        float adjustPositionArrow = 150;
+
+        leftArrow.setPosition(5, screenHeight / 2 - adjustPositionArrow);
+        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2 - adjustPositionArrow);
+
+        // Paramètre
+        settings.setPosition(10, 10);
+
+        // Position des tables
+        livingRoomTable.setPosition(screenWidth - 200, 30);
+        kitchenTable.setPosition(screenWidth - 175, 30);
+        bathroomTable.setPosition(screenWidth - 150, 30);
+        gardenTable.setPosition(screenWidth - 150, 30);
+
+
+        // Placement des images et des labels
+        float X = 10;
+        float Y = screenHeight;
+        float shiftX = widthImage + 10;
+        float shiftY = heightImage + 10;
+        float adjustProgressBar = 9;
+        float adjustGoldenApple = 70;
+
+        heartImage.setPosition(X, Y - shiftY);
+        foodImage.setPosition(X, Y - shiftY * 2);
+        sleepImage.setPosition(X, Y - shiftY * 3);
+        soapImage.setPosition(X, Y - shiftY * 4);
+        happyImage.setPosition(X, Y - shiftY * 5);
+        moneyImage.setPosition(X, Y - shiftY * 6);
+        appleImage.setPosition(X, Y - shiftY * 7);
+        goldenAppleImage.setPosition(X + shiftX + adjustGoldenApple, Y - shiftY * 7);
+
+        life.setPosition(X + shiftX, Y + adjustProgressBar - shiftY);
+        food.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 2);
+        sleeping.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 3);
+        hygiene.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
+        happiness.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
+
+        moneyLabel.setPosition(X + shiftX, Y - shiftY * 6);
+        appleLabel.setPosition(X + shiftX, Y - shiftY * 7);
+        goldenAppleLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7);
+    }
+
+    /**
      * Méthode appelée quand la fenêtre est redimensionnée
      *
      * @param width  largeur
@@ -519,6 +556,17 @@ public class ViewAnimal implements Screen {
         // Met à jour les nouvelles dimensions de la fenêtre
         screenWidth = width;
         screenHeight = height;
+
+        // Taille des barres de progression
+        widthProgressbar = (int) (screenWidth / 6);
+        heightProgressBar = (int) (screenHeight / 30);
+
+        if (heightProgressBar > 50) {
+            heightProgressBar = 50;
+        }
+
+        // Met à jour la position des éléments
+        posAndSizeElement();
 
         // Met à jour la projection du SpriteBatch
         batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
@@ -567,5 +615,4 @@ public class ViewAnimal implements Screen {
         batch.dispose();
         stage.dispose();
     }
-
 }

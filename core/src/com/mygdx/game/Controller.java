@@ -2,52 +2,146 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.LifecycleListener;
+import com.mygdx.game.Personnage.*;
 
+import java.awt.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+class Jeu implements Runnable {
+
+    private AtomicBoolean flagStop;
+
+    private Animal animal;
+
+    private Robot robot;
+
+    private Controller controller;
+
+    private ViewRobot viewRobot;
+
+
+    public Jeu(AtomicBoolean flagStop, Animal animal, Controller controller) {
+        this.flagStop = flagStop;
+        this.animal = animal;
+        this.controller = controller;
+    }
+
+    public void run() {
+        while (!flagStop.get()) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            controller.setAmountProgressBar("life", animal.getLife());
+            controller.setAmountProgressBar("food", animal.getFood());
+            controller.setAmountProgressBar("wash", animal.getHygiene());
+            controller.setAmountProgressBar("sleep", animal.getSleep());
+            controller.setAmountProgressBar("happy", animal.getHappiness());
+
+            controller.setAmountLabel("money", animal.getWallet());
+            controller.setAmountLabel("apple", animal.getNumberApple());
+            controller.setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+
+            animal.setLife(animal.getLife() - 10);
+            animal.setFood(animal.getFood() - 10);
+            animal.setHygiene(animal.getHygiene() - 10);
+            animal.setSleep(animal.getSleep() - 10);
+            animal.setHappiness(animal.getHappiness() - 10);
+
+            animal.setWallet(animal.getWallet() + 1);
+            animal.addBasket(new Apple());
+            animal.addBasket(new Apple());
+            animal.addBasket(new GoldenApple());
+
+
+        }
+    }
+}
 
 /**
  * Classe qui sert de controller pour le jeu
  */
 public class Controller {
 
-    private AtomicBoolean flag = new AtomicBoolean();
+    private final AtomicBoolean flagStop = new AtomicBoolean();
 
     // Vue du jeu
-    private ViewAnimal viewAnimal;
+    private final ViewAnimal viewAnimal;
 
     // Modèle du jeu
     private Modele modele;
 
+    private Animal animal;
+
+    private Robot robot;
+
+    private Thread jeu;
+
+
     /**
      * Constructeur
      *
-     * @param tamagotchi    Tamagotchi sélectionné
-     * @param nomTamagotchi Nom du tamagotchi
-     * @param difficulty    Niveau de difficulté
-     * @param save          Lancement d'une sauvegarde ou non
+     * @param tamagotchiWished Tamagotchi sélectionné
+     * @param nomTamagotchi    Nom du tamagotchi
+     * @param difficulty       Niveau de difficulté
+     * @param save             Lancement d'une sauvegarde ou non
      */
-    public Controller(int tamagotchi, String nomTamagotchi, int difficulty, Object save) {
+    public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) throws InterruptedException {
         if (save != null) {
 
         } else {
 
         }
-        System.out.println(tamagotchi + " " + nomTamagotchi + " " + difficulty);
 
         viewAnimal = new ViewAnimal(this);
 
         ((Game) Gdx.app.getApplicationListener()).setScreen(viewAnimal);
 
-        party(flag);
+        switch (tamagotchiWished) {
+            case (1):
+                animal = new Chat(difficulty);
+                break;
 
-    }
+            case (2):
+                animal = new Chien(difficulty);
+                break;
 
+            case (3):
+                animal = new Dinosaure(difficulty);
+                break;
 
-    public void party(AtomicBoolean flag) {
-        while (!flag.get()) {
-            System.out.println("toto");
+            case (4):
+                //robot = new Robot(difficulty);
+                System.out.println("A faire !!!!!!!");
+                break;
         }
+
+        jeu = new Thread(new Jeu(flagStop, animal, this));
+
+        jeu.start();
+
+        // Permet de savoir si l'utilisateur quitte le jeu pour stopper la partie
+        Gdx.app.addLifecycleListener(new LifecycleListener() {
+            @Override
+            public void pause() {
+            }
+
+            @Override
+            public void resume() {
+            }
+
+            @Override
+            public void dispose() {
+                stopGame();
+            }
+        });
+
     }
+
 
     public void setAmountLabel(String label, int amount) {
         viewAnimal.setAmountLabel(label, amount);
@@ -76,6 +170,6 @@ public class Controller {
     }
 
     public void stopGame() {
-        flag.set(true);
+        flagStop.set(true);
     }
 }

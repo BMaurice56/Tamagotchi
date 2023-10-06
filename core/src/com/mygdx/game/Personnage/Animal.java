@@ -1,14 +1,17 @@
 package com.mygdx.game.Personnage;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Animal extends Tamagotchi {
 
     private int life;
-    private int foods;
+    private int food;
     private int hygiene;
     private int sleep;
     private int happiness;
+
+    Random random;
 
     /**
      * Constructeur
@@ -18,11 +21,13 @@ public abstract class Animal extends Tamagotchi {
      */
     public Animal(int difficulty) {
         super(difficulty);
-        this.life = 1000;
-        this.foods = 1000;
-        this.hygiene = 1000;
-        this.sleep = 1000;
-        this.happiness = 1000;
+        life = 1000;
+        food = 1000;
+        hygiene = 1000;
+        sleep = 1000;
+        happiness = 1000;
+
+        random = new Random();
     }
 
     public int getLife() {
@@ -33,12 +38,12 @@ public abstract class Animal extends Tamagotchi {
         this.life = life;
     }
 
-    public int getFoods() {
-        return foods;
+    public int getFood() {
+        return food;
     }
 
-    public void setFoods(int foods) {
-        this.foods = foods;
+    public void setFood(int food) {
+        this.food = food;
     }
 
     public int getHygiene() {
@@ -65,8 +70,32 @@ public abstract class Animal extends Tamagotchi {
         this.happiness = happiness;
     }
 
+    public int getNumberApple() {
+        int number = 0;
+
+        for (Food food : getBasket()) {
+            if (food.getName().equals("Apple")) {
+                number++;
+            }
+        }
+
+        return number;
+    }
+
+    public int getNumberGoldenApple() {
+        int number = 0;
+
+        for (Food food : getBasket()) {
+            if (food.getName().equals("GoldenApple")) {
+                number++;
+            }
+        }
+
+        return number;
+    }
+
     public void Afficher_Attribut() {
-        System.out.println("vie : " + life + "\nfood : " + foods + "\nhygiene: " + hygiene + "\nsleep: " + sleep + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
+        System.out.println("vie : " + life + "\nfood : " + food + "\nhygiene: " + hygiene + "\nsleep: " + sleep + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
     }
 
     /**
@@ -74,20 +103,16 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : wallet , bonheur , hygiene , sleep
      */
-    public void travailler() {
+    public void travailler() throws InterruptedException {
 
-        long temps = System.currentTimeMillis();
-        while ((temps + 12_000) > System.currentTimeMillis()) {
-            continue;
-        }
+        TimeUnit.SECONDS.sleep(12);
+
         setWallet(getWallet() + 50);
         happiness -= getDifficulty() * 100;
         hygiene -= getDifficulty() * 43;
         sleep -= getDifficulty() * 60;
 
-
         check();
-
     }
 
     /**
@@ -97,8 +122,8 @@ public abstract class Animal extends Tamagotchi {
         if (life < 0) {
             life = 0;
         }
-        if (foods < 0) {
-            foods = 0;
+        if (food < 0) {
+            food = 0;
         }
         if (hygiene < 0) {
             hygiene = 0;
@@ -136,31 +161,29 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * supprime food du panier et y ajoute la valeur de point associer
+     * Supprime food du panier et y ajoute la valeur de point associer
      *
      * @param food apple or golden apple
      * @modif change l'attribut foods , bonheur
      */
-    public void manger(String food) {
-        for (int i = 0; i < getBasket().size(); i++) { //parcour l'attribut panier
+    public void manger(String food) throws InterruptedException {
+        for (int i = 0; i < getBasket().size(); i++) { //parcourt l'attribut panier
 
             Food food1 = getBasket().get(i); //el actu
 
             if (food.equals(food1.getName())) { //quand trouver
 
-                removePanier(i); //on suprimme l'element dans la liste
-                foods += food1.getPoint();
-                long temps = System.currentTimeMillis();
-                while ((temps + 5_000) > System.currentTimeMillis()) { //on attends 5 seconde
-                    continue;
-                }
+                removePanier(i); //on supprime l'élément dans la liste
+                this.food += food1.getPoint();
+
+                TimeUnit.SECONDS.sleep(5);
+
                 if (food.equals("GoldenApple")) {
                     happiness += 75;
                 }
                 if (happiness > 1000) {
                     setHappiness(1000);
                 }
-                return; //on par de la methode
             }
         }
     }
@@ -172,16 +195,13 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : attribut sleep
      */
-    public void dormir() {
+    public void dormir() throws InterruptedException {
 
-        long temps = System.currentTimeMillis();
-        Random random = new Random();
+        int interval = random.nextInt(4); //nbr entre 0 et 3
 
-        int interval = random.nextInt(3001); //nbr entre 0 et 3000 inclus
-        while ((temps + 15_000 + interval) > System.currentTimeMillis()) { //on attend entre 15 et 18 secondes
-            continue;
-        }
-        if (sleep <= 200) { //si sleep est entre 200 incul et 0
+        TimeUnit.SECONDS.sleep(15 + interval);
+
+        if (sleep <= 200) {
             setSleep(900 - getDifficulty() * 100); //som sommeil sera 800 ou 700  ou 600  en fonction de la difficulté
         } else {
             setSleep(1000); // sinon son sommeil va au max
@@ -194,52 +214,47 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : attribut hygiene , bonheur
      */
-    public void laver() {
-        long temps = System.currentTimeMillis();
-        Random random = new Random();
+    public void laver() throws InterruptedException {
 
-        int interval = random.nextInt(5501); //nbr entre 0 et 5000 inclus
-        while ((temps + 12_500 + interval) > System.currentTimeMillis()) { //on attend entre 12.5 et 18 secondes
-            continue;
-        }
+        int interval = random.nextInt(6); //nbr entre 0 et 5000 inclus
+
+        TimeUnit.SECONDS.sleep(12 + interval);
 
         happiness += 100;
-        if (happiness > 1000) { //se laver le detend et augmente son bonheure
+        if (happiness > 1000) { //se laver le détend et augmente son bonheur
             setHappiness(1000);
         }
 
-        if (hygiene <= 200) { //si hygiene est entre 200 incul et 0
-            setHygiene(900 - getDifficulty() * 85); //som hygiene sera 815 ou 730  ou 645  en fonction de la difficulté
+        if (hygiene <= 200) {
+            setHygiene(900 - getDifficulty() * 85);
         } else {
-            setHygiene(1000); // sinon son hygiene va au max
+            setHygiene(1000);
         }
     }
 
     /**
      * Auteur : Arthur
-     * descriptif : methode jouer qui rend + heureux le joueur mais le salit
+     * descriptif : methode jouer qui rend + heureux le joueur, mais le salit
      *
      * @modif : bonheur , hygiene
      */
-    public void jouer() {
-        long temps = System.currentTimeMillis();
-        Random random = new Random();
+    public void jouer() throws InterruptedException {
 
-        int interval = random.nextInt(5501); //nbr entre 0 et 5000 inclus
-        while ((temps + 10_000 + interval) > System.currentTimeMillis()) { //on attend entre 12.5 et 18 secondes
-            continue;
-        }
+        int interval = random.nextInt(6); //nbr entre 0 et 5 inclus
+
+        TimeUnit.SECONDS.sleep(10 + interval);
 
         hygiene -= random.nextInt(75, 200);
+
         check();
-        if (100 <= happiness && happiness <= 200) { //si bonheur est entre 200 incul et 0
+
+        if (100 <= happiness && happiness <= 200) {
             setHappiness(900 - getDifficulty() * 100); //som bonheur sera 800 ou 700  ou 600  en fonction de la difficulté
         } else if (happiness < 100) {
             setHappiness(750 - getDifficulty() * 100); //som bonheur sera 600 ou 500  ou 400  en fonction de la difficulté
         } else {
             setHappiness(1000); // sinon son bonheur va au max
         }
-
 
     }
 

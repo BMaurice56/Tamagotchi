@@ -2,11 +2,11 @@ package com.mygdx.game.Personnage;
 
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Chien PL = new Chien(1);
         PL.setWallet(300);
-        PL.setFoods(700);
+        PL.setFood(700);
         PL.setHappiness(99);
         PL.setSleep(201);
         PL.setHygiene(50);
