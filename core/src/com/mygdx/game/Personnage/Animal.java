@@ -112,7 +112,9 @@ public abstract class Animal extends Tamagotchi {
         hygiene -= getDifficulty() * 43;
         sleep -= getDifficulty() * 60;
 
+
         check();
+
     }
 
     /**
@@ -134,17 +136,19 @@ public abstract class Animal extends Tamagotchi {
         if (happiness < 0) {
             happiness = 0;
         }
+        if (food>1000){
+            food=1000;
+        }
     }
 
     /**
      * buy an apple
      */
     public void buyApple() {
-        int prix = 20;
-        if (getWallet() >= prix) {
-            Food f = new Apple();
+        Food f = new Apple();
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
-            setWallet(getWallet() - prix);
+            setWallet(getWallet() - f.getPrice());
         }
     }
 
@@ -152,11 +156,10 @@ public abstract class Animal extends Tamagotchi {
      * buy a golden apple
      */
     public void buyGoldenApple() {
-        int prix = 50;
-        if (getWallet() >= prix) {
-            Food f = new GoldenApple();
+        Food f = new GoldenApple();
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
-            setWallet(getWallet() - prix);
+            setWallet(getWallet() - f.getPrice());
         }
     }
 
@@ -174,7 +177,7 @@ public abstract class Animal extends Tamagotchi {
             if (food.equals(food1.getName())) { //quand trouver
 
                 removePanier(i); //on supprime l'élément dans la liste
-                this.food += food1.getPoint();
+                food += food1.getPoint();
 
                 TimeUnit.SECONDS.sleep(5);
 
@@ -184,6 +187,7 @@ public abstract class Animal extends Tamagotchi {
                 if (happiness > 1000) {
                     setHappiness(1000);
                 }
+                check();
             }
         }
     }
@@ -255,6 +259,7 @@ public abstract class Animal extends Tamagotchi {
         } else {
             setHappiness(1000); // sinon son bonheur va au max
         }
+
 
     }
 

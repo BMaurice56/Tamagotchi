@@ -13,11 +13,11 @@ public class Test {
 
         PL.Afficher_Attribut();
 
+
         PL.buyGoldenApple();
-        PL.buyApple();
-        PL.buyGoldenApple();
+
         System.out.println("panier "+PL.getBasket());
-        PL.manger("Apple");
+        PL.manger("GoldenApple");
         System.out.println("panier "+PL.getBasket());
 
         System.out.println("\n");
