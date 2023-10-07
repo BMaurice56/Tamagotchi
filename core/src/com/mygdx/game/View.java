@@ -13,13 +13,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.mygdx.game.Personnage.Tamagotchi;
 
 /**
  * Vue du jeu
  */
-public class ViewAnimal implements Screen {
+public class View implements Screen {
     // https://gamedev.stackexchange.com/questions/121316/what-is-the-difference-between-sprite-and-spritebatch-specifically-in-the-conte/121340
     private final SpriteBatch batch = new SpriteBatch();
 
@@ -34,14 +33,14 @@ public class ViewAnimal implements Screen {
     // Table qui gère le placement des objets sur la fenêtre
     private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable;
 
-    private ImageButton leftArrow, rightArrow, settings, heartImage, foodImage, sleepImage, soapImage, happyImage, appleImage, goldenAppleImage, moneyImage;
+    private ImageButton leftArrow, rightArrow, settings, heartImage, foodImage, sleepImage, soapImage, happyImage, appleImage, goldenAppleImage, moneyImage, tamagotchiImage;
 
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
     private ProgressBar life, food, sleeping, hygiene, happiness;
 
-    private int screen = 3, widthProgressbar, heightProgressBar, compteur;
+    private int screen = 3, widthProgressbar, heightProgressBar;
 
     private Label moneyLabel, appleLabel, goldenAppleLabel;
 
@@ -51,14 +50,32 @@ public class ViewAnimal implements Screen {
     /**
      * Constructeur
      */
-    public ViewAnimal(Controller controller) {
-        // Récupère les dimensions de la fenêtre
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
+    public View(Controller controller, Tamagotchi tamagotchi) {
+        System.out.println(tamagotchi.getClass().getName());
 
-        // Taille des barres de progression
-        widthProgressbar = (int) (screenWidth / 6);
-        heightProgressBar = (int) (screenHeight / 30);
+        switch (tamagotchi.getClass().getName()) {
+            case ("com.mygdx.game.Personnage.Chat"):
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
+                break;
+
+            case ("com.mygdx.game.Personnage.Chien"):
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog.png", 800, 723);
+                break;
+
+            case ("com.mygdx.game.Personnage.Dinosaure"):
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur.png", 1240, 1240);
+                break;
+
+            case ("com.mygdx.game.Personnage.Robot"):
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot.png", 1200, 800);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Tamagotchi non reconnu");
+        }
+
+        // Met à jour les variables de taille de l'écran
+        updateAttributScreenSize();
 
         // Définit le controller et instancie les différents éléments
         this.controller = controller;
@@ -405,6 +422,8 @@ public class ViewAnimal implements Screen {
         stage.addActor(moneyLabel);
         stage.addActor(appleLabel);
         stage.addActor(goldenAppleLabel);
+
+        stage.addActor(tamagotchiImage);
     }
 
     /**
@@ -425,18 +444,20 @@ public class ViewAnimal implements Screen {
      * @throws IllegalArgumentException Si label inconnu
      */
     public void setAmountLabel(String label, int amount) throws IllegalArgumentException {
-        String value = amount + " ";
 
         switch (label) {
             case ("money"):
-                moneyLabel.setText(value);
+                moneyLabel.setText(String.valueOf(amount));
                 break;
+
             case ("apple"):
-                appleLabel.setText(value);
+                appleLabel.setText(String.valueOf(amount));
                 break;
+
             case ("goldenApple"):
-                goldenAppleLabel.setText(value);
+                goldenAppleLabel.setText(String.valueOf(amount));
                 break;
+
             default:
                 throw new IllegalArgumentException("Nom de label inconnu");
         }
@@ -470,6 +491,7 @@ public class ViewAnimal implements Screen {
             case ("happy"):
                 happiness.setValue(amount);
                 break;
+
             default:
                 throw new IllegalArgumentException("Nom de barre de progression inconnu");
         }
@@ -498,6 +520,14 @@ public class ViewAnimal implements Screen {
         moneyImage.setSize(widthImage, heightImage);
         appleImage.setSize(widthImage, heightImage);
         goldenAppleImage.setSize(widthImage, heightImage);
+
+        // Tamagotchi
+        float widthTamagotchi = 150;
+        float heightTamagotchi = 150;
+
+        tamagotchiImage.setSize(widthTamagotchi, heightTamagotchi);
+        tamagotchiImage.setPosition(screenWidth / 2 - widthTamagotchi / 2, 70);
+
 
         // Flèche de changement d'écran
 
@@ -545,17 +575,12 @@ public class ViewAnimal implements Screen {
     }
 
     /**
-     * Méthode appelée quand la fenêtre est redimensionnée
-     *
-     * @param width  largeur
-     * @param height hauteur
-     * @see ApplicationListener#resize(int, int)
+     * Récupère la taille de la fenêtre et met à jour les attributs
      */
-    @Override
-    public void resize(int width, int height) {
-        // Met à jour les nouvelles dimensions de la fenêtre
-        screenWidth = width;
-        screenHeight = height;
+    public void updateAttributScreenSize() {
+        // Récupère les dimensions de la fenêtre
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
 
         // Taille des barres de progression
         widthProgressbar = (int) (screenWidth / 6);
@@ -564,6 +589,18 @@ public class ViewAnimal implements Screen {
         if (heightProgressBar > 50) {
             heightProgressBar = 50;
         }
+    }
+
+    /**
+     * Méthode appelée quand la fenêtre est redimensionnée
+     *
+     * @param width  largeur
+     * @param height hauteur
+     * @see ApplicationListener#resize(int, int)
+     */
+    @Override
+    public void resize(int width, int height) {
+        updateAttributScreenSize();
 
         // Met à jour la position des éléments
         posAndSizeElement();

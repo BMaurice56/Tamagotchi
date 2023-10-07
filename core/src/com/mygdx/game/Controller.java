@@ -4,22 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.LifecycleListener;
 import com.mygdx.game.Personnage.*;
+import com.mygdx.game.Personnage.Robot;
 
-import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class Jeu implements Runnable {
 
-    private AtomicBoolean flagStop;
+    private final AtomicBoolean flagStop;
 
-    private Animal animal;
+    private final Animal animal;
 
     private Robot robot;
 
-    private Controller controller;
-
-    private ViewRobot viewRobot;
+    private final Controller controller;
 
 
     public Jeu(AtomicBoolean flagStop, Animal animal, Controller controller) {
@@ -70,7 +68,7 @@ public class Controller {
     private final AtomicBoolean flagStop = new AtomicBoolean();
 
     // Vue du jeu
-    private final ViewAnimal viewAnimal;
+    private final View view;
 
     // Modèle du jeu
     private Modele modele;
@@ -79,7 +77,7 @@ public class Controller {
 
     private Robot robot;
 
-    private Thread jeu;
+    private final Thread jeu;
 
 
     /**
@@ -92,14 +90,10 @@ public class Controller {
      */
     public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) throws InterruptedException {
         if (save != null) {
-
+            System.out.println("toto");
         } else {
-
+            System.out.println("aah");
         }
-
-        viewAnimal = new ViewAnimal(this);
-
-        ((Game) Gdx.app.getApplicationListener()).setScreen(viewAnimal);
 
         switch (tamagotchiWished) {
             case (1):
@@ -115,10 +109,19 @@ public class Controller {
                 break;
 
             case (4):
-                //robot = new Robot(difficulty);
-                System.out.println("A faire !!!!!!!");
+                robot = new Robot(difficulty);
                 break;
+
         }
+        if (1 <= tamagotchiWished && tamagotchiWished <= 3) {
+            view = new View(this, animal);
+        } else {
+            assert robot != null;
+            view = new View(this, robot);
+        }
+
+
+        ((Game) Gdx.app.getApplicationListener()).setScreen(view);
 
         jeu = new Thread(new Jeu(flagStop, animal, this));
 
@@ -144,11 +147,11 @@ public class Controller {
 
 
     public void setAmountLabel(String label, int amount) {
-        viewAnimal.setAmountLabel(label, amount);
+        view.setAmountLabel(label, amount);
     }
 
     public void setAmountProgressBar(String progressBar, float amount) {
-        viewAnimal.setAmountProgressBar(progressBar, amount);
+        view.setAmountProgressBar(progressBar, amount);
     }
 
     public void sleep() {

@@ -80,12 +80,12 @@ public class SelectTamagotchi implements Screen {
      */
     public void createButton() {
         // Boutons de selection du Tamagotchi
-        pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelcat.png", 920, 1104);
-        pixelDog = new BoutonImage(new MultiSkin("image"), "images/pixeldog.png", 800, 723);
-        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "images/pixeldinosaur.png", 1240, 1240);
-        pixelRobot = new BoutonImage(new MultiSkin("image"), "images/pixelrobot.png", 1200, 800);
+        pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
+        pixelDog = new BoutonImage(new MultiSkin("image"), "images/pixelDog.png", 800, 723);
+        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur.png", 1240, 1240);
+        pixelRobot = new BoutonImage(new MultiSkin("image"), "images/pixelRobot.png", 1200, 800);
 
-        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "images/pixelcat.png", 920, 1104);
+        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
 
         backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
         playButton = new TextButton("Jouer", new MultiSkin("text"));
