@@ -15,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Personnage.Tamagotchi;
 
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+
 /**
  * Vue du jeu
  */
@@ -25,24 +28,28 @@ public class View implements Screen {
     // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
 
-    private Texture livingRoom, kitchen, bathroom, garden;
+    private Texture room1, room2, room3, room4;
+
+    private HashMap<String, String> hashMapTexture;
+
+    private Tamagotchi tamagotchi;
 
     // Taille de la fenêtre
     private float screenWidth, screenHeight;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table livingRoomTable, kitchenTable, bathroomTable, gardenTable, settingsTable;
+    private Table room1Table, room2Table, room3Table, room4Table, settingsTable;
 
-    private ImageButton leftArrow, rightArrow, settings, heartImage, foodImage, sleepImage, soapImage, happyImage, appleImage, goldenAppleImage, moneyImage, tamagotchiImage;
+    private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, tamagotchiImage;
 
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
-    private ProgressBar life, food, sleeping, hygiene, happiness;
+    private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5;
 
     private int screen = 3, widthProgressbar, heightProgressBar;
 
-    private Label moneyLabel, appleLabel, goldenAppleLabel;
+    private Label moneyLabel, foodLabel, extraFoodLabel;
 
     private final Controller controller;
 
@@ -51,7 +58,7 @@ public class View implements Screen {
      * Constructeur
      */
     public View(Controller controller, Tamagotchi tamagotchi) {
-        System.out.println(tamagotchi.getClass().getName());
+        this.tamagotchi = tamagotchi;
 
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
@@ -79,6 +86,7 @@ public class View implements Screen {
 
         // Définit le controller et instancie les différents éléments
         this.controller = controller;
+        initializeHashmap();
         createButton();
         createTexture();
         createProgressBar();
@@ -90,7 +98,7 @@ public class View implements Screen {
         posAndSizeElement();
 
         // Affiche la table de jeu
-        putTable(livingRoomTable);
+        putTable(room3Table);
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -112,16 +120,16 @@ public class View implements Screen {
         batch.begin();
         switch (screen) {
             case 1:
-                batch.draw(garden, 0, 0, screenWidth, screenHeight);
+                batch.draw(room1, 0, 0, screenWidth, screenHeight);
                 break;
             case 2:
-                batch.draw(kitchen, 0, 0, screenWidth, screenHeight);
+                batch.draw(room2, 0, 0, screenWidth, screenHeight);
                 break;
             case 3:
-                batch.draw(livingRoom, 0, 0, screenWidth, screenHeight);
+                batch.draw(room3, 0, 0, screenWidth, screenHeight);
                 break;
             case 4:
-                batch.draw(bathroom, 0, 0, screenWidth, screenHeight);
+                batch.draw(room4, 0, 0, screenWidth, screenHeight);
                 break;
             // Ajoutez d'autres cas pour d'autres images de fond si nécessaire
         }
@@ -135,10 +143,10 @@ public class View implements Screen {
      * Instancie les textures
      */
     public void createTexture() {
-        livingRoom = new Texture("images/livingRoom.jpg");
-        kitchen = new Texture("images/kitchen.jpg");
-        bathroom = new Texture("images/bathroom.jpg");
-        garden = new Texture("images/garden.png");
+        room1 = new Texture(getImageFromTamagotchi("room1"));
+        room2 = new Texture(getImageFromTamagotchi("room2"));
+        room3 = new Texture(getImageFromTamagotchi("room3"));
+        room4 = new Texture(getImageFromTamagotchi("room4"));
     }
 
     /**
@@ -149,15 +157,15 @@ public class View implements Screen {
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
         settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
 
-        heartImage = new BoutonImage(new MultiSkin("image"), "images/heart.png", 225, 225);
-        foodImage = new BoutonImage(new MultiSkin("image"), "images/food.png", 225, 225);
-        sleepImage = new BoutonImage(new MultiSkin("image"), "images/sleep.png", 225, 225);
-        soapImage = new BoutonImage(new MultiSkin("image"), "images/soap.png", 225, 225);
-        happyImage = new BoutonImage(new MultiSkin("image"), "images/happy.png", 225, 225);
+        image1 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image1"), 225, 225);
+        image2 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image2"), 225, 225);
+        image3 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image3"), 225, 225);
+        image4 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image4"), 225, 225);
+        image5 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image5"), 225, 225);
 
-        appleImage = new BoutonImage(new MultiSkin("image"), "images/apple.png", 225, 225);
-        goldenAppleImage = new BoutonImage(new MultiSkin("image"), "images/goldenApple.png", 225, 225);
-        moneyImage = new BoutonImage(new MultiSkin("image"), "images/money.png", 225, 225);
+        foodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("foodImage"), 225, 225);
+        extraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
+        moneyImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("moneyImage"), 225, 225);
 
         sleep = new TextButton("Dormir  ", new MultiSkin("text"));
         work = new TextButton("Travailler", new MultiSkin("text"));
@@ -200,11 +208,11 @@ public class View implements Screen {
         happinessProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
         happinessProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
-        life = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
-        food = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
-        sleeping = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
-        hygiene = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
-        happiness = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
+        progressBar1 = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
+        progressBar2 = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
+        progressBar3 = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
+        progressBar4 = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
+        progressBar5 = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
     }
 
     /**
@@ -218,19 +226,19 @@ public class View implements Screen {
         settingsTable.add(settings2).row();
         settingsTable.add(home).row();
 
-        livingRoomTable = new Table();
-        livingRoomTable.add(sleep);
-        livingRoomTable.add(work).row();
+        room3Table = new Table();
+        room3Table.add(sleep);
+        room3Table.add(work).row();
 
-        bathroomTable = new Table();
-        bathroomTable.add(wash).row();
+        room4Table = new Table();
+        room4Table.add(wash).row();
 
-        kitchenTable = new Table();
-        kitchenTable.add(eat);
-        kitchenTable.add(buy).row();
+        room2Table = new Table();
+        room2Table.add(eat);
+        room2Table.add(buy).row();
 
-        gardenTable = new Table();
-        gardenTable.add(play).row();
+        room1Table = new Table();
+        room1Table.add(play).row();
     }
 
     /**
@@ -238,8 +246,8 @@ public class View implements Screen {
      */
     public void createLabel() {
         moneyLabel = new Label("0", new MultiSkin("label"));
-        appleLabel = new Label("0", new MultiSkin("label"));
-        goldenAppleLabel = new Label("0", new MultiSkin("label"));
+        foodLabel = new Label("0", new MultiSkin("label"));
+        extraFoodLabel = new Label("0", new MultiSkin("label"));
     }
 
     /**
@@ -276,16 +284,16 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 switch (screen) {
                     case (1):
-                        putTable(gardenTable);
+                        putTable(room1Table);
                         break;
                     case (2):
-                        putTable(kitchenTable);
+                        putTable(room2Table);
                         break;
                     case (3):
-                        putTable(livingRoomTable);
+                        putTable(room3Table);
                         break;
                     case (4):
-                        putTable(bathroomTable);
+                        putTable(room4Table);
                         break;
                 }
                 return true;
@@ -358,17 +366,17 @@ public class View implements Screen {
         screen -= 1;
         switch (screen) {
             case (1):
-                putTable(gardenTable);
+                putTable(room1Table);
                 leftArrow.setVisible(false);
                 break;
 
             case (2):
-                putTable(kitchenTable);
+                putTable(room2Table);
                 break;
 
             case (3):
                 rightArrow.setVisible(true);
-                putTable(livingRoomTable);
+                putTable(room3Table);
                 break;
         }
     }
@@ -381,16 +389,16 @@ public class View implements Screen {
         switch (screen) {
             case (2):
                 leftArrow.setVisible(true);
-                putTable(kitchenTable);
+                putTable(room2Table);
                 break;
 
             case (3):
-                putTable(livingRoomTable);
+                putTable(room3Table);
                 break;
 
             case (4):
                 rightArrow.setVisible(false);
-                putTable(bathroomTable);
+                putTable(room4Table);
                 break;
         }
     }
@@ -403,25 +411,25 @@ public class View implements Screen {
         stage.addActor(leftArrow);
         stage.addActor(rightArrow);
         stage.addActor(settings);
-        stage.addActor(life);
-        stage.addActor(heartImage);
-        stage.addActor(foodImage);
-        stage.addActor(sleepImage);
-        stage.addActor(soapImage);
-        stage.addActor(happyImage);
+        stage.addActor(progressBar1);
+        stage.addActor(image1);
+        stage.addActor(image2);
+        stage.addActor(image3);
+        stage.addActor(image4);
+        stage.addActor(image5);
         stage.addActor(moneyImage);
-        stage.addActor(appleImage);
-        stage.addActor(goldenAppleImage);
+        stage.addActor(foodImage);
+        stage.addActor(extraFoodImage);
 
-        stage.addActor(life);
-        stage.addActor(food);
-        stage.addActor(sleeping);
-        stage.addActor(hygiene);
-        stage.addActor(happiness);
+        stage.addActor(progressBar1);
+        stage.addActor(progressBar2);
+        stage.addActor(progressBar3);
+        stage.addActor(progressBar4);
+        stage.addActor(progressBar5);
 
         stage.addActor(moneyLabel);
-        stage.addActor(appleLabel);
-        stage.addActor(goldenAppleLabel);
+        stage.addActor(foodLabel);
+        stage.addActor(extraFoodLabel);
 
         stage.addActor(tamagotchiImage);
     }
@@ -444,18 +452,19 @@ public class View implements Screen {
      * @throws IllegalArgumentException Si label inconnu
      */
     public void setAmountLabel(String label, int amount) throws IllegalArgumentException {
-
         switch (label) {
-            case ("money"):
+            case "money":
                 moneyLabel.setText(String.valueOf(amount));
                 break;
 
-            case ("apple"):
-                appleLabel.setText(String.valueOf(amount));
+            case "apple":
+            case "oil":
+                foodLabel.setText(String.valueOf(amount));
                 break;
 
-            case ("goldenApple"):
-                goldenAppleLabel.setText(String.valueOf(amount));
+            case "goldenApple":
+            case "extraOil":
+                extraFoodLabel.setText(String.valueOf(amount));
                 break;
 
             default:
@@ -467,29 +476,38 @@ public class View implements Screen {
      * Méthode qui définit le niveau des barres de progression
      *
      * @param progressBar Barre de progression voulu
-     * @param amount      niveau voulu
+     * @param amount      niveau voulu (0 <= amount <= 1000)
      * @throws IllegalArgumentException Si barre de progression inconnue
      */
     public void setAmountProgressBar(String progressBar, float amount) throws IllegalArgumentException {
+        if (amount < 0 || amount > 1000) {
+            throw new IllegalArgumentException("Montant en dehors des bornes");
+        }
+
         switch (progressBar) {
-            case ("life"):
-                life.setValue(amount);
+            case "life":
+            case "battery":
+                progressBar1.setValue(amount);
                 break;
 
-            case ("food"):
-                food.setValue(amount);
+            case "food":
+            case "tank":
+                progressBar2.setValue(amount);
                 break;
 
-            case ("sleep"):
-                sleeping.setValue(amount);
+
+            case "sleep":
+            case "durability":
+                progressBar3.setValue(amount);
                 break;
 
-            case ("wash"):
-                hygiene.setValue(amount);
+            case "wash":
+            case "maintenance":
+                progressBar4.setValue(amount);
                 break;
 
-            case ("happy"):
-                happiness.setValue(amount);
+            case "happy":
+                progressBar5.setValue(amount);
                 break;
 
             default:
@@ -503,23 +521,23 @@ public class View implements Screen {
      */
     public void posAndSizeElement() {
         // Taille des barres de progression
-        life.setSize(widthProgressbar, heightProgressBar);
-        food.setSize(widthProgressbar, heightProgressBar);
-        sleeping.setSize(widthProgressbar, heightProgressBar);
-        hygiene.setSize(widthProgressbar, heightProgressBar);
-        happiness.setSize(widthProgressbar, heightProgressBar);
+        progressBar1.setSize(widthProgressbar, heightProgressBar);
+        progressBar2.setSize(widthProgressbar, heightProgressBar);
+        progressBar3.setSize(widthProgressbar, heightProgressBar);
+        progressBar4.setSize(widthProgressbar, heightProgressBar);
+        progressBar5.setSize(widthProgressbar, heightProgressBar);
 
         // Taille des images
         float widthImage = 50f, heightImage = 50f;
 
-        heartImage.setSize(widthImage, heightImage);
-        foodImage.setSize(widthImage, heightImage);
-        sleepImage.setSize(widthImage, heightImage);
-        soapImage.setSize(widthImage, heightImage);
-        happyImage.setSize(widthImage, heightImage);
+        image1.setSize(widthImage, heightImage);
+        image2.setSize(widthImage, heightImage);
+        image3.setSize(widthImage, heightImage);
+        image4.setSize(widthImage, heightImage);
+        image5.setSize(widthImage, heightImage);
         moneyImage.setSize(widthImage, heightImage);
-        appleImage.setSize(widthImage, heightImage);
-        goldenAppleImage.setSize(widthImage, heightImage);
+        foodImage.setSize(widthImage, heightImage);
+        extraFoodImage.setSize(widthImage, heightImage);
 
         // Tamagotchi
         float widthTamagotchi = 150;
@@ -540,10 +558,10 @@ public class View implements Screen {
         settings.setPosition(10, 10);
 
         // Position des tables
-        livingRoomTable.setPosition(screenWidth - 200, 30);
-        kitchenTable.setPosition(screenWidth - 175, 30);
-        bathroomTable.setPosition(screenWidth - 150, 30);
-        gardenTable.setPosition(screenWidth - 150, 30);
+        room1Table.setPosition(screenWidth - 150, 30);
+        room2Table.setPosition(screenWidth - 175, 30);
+        room3Table.setPosition(screenWidth - 200, 30);
+        room4Table.setPosition(screenWidth - 150, 30);
 
 
         // Placement des images et des labels
@@ -554,24 +572,24 @@ public class View implements Screen {
         float adjustProgressBar = 9;
         float adjustGoldenApple = 70;
 
-        heartImage.setPosition(X, Y - shiftY);
-        foodImage.setPosition(X, Y - shiftY * 2);
-        sleepImage.setPosition(X, Y - shiftY * 3);
-        soapImage.setPosition(X, Y - shiftY * 4);
-        happyImage.setPosition(X, Y - shiftY * 5);
+        image1.setPosition(X, Y - shiftY);
+        image2.setPosition(X, Y - shiftY * 2);
+        image3.setPosition(X, Y - shiftY * 3);
+        image4.setPosition(X, Y - shiftY * 4);
+        image5.setPosition(X, Y - shiftY * 5);
         moneyImage.setPosition(X, Y - shiftY * 6);
-        appleImage.setPosition(X, Y - shiftY * 7);
-        goldenAppleImage.setPosition(X + shiftX + adjustGoldenApple, Y - shiftY * 7);
+        foodImage.setPosition(X, Y - shiftY * 7);
+        extraFoodImage.setPosition(X + shiftX + adjustGoldenApple, Y - shiftY * 7);
 
-        life.setPosition(X + shiftX, Y + adjustProgressBar - shiftY);
-        food.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 2);
-        sleeping.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 3);
-        hygiene.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
-        happiness.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
+        progressBar1.setPosition(X + shiftX, Y + adjustProgressBar - shiftY);
+        progressBar2.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 2);
+        progressBar3.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 3);
+        progressBar4.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
+        progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
         moneyLabel.setPosition(X + shiftX, Y - shiftY * 6);
-        appleLabel.setPosition(X + shiftX, Y - shiftY * 7);
-        goldenAppleLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7);
+        foodLabel.setPosition(X + shiftX, Y - shiftY * 7);
+        extraFoodLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7);
     }
 
     /**
@@ -589,6 +607,57 @@ public class View implements Screen {
         if (heightProgressBar > 50) {
             heightProgressBar = 50;
         }
+    }
+
+    public void initializeHashmap() {
+        hashMapTexture = new HashMap<>();
+
+        if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
+            hashMapTexture.put("image1", "images/battery.png");
+            hashMapTexture.put("image2", "images/tank.png");
+            hashMapTexture.put("image3", "images/durability.png");
+            hashMapTexture.put("image4", "images/woolWrench.png");
+
+            hashMapTexture.put("foodImage", "images/oil.png");
+            hashMapTexture.put("extraFoodImage", "images/extraOil.png");
+
+            hashMapTexture.put("room1", "images/garden.png");
+            hashMapTexture.put("room2", "images/kitchen.jpg");
+            hashMapTexture.put("room3", "images/livingRoom.jpg");
+            hashMapTexture.put("room4", "images/bathroom.jpg");
+
+        } else {
+            hashMapTexture.put("image1", "images/heart.png");
+            hashMapTexture.put("image2", "images/food.png");
+            hashMapTexture.put("image3", "images/sleep.png");
+            hashMapTexture.put("image4", "images/soap.png");
+
+            hashMapTexture.put("foodImage", "images/apple.png");
+            hashMapTexture.put("extraFoodImage", "images/goldenApple.png");
+
+            hashMapTexture.put("room1", "images/garden.png");
+            hashMapTexture.put("room2", "images/kitchen.jpg");
+            hashMapTexture.put("room3", "images/livingRoom.jpg");
+            hashMapTexture.put("room4", "images/bathroom.jpg");
+        }
+
+        hashMapTexture.put("image5", "images/happy.png");
+        hashMapTexture.put("moneyImage", "images/money.png");
+    }
+
+    /**
+     * Renvoie la texture voulu selon la clef
+     *
+     * @param key clef
+     * @return String chemin de la texture
+     */
+    public String getImageFromTamagotchi(String key) {
+        if (hashMapTexture.containsKey(key)) {
+            return hashMapTexture.get(key);
+        } else {
+            throw new NoSuchElementException("Clef inconnu du dictionnaire");
+        }
+
     }
 
     /**

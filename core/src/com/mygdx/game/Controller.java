@@ -95,28 +95,24 @@ public class Controller {
             System.out.println("aah");
         }
 
-        switch (tamagotchiWished) {
-            case (1):
-                animal = new Chat(difficulty);
-                break;
-
-            case (2):
-                animal = new Chien(difficulty);
-                break;
-
-            case (3):
-                animal = new Dinosaure(difficulty);
-                break;
-
-            case (4):
-                robot = new Robot(difficulty);
-                break;
-
-        }
         if (1 <= tamagotchiWished && tamagotchiWished <= 3) {
+            switch (tamagotchiWished) {
+                case (1):
+                    animal = new Chat(difficulty);
+                    break;
+
+                case (2):
+                    animal = new Chien(difficulty);
+                    break;
+
+                case (3):
+                    animal = new Dinosaure(difficulty);
+                    break;
+            }
+
             view = new View(this, animal);
         } else {
-            assert robot != null;
+            robot = new Robot(difficulty);
             view = new View(this, robot);
         }
 
