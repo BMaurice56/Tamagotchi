@@ -3,7 +3,7 @@ package com.mygdx.game.Personnage;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Robot extends Tamagotchi{
+public class Robot extends Tamagotchi {
 
     private int battery;
     private int maintenance;
@@ -24,25 +24,69 @@ public class Robot extends Tamagotchi{
         random = new Random();
     }
 
-    public int getBattery(){ return battery; }
+    public int getBattery() {
+        return battery;
+    }
 
-    public void setBattery(int battery){ this.battery = battery; }
+    public void setBattery(int battery) {
+        this.battery = battery;
+    }
 
-    public int getMaintenance(){ return maintenance; }
+    public int getMaintenance() {
+        return maintenance;
+    }
 
-    public void setMaintenance(int maintenance){ this.maintenance = maintenance; }
+    public void setMaintenance(int maintenance) {
+        this.maintenance = maintenance;
+    }
 
-    public int getTank(){ return tank; }
+    public int getTank() {
+        return tank;
+    }
 
-    public void setTank(int tank){ this.tank = tank; }
+    public void setTank(int tank) {
+        this.tank = tank;
+    }
 
-    public int getDurability(){ return durability; }
+    public int getDurability() {
+        return durability;
+    }
 
-    public void setDurability(int durability){ this.durability = durability; }
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
 
-    public int getHappiness(){ return happiness; }
+    public int getHappiness() {
+        return happiness;
+    }
 
-    public void setHappiness(int happiness){ this.happiness = happiness; }
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
+    public int getNumberOil() {
+        int number = 0;
+
+        for (Food food : getBasket()) {
+            if (food.getName().equals("Oil")) {
+                number++;
+            }
+        }
+
+        return number;
+    }
+
+    public int getNumberExtraOil() {
+        int number = 0;
+
+        for (Food food : getBasket()) {
+            if (food.getName().equals("ExtraOil")) {
+                number++;
+            }
+        }
+
+        return number;
+    }
 
     public void check() {
         if (battery < 0) {
@@ -60,25 +104,25 @@ public class Robot extends Tamagotchi{
         if (happiness < 0) {
             happiness = 0;
         }
-        if (tank > 1000){
+        if (tank > 1000) {
             tank = 1000;
         }
     }
 
-    public void reload() throws InterruptedException{
+    public void reload() throws InterruptedException {
 
         int interval = random.nextInt(4);
 
         TimeUnit.SECONDS.sleep(15 + interval);
 
-        if (durability <= 200){
+        if (durability <= 200) {
             setDurability(900 - getDifficulty() * 100);
-        }else{
+        } else {
             setDurability(1000);
         }
     }
 
-    public void updating() throws InterruptedException{
+    public void updating() throws InterruptedException {
 
         int interval = random.nextInt(6);
 
@@ -86,13 +130,13 @@ public class Robot extends Tamagotchi{
 
         happiness += 100;
 
-        if (happiness > 1000){
+        if (happiness > 1000) {
             setHappiness(1000);
         }
 
-        if (maintenance <= 200){
+        if (maintenance <= 200) {
             setMaintenance(900 - getDifficulty() * 85);
-        }else{
+        } else {
             setMaintenance(1000);
         }
     }
@@ -107,18 +151,18 @@ public class Robot extends Tamagotchi{
 
         check();
 
-        if(100 <= happiness && happiness <= 200){
+        if (100 <= happiness && happiness <= 200) {
             setHappiness(900 - getDifficulty() * 100);
         } else if (happiness < 100) {
             setHappiness(750 - getDifficulty() * 100);
-        }else {
+        } else {
             setHappiness(1000);
         }
     }
 
-    public void fillTank(String tank) throws InterruptedException{
+    public void fillTank(String tank) throws InterruptedException {
 
-        for (int i = 0; i < getBasket().size(); i++){
+        for (int i = 0; i < getBasket().size(); i++) {
 
             Food food1 = getBasket().get(i);
 
@@ -131,7 +175,7 @@ public class Robot extends Tamagotchi{
                 if (tank.equals("SuperExtraOil")) {
                     happiness += 75;
                 }
-                if (happiness > 1000){
+                if (happiness > 1000) {
                     setHappiness(1000);
                 }
                 check();
@@ -153,19 +197,19 @@ public class Robot extends Tamagotchi{
         check();
     }
 
-    public void buyOil(){
+    public void buyOil() {
 
         Food f = new Oil();
-        if(getWallet() >= f.getPrice()){
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
             setWallet(getWallet() - f.getPrice());
         }
     }
 
-    public void buySuperExtraOil(){
+    public void buySuperExtraOil() {
 
-        Food f = new SuperExtraOil();
-        if(getWallet() >= f.getPrice()){
+        Food f = new ExtraOil();
+        if (getWallet() >= f.getPrice()) {
             addBasket(f);
             setWallet(getWallet() - f.getPrice());
         }

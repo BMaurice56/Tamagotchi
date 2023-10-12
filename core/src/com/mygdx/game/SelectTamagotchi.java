@@ -185,7 +185,7 @@ public class SelectTamagotchi implements Screen {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
                 try {
-                    new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, "");
+                    new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, null);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

@@ -89,9 +89,9 @@ public class Controller {
      */
     public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) throws InterruptedException {
         if (save != null) {
-            System.out.println("toto");
+            System.out.println("Save à faire !");
         } else {
-            System.out.println("aah");
+            System.out.println("Pas de save");
         }
 
         if (1 <= tamagotchiWished && tamagotchiWished <= 3) {
@@ -110,10 +110,34 @@ public class Controller {
             }
 
             view = new View(this, animal);
+
+            setAmountProgressBar("life", animal.getLife());
+            setAmountProgressBar("food", animal.getFood());
+            setAmountProgressBar("sleep", animal.getSleep());
+            setAmountProgressBar("wash", animal.getHygiene());
+            setAmountProgressBar("happy", animal.getHappiness());
+
+            setAmountLabel("money", animal.getWallet());
+            setAmountLabel("apple", animal.getNumberApple());
+            setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+
         } else {
             robot = new Robot(difficulty);
             view = new View(this, robot);
+
+            setAmountProgressBar("battery", robot.getBattery());
+            setAmountProgressBar("tank", robot.getTank());
+            setAmountProgressBar("durability", robot.getDurability());
+            setAmountProgressBar("maintenance", robot.getMaintenance());
+            setAmountProgressBar("happy", robot.getHappiness());
+
+            setAmountLabel("money", robot.getWallet());
+            setAmountLabel("apple", robot.getNumberOil());
+            setAmountLabel("goldenApple", robot.getNumberExtraOil());
         }
+
+
+
 
 
         ((Game) Gdx.app.getApplicationListener()).setScreen(view);
