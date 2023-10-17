@@ -9,8 +9,7 @@ public class GameStart extends Game {
 
     @Override
     public void create() {
-        //setScreen(new ScreenMenu());
-        setScreen(new SelectTamagotchi());
-        //setScreen(new ViewAnimal());
+        setScreen(new ScreenMenu());
+        //setScreen(new SelectTamagotchi());
     }
 }

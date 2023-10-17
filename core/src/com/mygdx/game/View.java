@@ -312,7 +312,11 @@ public class View implements Screen {
         sleep.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.sleep();
+                try {
+                    controller.sleep();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 return true;
             }
         });
@@ -320,7 +324,11 @@ public class View implements Screen {
         work.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.work();
+                try {
+                    controller.work();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 return true;
             }
         });
@@ -328,7 +336,11 @@ public class View implements Screen {
         wash.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.wash();
+                try {
+                    controller.wash();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 return true;
             }
         });
@@ -353,7 +365,11 @@ public class View implements Screen {
         play.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.play();
+                try {
+                    controller.play();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 return true;
             }
         });

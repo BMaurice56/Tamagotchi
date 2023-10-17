@@ -35,12 +35,8 @@ public abstract class Animal extends Tamagotchi {
     }
 
     public void setLife(int life) {
-        if (life>1000){
-            this.life = 1000;
-        }else {
-            this.life = life;
-        }
-
+        this.life = life;
+        check();
     }
 
     public int getFood() {
@@ -48,10 +44,8 @@ public abstract class Animal extends Tamagotchi {
     }
 
     public void setFood(int food) {
-        if (food>1000){
-            this.food = 1000;
-        }
         this.food = food;
+        check();
     }
 
     public int getHygiene() {
@@ -60,6 +54,7 @@ public abstract class Animal extends Tamagotchi {
 
     public void setHygiene(int hygiene) {
         this.hygiene = hygiene;
+        check();
     }
 
     public int getSleep() {
@@ -68,6 +63,7 @@ public abstract class Animal extends Tamagotchi {
 
     public void setSleep(int sleep) {
         this.sleep = sleep;
+        check();
     }
 
     public int getHappiness() {
@@ -76,6 +72,7 @@ public abstract class Animal extends Tamagotchi {
 
     public void setHappiness(int happiness) {
         this.happiness = happiness;
+        check();
     }
 
     public int getNumberApple() {
@@ -107,26 +104,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Travaille pendant 12 secondes pour gagner de l'argent
-     *
-     * @modif : wallet , bonheur , hygiene , sleep
-     */
-    public void travailler() throws InterruptedException {
-
-        TimeUnit.SECONDS.sleep(12);
-
-        setWallet(getWallet() + 50);
-        happiness -= getDifficulty() * 100;
-        hygiene -= getDifficulty() * 43;
-        sleep -= getDifficulty() * 60;
-
-
-        check();
-
-    }
-
-    /**
-     * Méthode qui vérifie si les attributs sont < 0
+     * Méthode qui vérifie si les attributs sont < 0 et > 1000
      */
     public void check() {
         if (life < 0) {
@@ -144,10 +122,42 @@ public abstract class Animal extends Tamagotchi {
         if (happiness < 0) {
             happiness = 0;
         }
-        if (food>1000){
-            food=1000;
+        if (life > 1000) {
+            life = 1000;
+        }
+        if (food > 1000) {
+            food = 1000;
+        }
+        if (hygiene > 1000) {
+            hygiene = 1000;
+        }
+        if (sleep > 1000) {
+            sleep = 1000;
+        }
+        if (happiness > 1000) {
+            happiness = 1000;
         }
     }
+
+
+    /**
+     * Travaille pendant 12 secondes pour gagner de l'argent
+     *
+     * @modif : wallet , bonheur , hygiene , sleep
+     */
+    public void work() throws InterruptedException {
+
+        TimeUnit.SECONDS.sleep(12);
+
+        setWallet(getWallet() + 50);
+        happiness -= getDifficulty() * 100;
+        hygiene -= getDifficulty() * 43;
+        sleep -= getDifficulty() * 60;
+
+        check();
+
+    }
+
 
     /**
      * buy an apple
@@ -192,10 +202,9 @@ public abstract class Animal extends Tamagotchi {
                 if (food.equals("GoldenApple")) {
                     happiness += 75;
                 }
-                if (happiness > 1000) {
-                    setHappiness(1000);
-                }
                 check();
+
+                return;
             }
         }
     }
@@ -207,7 +216,7 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : attribut sleep
      */
-    public void dormir() throws InterruptedException {
+    public void sleep() throws InterruptedException {
 
         int interval = random.nextInt(4); //nbr entre 0 et 3
 
@@ -218,6 +227,8 @@ public abstract class Animal extends Tamagotchi {
         } else {
             setSleep(1000); // sinon son sommeil va au max
         }
+
+        check();
     }
 
     /**
@@ -226,22 +237,21 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : attribut hygiene , bonheur
      */
-    public void laver() throws InterruptedException {
+    public void wash() throws InterruptedException {
 
         int interval = random.nextInt(6); //nbr entre 0 et 5000 inclus
 
         TimeUnit.SECONDS.sleep(12 + interval);
 
         happiness += 100;
-        if (happiness > 1000) { //se laver le détend et augmente son bonheur
-            setHappiness(1000);
-        }
 
         if (hygiene <= 200) {
             setHygiene(900 - getDifficulty() * 85);
         } else {
             setHygiene(1000);
         }
+
+        check();
     }
 
     /**
@@ -250,7 +260,7 @@ public abstract class Animal extends Tamagotchi {
      *
      * @modif : bonheur , hygiene
      */
-    public void jouer() throws InterruptedException {
+    public void play() throws InterruptedException {
 
         int interval = random.nextInt(6); //nbr entre 0 et 5 inclus
 
@@ -258,7 +268,6 @@ public abstract class Animal extends Tamagotchi {
 
         hygiene -= random.nextInt(75, 200);
 
-        check();
 
         if (100 <= happiness && happiness <= 200) {
             setHappiness(900 - getDifficulty() * 100); //som bonheur sera 800 ou 700  ou 600  en fonction de la difficulté
@@ -268,7 +277,6 @@ public abstract class Animal extends Tamagotchi {
             setHappiness(1000); // sinon son bonheur va au max
         }
 
-
+        check();
     }
-
 }

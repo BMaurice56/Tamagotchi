@@ -15,6 +15,10 @@ public class Test {
 
 
         PL.buyGoldenApple();
+        PL.buyGoldenApple();
+        PL.buyGoldenApple();
+        PL.buyGoldenApple();
+        PL.buyGoldenApple();
 
         System.out.println("panier "+PL.getBasket());
         PL.manger("GoldenApple");
