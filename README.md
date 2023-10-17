@@ -7,3 +7,6 @@ Pour modifier le projet avec Intellij, il faut ouvrir le fichier build.gradle en
 File -> open -> sélectionner le fichier -> Open As project
 
 !!! Installer le plugin libGDX dans intellij en en allant dans settings -> plugins !!!
+
+lien important :
+https://lipn.univ-paris13.fr/~gerard/uml-s2/uml-cours05.html
