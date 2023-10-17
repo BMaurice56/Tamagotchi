@@ -35,7 +35,12 @@ public abstract class Animal extends Tamagotchi {
     }
 
     public void setLife(int life) {
-        this.life = life;
+        if (life>1000){
+            this.life = 1000;
+        }else {
+            this.life = life;
+        }
+
     }
 
     public int getFood() {
@@ -43,6 +48,9 @@ public abstract class Animal extends Tamagotchi {
     }
 
     public void setFood(int food) {
+        if (food>1000){
+            this.food = 1000;
+        }
         this.food = food;
     }
 
