@@ -6,35 +6,40 @@ import com.badlogic.gdx.LifecycleListener;
 import com.mygdx.game.Personnage.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class Jeu implements Runnable {
 
-    private final AtomicBoolean flagStop;
-
-    private final Animal animal;
-
-    private Robot robot;
+    private final AtomicBoolean flagStop, flagWait;
 
     private final Controller controller;
 
 
-    public Jeu(AtomicBoolean flagStop, Animal animal, Controller controller) {
+    public Jeu(AtomicBoolean flagStop, AtomicBoolean flagWait, Controller controller) {
         this.flagStop = flagStop;
-        this.animal = animal;
+        this.flagWait = flagWait;
         this.controller = controller;
     }
 
     public void run() {
         while (!flagStop.get()) {
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
             controller.vieTamagotchi();
+
+            if (flagWait.get()) {
+                try {
+                    controller.waiting();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             controller.updateAffichage();
 
@@ -47,7 +52,7 @@ class Jeu implements Runnable {
  */
 public class Controller {
 
-    private final AtomicBoolean flagStop = new AtomicBoolean();
+    private final AtomicBoolean flagStop = new AtomicBoolean(), flagWait = new AtomicBoolean(true);
 
     // Vue du jeu
     private final View view;
@@ -60,6 +65,10 @@ public class Controller {
     private Robot robot;
 
     private final Thread jeu;
+
+    private String attente;
+
+    private final Random random = new Random();
 
 
     /**
@@ -121,7 +130,7 @@ public class Controller {
 
         ((Game) Gdx.app.getApplicationListener()).setScreen(view);
 
-        jeu = new Thread(new Jeu(flagStop, animal, this));
+        jeu = new Thread(new Jeu(flagStop, flagWait, this));
 
         jeu.start();
 
@@ -144,14 +153,29 @@ public class Controller {
     }
 
 
+    /**
+     * Définit la valeur du label voulu
+     *
+     * @param label  Label
+     * @param amount Montant
+     */
     public void setAmountLabel(String label, int amount) {
         view.setAmountLabel(label, amount);
     }
 
+    /**
+     * Définit la valeur de la barre de progression voulue
+     *
+     * @param progressBar Barre de progression
+     * @param amount      Montant
+     */
     public void setAmountProgressBar(String progressBar, float amount) {
         view.setAmountProgressBar(progressBar, amount);
     }
 
+    /**
+     * Modifie les valeurs du tamagotchi
+     */
     public void vieTamagotchi() {
         if (animal != null) {
             animal.setFood(animal.getFood() - 10);
@@ -192,6 +216,9 @@ public class Controller {
 
     }
 
+    /**
+     * Met à jour l'affichage avec les bonnes valeurs du tamagotchi
+     */
     public void updateAffichage() {
         if (animal != null) {
             setAmountProgressBar("life", animal.getLife());
@@ -209,30 +236,107 @@ public class Controller {
         }
     }
 
-    public void sleep() throws InterruptedException {
+    /**
+     * Calcul la valeur pour la barre de progression selon le temps d'attente
+     *
+     * @param tempsAttente Temps de base (ex : 10 secondes)
+     * @param min          Temps actuel en milliseconde (time code depuis le 1 janvier 1970)
+     * @param max          Temps final en millisecondes
+     * @return float La valeur pour la barre de progression
+     */
+    public float getValueWaitingBar(int tempsAttente, double min, double max) {
+        return (float) ((tempsAttente * 1000) - (max - min)) / tempsAttente;
+    }
+
+    public void waiting() throws InterruptedException {
+        // S'il y a bien une chaine de caractère, alors une action doit être effectuée
+        if (attente != null) {
+            // Bloque le moteur de reappeler cette fonction
+            flagWait.set(false);
+
+            // Thread qui met à jour la barre de progression sans bloquer le jeu
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Cache les éléments inutiles de l'interface
+                    view.changeVisibilityWaitingBar(false);
+
+                    // Sépare les différentes valeurs
+                    String[] values = attente.split(";");
+
+                    // Temps d'attente
+                    int time = Integer.parseInt(values[0]);
+
+                    // Temps de fin en milliseconde
+                    long temps = System.currentTimeMillis() + (time * 1_000L);
+
+                    // Tant que l'on n'a pas attendu le temps nécessaire, on continue
+                    while (temps > System.currentTimeMillis()) {
+                        // Met la bonne valeur sur la barre de progression
+                        view.setAmountProgressBar("waiting", getValueWaitingBar(time, System.currentTimeMillis(), temps));
+                    }
+                    // Reaffiche les éléments de l'interface
+                    view.changeVisibilityWaitingBar(true);
+
+                    // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
+                    switch (values[2]) {
+                        case "work":
+                            animal.work();
+                            break;
+
+                        case "sleep":
+                            animal.sleep();
+                            break;
+
+                        case "wash":
+                            animal.wash();
+                            break;
+
+                        case "play":
+                            animal.play();
+                            break;
+
+                        default:
+                            throw new IllegalArgumentException("Action inconnu");
+
+                    }
+
+                    // Remet à null attente pour pouvoir effectuer la prochaine action
+                    attente = null;
+
+                    // Réautorise le moteur à appeler cette fonction
+                    flagWait.set(true);
+                }
+            });
+
+            // Démarre le thread
+            t.start();
+        }
+    }
+
+    public void sleep() {
         if (animal != null) {
-            animal.sleep();
+            int temps = 15 + random.nextInt(4);
+            attente = temps + ";Dodo;sleep";
         } else {
             System.out.println("A faire robot sleep");
-            throw new NotImplementedException();
         }
     }
 
-    public void work() throws InterruptedException {
+    public void work() {
         if (animal != null) {
-            animal.work();
+            attente = "12;Travaille;work";
         } else {
             System.out.println("A faire robot work");
-            throw new NotImplementedException();
         }
     }
 
-    public void wash() throws InterruptedException {
+    public void wash() {
         if (animal != null) {
-            animal.wash();
+            int temps = 12 + random.nextInt(6);
+            attente = temps + ";Lavage;wash";
         } else {
             System.out.println("A faire robot wash");
-            throw new NotImplementedException();
         }
     }
 
@@ -256,9 +360,10 @@ public class Controller {
         }
     }
 
-    public void play() throws InterruptedException {
+    public void play() throws NotImplementedException {
         if (animal != null) {
-            animal.play();
+            int temps = 10 + random.nextInt(6);
+            attente = temps + ";Jeu;play";
         } else {
             System.out.println("A faire robot eat");
             throw new NotImplementedException();

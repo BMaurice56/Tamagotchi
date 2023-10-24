@@ -32,7 +32,7 @@ public class View implements Screen {
 
     private HashMap<String, String> hashMapTexture;
 
-    private Tamagotchi tamagotchi;
+    private final Tamagotchi tamagotchi;
 
     // Taille de la fenêtre
     private float screenWidth, screenHeight;
@@ -45,7 +45,7 @@ public class View implements Screen {
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
-    private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5;
+    private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
 
     private int screen = 3, widthProgressbar, heightProgressBar;
 
@@ -187,6 +187,7 @@ public class View implements Screen {
         ProgressBar.ProgressBarStyle sleepingProgressBarStyle = new ProgressBar.ProgressBarStyle();
         ProgressBar.ProgressBarStyle hygieneProgressBarStyle = new ProgressBar.ProgressBarStyle();
         ProgressBar.ProgressBarStyle happinessProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        ProgressBar.ProgressBarStyle waitingProgressBarStyle = new ProgressBar.ProgressBarStyle();
 
         lifeProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
         lifeProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
@@ -208,11 +209,18 @@ public class View implements Screen {
         happinessProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
         happinessProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
 
+        waitingProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
+        waitingProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
+        waitingProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
+
         progressBar1 = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
         progressBar2 = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
         progressBar3 = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
         progressBar4 = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
         progressBar5 = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
+        waitingBar = new ProgressBar(0f, 1000f, 1f, false, waitingProgressBarStyle);
+
+        waitingBar.setVisible(false);
     }
 
     /**
@@ -312,11 +320,7 @@ public class View implements Screen {
         sleep.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    controller.sleep();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.sleep();
                 return true;
             }
         });
@@ -324,11 +328,7 @@ public class View implements Screen {
         work.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    controller.work();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.work();
                 return true;
             }
         });
@@ -336,11 +336,7 @@ public class View implements Screen {
         wash.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    controller.wash();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.wash();
                 return true;
             }
         });
@@ -365,11 +361,7 @@ public class View implements Screen {
         play.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    controller.play();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.play();
                 return true;
             }
         });
@@ -526,6 +518,10 @@ public class View implements Screen {
                 progressBar5.setValue(amount);
                 break;
 
+            case "waiting":
+                waitingBar.setValue(amount);
+                break;
+
             default:
                 throw new IllegalArgumentException("Nom de barre de progression inconnu");
         }
@@ -542,6 +538,7 @@ public class View implements Screen {
         progressBar3.setSize(widthProgressbar, heightProgressBar);
         progressBar4.setSize(widthProgressbar, heightProgressBar);
         progressBar5.setSize(widthProgressbar, heightProgressBar);
+        waitingBar.setSize(widthProgressbar, heightProgressBar);
 
         // Taille des images
         float widthImage = 50f, heightImage = 50f;
@@ -603,6 +600,8 @@ public class View implements Screen {
         progressBar4.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
         progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
+        waitingBar.setPosition(screenWidth / 2 - (float) widthProgressbar / 2, screenHeight / 2 - (float) heightProgressBar / 2);
+
         moneyLabel.setPosition(X + shiftX, Y - shiftY * 6);
         foodLabel.setPosition(X + shiftX, Y - shiftY * 7);
         extraFoodLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7);
@@ -625,6 +624,9 @@ public class View implements Screen {
         }
     }
 
+    /**
+     * Initialise le dictionnaire qui contient le répertoire des images selon le tamagotchi
+     */
     public void initializeHashmap() {
         hashMapTexture = new HashMap<>();
 
@@ -674,6 +676,54 @@ public class View implements Screen {
             throw new NoSuchElementException("Clef inconnu du dictionnaire");
         }
 
+    }
+
+    /**
+     *Modifie l'affichage pour permettre l'attente de l'action en cours
+     *
+     * @param visibility boolean Modifie l'affichage
+     */
+    public void changeVisibilityWaitingBar(boolean visibility) {
+
+        stage.addActor(waitingBar);
+
+        leftArrow.setVisible(visibility);
+        rightArrow.setVisible(visibility);
+        settings.setVisible(visibility);
+
+        sleep.setVisible(visibility);
+        work.setVisible(visibility);
+        wash.setVisible(visibility);
+        eat.setVisible(visibility);
+        buy.setVisible(visibility);
+        play.setVisible(visibility);
+
+        tamagotchiImage.setVisible(visibility);
+
+        waitingBar.setVisible(!visibility);
+
+        if (visibility) {
+            switch (screen) {
+                case (1):
+                    putTable(room1Table);
+                    leftArrow.setVisible(false);
+                    break;
+
+                case (2):
+                    putTable(room2Table);
+                    break;
+
+                case (3):
+                    putTable(room3Table);
+                    break;
+
+                case (4):
+                    rightArrow.setVisible(false);
+                    putTable(room3Table);
+                    break;
+            }
+
+        }
     }
 
     /**

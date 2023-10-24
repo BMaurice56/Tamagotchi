@@ -11,7 +11,7 @@ public abstract class Animal extends Tamagotchi {
     private int sleep;
     private int happiness;
 
-    Random random;
+    private final Random random = new Random();
 
     /**
      * Constructeur
@@ -26,8 +26,6 @@ public abstract class Animal extends Tamagotchi {
         hygiene = 1000;
         sleep = 1000;
         happiness = 1000;
-
-        random = new Random();
     }
 
     public int getLife() {
@@ -142,20 +140,14 @@ public abstract class Animal extends Tamagotchi {
 
     /**
      * Travaille pendant 12 secondes pour gagner de l'argent
-     *
-     * @modif : wallet , bonheur , hygiene , sleep
+     * Modifie : wallet, bonheur, hygiene, sleep
      */
-    public void work() throws InterruptedException {
-
-        TimeUnit.SECONDS.sleep(12);
-
+    public void work() {
         setWallet(getWallet() + 50);
         happiness -= getDifficulty() * 100;
         hygiene -= getDifficulty() * 43;
         sleep -= getDifficulty() * 60;
-
         check();
-
     }
 
 
@@ -185,7 +177,7 @@ public abstract class Animal extends Tamagotchi {
      * Supprime food du panier et y ajoute la valeur de point associer
      *
      * @param food apple or golden apple
-     * @modif change l'attribut foods , bonheur
+     *             modifie : foods, bonheur
      */
     public void manger(String food) throws InterruptedException {
         for (int i = 0; i < getBasket().size(); i++) { //parcourt l'attribut panier
@@ -213,15 +205,9 @@ public abstract class Animal extends Tamagotchi {
     /**
      * Auteur : Arthur
      * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
-     *
-     * @modif : attribut sleep
+     * modifie : sleep
      */
-    public void sleep() throws InterruptedException {
-
-        int interval = random.nextInt(4); //nbr entre 0 et 3
-
-        TimeUnit.SECONDS.sleep(15 + interval);
-
+    public void sleep() {
         if (sleep <= 200) {
             setSleep(900 - getDifficulty() * 100); //som sommeil sera 800 ou 700  ou 600  en fonction de la difficulté
         } else {
@@ -234,15 +220,9 @@ public abstract class Animal extends Tamagotchi {
     /**
      * Auteur : Arthur
      * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
-     *
-     * @modif : attribut hygiene , bonheur
+     * Modifie : hygiene, bonheur
      */
-    public void wash() throws InterruptedException {
-
-        int interval = random.nextInt(6); //nbr entre 0 et 5000 inclus
-
-        TimeUnit.SECONDS.sleep(12 + interval);
-
+    public void wash() {
         happiness += 100;
 
         if (hygiene <= 200) {
@@ -256,18 +236,11 @@ public abstract class Animal extends Tamagotchi {
 
     /**
      * Auteur : Arthur
-     * descriptif : methode jouer qui rend + heureux le joueur, mais le salit
-     *
-     * @modif : bonheur , hygiene
+     * descriptif : methode jouer qui rend + heureux le joueur, mais le salin
+     * Modifie : bonheur, hygiene
      */
-    public void play() throws InterruptedException {
-
-        int interval = random.nextInt(6); //nbr entre 0 et 5 inclus
-
-        TimeUnit.SECONDS.sleep(10 + interval);
-
+    public void play() {
         hygiene -= random.nextInt(75, 200);
-
 
         if (100 <= happiness && happiness <= 200) {
             setHappiness(900 - getDifficulty() * 100); //som bonheur sera 800 ou 700  ou 600  en fonction de la difficulté
