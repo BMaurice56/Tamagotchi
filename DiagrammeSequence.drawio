@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:14:38.580Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="cpy9LA5PJcFSa5PWaOA1" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:15:33.924Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="-8cxKlXKb1gPwso5MyK5" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="2284" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -156,7 +156,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BjoWhivaikeUuKNBFJ7F" name="Page-2">
-    <mxGraphModel dx="819" dy="427" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="683" dy="356" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -352,13 +352,13 @@
         </mxCell>
         <mxCell id="xTmdPanvR6ia15hfYvBN-7" value="sauvegarde" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;entryX=1.1;entryY=0.876;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.933;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
           <mxGeometry x="-0.462" y="10" relative="1" as="geometry">
-            <mxPoint x="694.9999999999999" y="429.99999999999994" as="sourcePoint" />
+            <mxPoint x="694.9999999999999" y="439.99999999999994" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="817" y="430.21" />
-              <mxPoint x="817" y="470.21" />
-              <mxPoint x="765" y="470.21" />
+              <mxPoint x="817" y="440.21" />
+              <mxPoint x="817" y="480.21" />
+              <mxPoint x="765" y="480.21" />
             </Array>
-            <mxPoint x="696.67" y="470.67" as="targetPoint" />
+            <mxPoint x="696.67" y="480.67" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
@@ -390,6 +390,15 @@
         </mxCell>
         <mxCell id="xTmdPanvR6ia15hfYvBN-14" value="signal fin de jeu" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="540" y="290" width="145" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xTmdPanvR6ia15hfYvBN-17" value="demande sauvegarde" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="535" y="400" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xTmdPanvR6ia15hfYvBN-18" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="525" y="430" as="sourcePoint" />
+            <mxPoint x="680" y="430" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
