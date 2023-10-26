@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T17:06:42.561Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="jsq-p0Le2558qsMCvdxo" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T17:11:19.719Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="ZkJTGRErTFaSHwQyV8N6" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="1836" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -551,7 +551,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="dwIyI6OpNoD_5IZxsej2-15" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="474" y="260" width="10" height="110" as="geometry" />
+          <mxGeometry x="474" y="260" width="10" height="120" as="geometry" />
         </mxCell>
         <mxCell id="dwIyI6OpNoD_5IZxsej2-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="dwIyI6OpNoD_5IZxsej2-10" target="dwIyI6OpNoD_5IZxsej2-10">
           <mxGeometry relative="1" as="geometry" />
@@ -647,12 +647,30 @@
         </mxCell>
         <mxCell id="izy3RE0cnmg-vb3SCTiM-2" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="672.5" y="369.17" as="sourcePoint" />
-            <mxPoint x="560" y="369.34" as="targetPoint" />
+            <mxPoint x="682.5" y="359.17" as="sourcePoint" />
+            <mxPoint x="500" y="360" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="izy3RE0cnmg-vb3SCTiM-3" value="demande dormir" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="349.99999999999994" width="110" height="20" as="geometry" />
+        <mxCell id="izy3RE0cnmg-vb3SCTiM-3" value="envoie nouvelle donné Tamagotchi" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="539" y="329.99999999999994" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="r9K5tq3RVRZorufN6kdG-1" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="472.5" y="369.17" as="sourcePoint" />
+            <mxPoint x="290" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r9K5tq3RVRZorufN6kdG-2" value="envoie nouvelle donné Tamagotchi" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="329" y="339.99999999999994" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="r9K5tq3RVRZorufN6kdG-3" value="Affichage nouveau écran de jeu" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="85" y="350" width="167.75" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="r9K5tq3RVRZorufN6kdG-4" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="380" as="sourcePoint" />
+            <mxPoint x="55" y="380" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
