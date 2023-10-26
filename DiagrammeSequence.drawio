@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:16:23.271Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="_u42hw261H0j5aKspDCO" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:17:42.073Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="JWBwbB9AGtTttAMr3JZy" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="2284" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -156,7 +156,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BjoWhivaikeUuKNBFJ7F" name="Page-2">
-    <mxGraphModel dx="683" dy="356" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1195" dy="623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -307,8 +307,8 @@
         </mxCell>
         <mxCell id="39_W7SnpCq-yl0j5I8Qd-14" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="514" y="480" as="sourcePoint" />
-            <mxPoint x="314" y="480" as="targetPoint" />
+            <mxPoint x="514" y="490" as="sourcePoint" />
+            <mxPoint x="314" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="39_W7SnpCq-yl0j5I8Qd-16" value="Affichage écran Menu de Jeu" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -388,7 +388,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="xTmdPanvR6ia15hfYvBN-14" value="signal fin de jeu" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="540" y="290" width="145" height="20" as="geometry" />
+          <mxGeometry x="537.5" y="290" width="145" height="20" as="geometry" />
         </mxCell>
         <mxCell id="xTmdPanvR6ia15hfYvBN-17" value="demande sauvegarde" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="535" y="400" width="150" height="30" as="geometry" />
@@ -397,6 +397,15 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="525" y="430" as="sourcePoint" />
             <mxPoint x="680" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xTmdPanvR6ia15hfYvBN-19" value="signal sauvegarde" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="535" y="460" width="145" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xTmdPanvR6ia15hfYvBN-20" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="480.24" as="sourcePoint" />
+            <mxPoint x="535" y="480" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
