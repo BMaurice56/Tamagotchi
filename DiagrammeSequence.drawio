@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:58:22.983Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="h_a8UR2JvCKmYaK8c88S" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:58:33.432Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="ZigK8jtWuO4LyqCKlXp-" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="1836" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -392,7 +392,7 @@
             <mxPoint x="314" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="39_W7SnpCq-yl0j5I8Qd-16" value="Affichage écran Menu de Jeu" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="39_W7SnpCq-yl0j5I8Qd-16" value="Affichage écran Menu " style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="112.25" y="469" width="167.75" height="30" as="geometry" />
         </mxCell>
         <mxCell id="39_W7SnpCq-yl0j5I8Qd-17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
