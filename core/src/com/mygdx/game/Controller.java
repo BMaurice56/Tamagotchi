@@ -2,8 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.LifecycleListener;
 import com.mygdx.game.Personnage.*;
+import com.badlogic.gdx.LifecycleListener;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Random;
@@ -12,35 +12,48 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 class Jeu implements Runnable {
 
+    // Drapeau qui régule le moteur
     private final AtomicBoolean flagStop, flagWait;
 
+    // Controller de jeu
     private final Controller controller;
 
-
+    /**
+     * Constructeur
+     *
+     * @param flagStop   Arrête le moteur
+     * @param flagWait   Fait attendre le moteur
+     * @param controller controller de jeu
+     */
     public Jeu(AtomicBoolean flagStop, AtomicBoolean flagWait, Controller controller) {
         this.flagStop = flagStop;
         this.flagWait = flagWait;
         this.controller = controller;
     }
 
+    /**
+     * Méthode appelée pour exécuter le thread
+     */
     public void run() {
+        // Tant que le drapeau n'est pas levé, on continue
         while (!flagStop.get()) {
+            // fait attendre le moteur
             try {
-                TimeUnit.MILLISECONDS.sleep(1000);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
+            // Fait vivre le tamagotchi
             controller.vieTamagotchi();
 
+            // Si on peut faire une action, on l'effectue
+            // Permet d'éviter de rappeler la fonction si on l'a déja appelé et qu'elle effectue une action
             if (flagWait.get()) {
-                try {
-                    controller.waiting();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.waiting();
             }
 
+            // Met à jour l'affichage
             controller.updateAffichage();
 
         }
@@ -63,8 +76,6 @@ public class Controller {
     private Animal animal;
 
     private Robot robot;
-
-    private final Thread jeu;
 
     private String attente;
 
@@ -128,11 +139,8 @@ public class Controller {
             setAmountLabel("goldenApple", robot.getNumberExtraOil());
         }
 
+        // Définit l'écran de jeu
         ((Game) Gdx.app.getApplicationListener()).setScreen(view);
-
-        jeu = new Thread(new Jeu(flagStop, flagWait, this));
-
-        jeu.start();
 
         // Permet de savoir si l'utilisateur quitte le jeu pour stopper la partie
         Gdx.app.addLifecycleListener(new LifecycleListener() {
@@ -150,6 +158,7 @@ public class Controller {
             }
         });
 
+        startGame();
     }
 
 
@@ -178,8 +187,8 @@ public class Controller {
      */
     public void vieTamagotchi() {
         if (animal != null) {
-            animal.setFood(animal.getFood() - 10);
-            animal.setHygiene(animal.getHygiene() - 5);
+            animal.setFood(animal.getFood() - 5);
+            animal.setHygiene(animal.getHygiene() - 4);
             animal.setSleep(animal.getSleep() - 2);
             animal.setHappiness(animal.getHappiness() - 3);
 
@@ -248,7 +257,11 @@ public class Controller {
         return (float) ((tempsAttente * 1000) - (max - min)) / tempsAttente;
     }
 
-    public void waiting() throws InterruptedException {
+    /**
+     * Méthode appelée par le moteur de jeu
+     * Si attente != null, alors il y a une action à effectuer
+     */
+    public void waiting() {
         // S'il y a bien une chaine de caractère, alors une action doit être effectuée
         if (attente != null) {
             // Bloque le moteur de reappeler cette fonction
@@ -295,9 +308,9 @@ public class Controller {
                         case "play":
                             animal.play();
                             break;
-
-                        default:
-                            throw new IllegalArgumentException("Action inconnu");
+                        case "eat":
+                            animal.eat("Apple");
+                            break;
 
                     }
 
@@ -314,6 +327,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Fait dormir le tamagotchi
+     */
     public void sleep() {
         if (animal != null) {
             int temps = 15 + random.nextInt(4);
@@ -323,6 +339,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Fait travailler le tamagotchi
+     */
     public void work() {
         if (animal != null) {
             attente = "12;Travaille;work";
@@ -331,6 +350,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Fait se laver le tamagotchi
+     */
     public void wash() {
         if (animal != null) {
             int temps = 12 + random.nextInt(6);
@@ -340,37 +362,63 @@ public class Controller {
         }
     }
 
+    /**
+     * Fait manger le tamagotchi
+     */
     public void eat() {
         if (animal != null) {
             System.out.println("A faire animal eat");
-            throw new NotImplementedException();
+            attente = "5;Alimentation;eat";
         } else {
             System.out.println("A faire robot eat");
-            throw new NotImplementedException();
         }
     }
 
+    /**
+     * Permet d'acheter de la nourriture
+     */
     public void buy() {
         if (animal != null) {
             System.out.println("A faire animal buy");
-            throw new NotImplementedException();
+            int amount = animal.getWallet();
+            if (amount >= Apple.price) {
+                animal.setWallet(amount - Apple.price);
+                animal.addBasket(new Apple());
+            }
+
         } else {
             System.out.println("A faire robot buy");
-            throw new NotImplementedException();
         }
     }
 
-    public void play() throws NotImplementedException {
+    /**
+     * Fait jouer le tamagotchi
+     */
+    public void play() {
         if (animal != null) {
             int temps = 10 + random.nextInt(6);
             attente = temps + ";Jeu;play";
         } else {
             System.out.println("A faire robot eat");
-            throw new NotImplementedException();
         }
     }
 
+    /**
+     * Arrête le jeu
+     */
     public void stopGame() {
         flagStop.set(true);
+    }
+
+    /**
+     * Démarre le jeu
+     */
+    public void startGame() {
+        flagStop.set(false);
+        attente = null;
+
+        // Moteur de jeu
+        Thread jeu = new Thread(new Jeu(flagStop, flagWait, this));
+        jeu.start();
     }
 }

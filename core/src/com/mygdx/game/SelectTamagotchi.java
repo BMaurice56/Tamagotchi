@@ -180,10 +180,6 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // Efface l'écran
-                Gdx.gl.glClearColor(0, 0, 0, 1);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
                 try {
                     new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, null);
                 } catch (InterruptedException e) {

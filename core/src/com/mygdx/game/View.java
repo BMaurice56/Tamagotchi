@@ -56,6 +56,9 @@ public class View implements Screen {
 
     /**
      * Constructeur
+     *
+     * @param controller Controller de jeu
+     * @param tamagotchi Tamagotchi
      */
     public View(Controller controller, Tamagotchi tamagotchi) {
         this.tamagotchi = tamagotchi;
@@ -283,6 +286,7 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 stage.clear();
                 stage.addActor(settingsTable);
+                controller.stopGame(); // stop le jeu
                 return true;
             }
         });
@@ -304,6 +308,7 @@ public class View implements Screen {
                         putTable(room4Table);
                         break;
                 }
+                controller.startGame(); // Reprend le jeu
                 return true;
             }
         });
@@ -311,7 +316,6 @@ public class View implements Screen {
         home.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.stopGame();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
                 return true;
             }
@@ -459,7 +463,7 @@ public class View implements Screen {
      * @param amount Montant voulu
      * @throws IllegalArgumentException Si label inconnu
      */
-    public void setAmountLabel(String label, int amount) throws IllegalArgumentException {
+    public void setAmountLabel(String label, int amount) {
         switch (label) {
             case "money":
                 moneyLabel.setText(String.valueOf(amount));
@@ -475,8 +479,6 @@ public class View implements Screen {
                 extraFoodLabel.setText(String.valueOf(amount));
                 break;
 
-            default:
-                throw new IllegalArgumentException("Nom de label inconnu");
         }
     }
 
@@ -487,43 +489,38 @@ public class View implements Screen {
      * @param amount      niveau voulu (0 <= amount <= 1000)
      * @throws IllegalArgumentException Si barre de progression inconnue
      */
-    public void setAmountProgressBar(String progressBar, float amount) throws IllegalArgumentException {
-        if (amount < 0 || amount > 1000) {
-            throw new IllegalArgumentException("Montant en dehors des bornes");
-        }
+    public void setAmountProgressBar(String progressBar, float amount) {
+        if (amount >= 0 || amount <= 1000) {
+            switch (progressBar) {
+                case "life":
+                case "battery":
+                    progressBar1.setValue(amount);
+                    break;
 
-        switch (progressBar) {
-            case "life":
-            case "battery":
-                progressBar1.setValue(amount);
-                break;
-
-            case "food":
-            case "tank":
-                progressBar2.setValue(amount);
-                break;
+                case "food":
+                case "tank":
+                    progressBar2.setValue(amount);
+                    break;
 
 
-            case "sleep":
-            case "durability":
-                progressBar3.setValue(amount);
-                break;
+                case "sleep":
+                case "durability":
+                    progressBar3.setValue(amount);
+                    break;
 
-            case "wash":
-            case "maintenance":
-                progressBar4.setValue(amount);
-                break;
+                case "wash":
+                case "maintenance":
+                    progressBar4.setValue(amount);
+                    break;
 
-            case "happy":
-                progressBar5.setValue(amount);
-                break;
+                case "happy":
+                    progressBar5.setValue(amount);
+                    break;
 
-            case "waiting":
-                waitingBar.setValue(amount);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Nom de barre de progression inconnu");
+                case "waiting":
+                    waitingBar.setValue(amount);
+                    break;
+            }
         }
     }
 
@@ -679,14 +676,15 @@ public class View implements Screen {
     }
 
     /**
-     *Modifie l'affichage pour permettre l'attente de l'action en cours
+     * Modifie l'affichage pour permettre l'attente de l'action en cours
      *
      * @param visibility boolean Modifie l'affichage
      */
     public void changeVisibilityWaitingBar(boolean visibility) {
-
+        // Ajoute la barre à l'affichage
         stage.addActor(waitingBar);
 
+        // Enlève les éléments inutiles de l'interface
         leftArrow.setVisible(visibility);
         rightArrow.setVisible(visibility);
         settings.setVisible(visibility);
@@ -700,8 +698,10 @@ public class View implements Screen {
 
         tamagotchiImage.setVisible(visibility);
 
+        // Rend la barre visible
         waitingBar.setVisible(!visibility);
 
+        // Si on remet l'affichage, il faut remettre la bonne table
         if (visibility) {
             switch (screen) {
                 case (1):
@@ -719,7 +719,7 @@ public class View implements Screen {
 
                 case (4):
                     rightArrow.setVisible(false);
-                    putTable(room3Table);
+                    putTable(room4Table);
                     break;
             }
 

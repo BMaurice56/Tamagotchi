@@ -179,21 +179,18 @@ public abstract class Animal extends Tamagotchi {
      * @param food apple or golden apple
      *             modifie : foods, bonheur
      */
-    public void manger(String food) throws InterruptedException {
+    public void eat(String food) {
         for (int i = 0; i < getBasket().size(); i++) { //parcourt l'attribut panier
 
             Food food1 = getBasket().get(i); //el actu
 
             if (food.equals(food1.getName())) { //quand trouver
-
-                removePanier(i); //on supprime l'élément dans la liste
-                food += food1.getPoint();
-
-                TimeUnit.SECONDS.sleep(5);
-
+                this.food += food1.getPoint();
                 if (food.equals("GoldenApple")) {
                     happiness += 75;
                 }
+                removePanier(i); //on supprime l'élément dans la liste
+
                 check();
 
                 return;

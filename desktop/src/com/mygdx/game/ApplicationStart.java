@@ -8,7 +8,7 @@ public class ApplicationStart {
     public static void main(String[] arg) {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setForegroundFPS(30);
+        config.setForegroundFPS(60);
         config.setTitle("Tamagotchi");
         config.setWindowedMode(900, 900);
 

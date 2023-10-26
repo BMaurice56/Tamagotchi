@@ -21,7 +21,7 @@ public class Test {
         PL.buyGoldenApple();
 
         System.out.println("panier "+PL.getBasket());
-        PL.manger("GoldenApple");
+        PL.eat("GoldenApple");
         System.out.println("panier "+PL.getBasket());
 
         System.out.println("\n");
