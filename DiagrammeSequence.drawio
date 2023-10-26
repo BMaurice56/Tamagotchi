@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:13:59.783Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="Ys-90O2RHR1j47PsVQnO" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:14:38.580Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="cpy9LA5PJcFSa5PWaOA1" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="2284" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -156,7 +156,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BjoWhivaikeUuKNBFJ7F" name="Page-2">
-    <mxGraphModel dx="478" dy="249" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="819" dy="427" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -302,8 +302,8 @@
             <mxPoint x="515" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="39_W7SnpCq-yl0j5I8Qd-13" value="demande sauvegarde" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="340" y="377.5" width="150" height="30" as="geometry" />
+        <mxCell id="39_W7SnpCq-yl0j5I8Qd-13" value="action quitter" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="339" y="390" width="150" height="30" as="geometry" />
         </mxCell>
         <mxCell id="39_W7SnpCq-yl0j5I8Qd-14" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="160" relative="1" as="geometry">
