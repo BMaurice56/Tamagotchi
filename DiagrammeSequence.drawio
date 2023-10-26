@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:45:07.008Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="vX06nX-bgWv8dzAJwcy1" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:46:36.311Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="zxiXqL3XGMU8yqCW3rN2" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="1836" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -126,24 +126,13 @@
           <mxGeometry x="-175" y="450" width="10" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0IzDjVCyeIBFpmfxmG8a-7" value="instencie nouvelle partie" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;exitX=0.933;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
-          <mxGeometry x="-0.8182" y="15" relative="1" as="geometry">
+          <mxGeometry x="-0.7455" y="15" relative="1" as="geometry">
             <mxPoint x="-165.0000000000001" y="464.98" as="sourcePoint" />
             <Array as="points">
               <mxPoint x="-40" y="464.98" />
               <mxPoint x="-40" y="494.98" />
             </Array>
             <mxPoint x="-160" y="494.98" as="targetPoint" />
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="0IzDjVCyeIBFpmfxmG8a-8" value="&lt;div&gt;stop &lt;br&gt;&lt;/div&gt;&lt;div&gt;le jeu&lt;br&gt;&lt;/div&gt;" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;entryX=1.1;entryY=0.876;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1">
-          <mxGeometry x="-0.462" y="10" relative="1" as="geometry">
-            <mxPoint x="-165" y="284.6500000000001" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="-50" y="284.6500000000001" />
-              <mxPoint x="-50" y="305.6500000000001" />
-            </Array>
-            <mxPoint x="-163.32999999999993" y="305.32000000000016" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
@@ -203,7 +192,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="0IzDjVCyeIBFpmfxmG8a-24" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-380" y="440" width="10" height="80" as="geometry" />
+          <mxGeometry x="-380" y="440" width="10" height="100" as="geometry" />
         </mxCell>
         <mxCell id="0IzDjVCyeIBFpmfxmG8a-26" value="demande lancement de partie" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-330" y="434.66" width="110" height="30" as="geometry" />
@@ -214,11 +203,20 @@
             <mxPoint x="-180" y="464.66" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="OiuwMQJCsC47Ue4c3d7c-1" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-175" y="509.31" as="sourcePoint" />
+            <mxPoint x="-360" y="509.31" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OiuwMQJCsC47Ue4c3d7c-2" value="signal nouvelle partie" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-360" y="479.31" width="180" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="BjoWhivaikeUuKNBFJ7F" name="Page-2">
-    <mxGraphModel dx="1195" dy="623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1191" dy="623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
