@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:43:24.194Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="3I4WThpk-srTSsXwsPJ_" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:45:07.008Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="vX06nX-bgWv8dzAJwcy1" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="1836" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -123,16 +123,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="0IzDjVCyeIBFpmfxmG8a-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-175" y="410" width="10" height="80" as="geometry" />
+          <mxGeometry x="-175" y="450" width="10" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="0IzDjVCyeIBFpmfxmG8a-7" value="sauvegarde" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;exitX=0.933;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
-          <mxGeometry x="-0.462" y="10" relative="1" as="geometry">
-            <mxPoint x="-165.0000000000001" y="440" as="sourcePoint" />
+        <mxCell id="0IzDjVCyeIBFpmfxmG8a-7" value="instencie nouvelle partie" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;exitX=0.933;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry x="-0.8182" y="15" relative="1" as="geometry">
+            <mxPoint x="-165.0000000000001" y="464.98" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="-40" y="440" />
-              <mxPoint x="-40" y="470" />
+              <mxPoint x="-40" y="464.98" />
+              <mxPoint x="-40" y="494.98" />
             </Array>
-            <mxPoint x="-160" y="470" as="targetPoint" />
+            <mxPoint x="-160" y="494.98" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
