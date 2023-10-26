@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T16:08:43.295Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="EKphxSIF5qpNqPzxmm3Q" version="22.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-10-26T16:09:03.773Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="_qFpISisQFO6slaV-GAk" version="22.0.8" type="github" pages="3">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
     <mxGraphModel dx="2284" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -480,18 +480,6 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="385" y="430" as="sourcePoint" />
             <mxPoint x="580" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="oDE1mVF2loVCQig9XbU--31" value="sauvegarde" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;entryX=1.1;entryY=0.876;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.933;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
-          <mxGeometry x="-0.462" y="10" relative="1" as="geometry">
-            <mxPoint x="594.9999999999999" y="439.99999999999994" as="sourcePoint" />
-            <Array as="points">
-              <mxPoint x="717" y="440.21" />
-              <mxPoint x="717" y="480.21" />
-              <mxPoint x="665" y="480.21" />
-            </Array>
-            <mxPoint x="596.67" y="480.67" as="targetPoint" />
-            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="oDE1mVF2loVCQig9XbU--32" value="demande sauvegarde" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
