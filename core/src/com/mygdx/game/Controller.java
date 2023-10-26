@@ -187,7 +187,7 @@ public class Controller {
      */
     public void vieTamagotchi() {
         if (animal != null) {
-            animal.setFood(animal.getFood() - 5);
+            animal.setFood(animal.getFood() - 4);
             animal.setHygiene(animal.getHygiene() - 4);
             animal.setSleep(animal.getSleep() - 2);
             animal.setHappiness(animal.getHappiness() - 3);
@@ -204,9 +204,13 @@ public class Controller {
                 animal.setLife(animal.getLife() + 10);
             }
 
+            if (animal.getLife() == 0) {
+                Gdx.app.exit();
+            }
+
         } else {
-            robot.setTank(robot.getTank() - 10);
-            robot.setMaintenance(robot.getMaintenance() - 5);
+            robot.setTank(robot.getTank() - 4);
+            robot.setMaintenance(robot.getMaintenance() - 4);
             robot.setDurability(robot.getDurability() - 2);
             robot.setHappiness(robot.getHappiness() - 3);
 
@@ -220,6 +224,10 @@ public class Controller {
 
             if (robot.getTank() >= 600) {
                 robot.setBattery(robot.getBattery() + 10);
+            }
+
+            if (robot.getBattery() == 0) {
+                Gdx.app.exit();
             }
         }
 
