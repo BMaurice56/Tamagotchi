@@ -76,7 +76,7 @@ public class Modele {
     String emplacement = "core/src/com/mygdx/game/jsonFile";
 
     // Drapeau qui gère le thread de jeu
-    private final AtomicBoolean flagStop = new AtomicBoolean(), flagWait = new AtomicBoolean(true);
+    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);
 
     // Tamagotchi animale
     private Animal animal;
