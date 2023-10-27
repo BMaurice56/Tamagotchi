@@ -5,11 +5,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Robot extends Tamagotchi {
 
-    private int battery;
-    private int maintenance;
-    private int tank;
-    private int durability;
-    private int happiness;
+    private float battery;
+    private float maintenance;
+    private float tank;
+    private float durability;
+    private float happiness;
 
     Random random;
 
@@ -24,43 +24,43 @@ public class Robot extends Tamagotchi {
         random = new Random();
     }
 
-    public int getBattery() {
+    public float getBattery() {
         return battery;
     }
 
-    public void setBattery(int battery) {
+    public void setBattery(float battery) {
         this.battery = battery;
     }
 
-    public int getMaintenance() {
+    public float getMaintenance() {
         return maintenance;
     }
 
-    public void setMaintenance(int maintenance) {
+    public void setMaintenance(float maintenance) {
         this.maintenance = maintenance;
     }
 
-    public int getTank() {
+    public float getTank() {
         return tank;
     }
 
-    public void setTank(int tank) {
+    public void setTank(float tank) {
         this.tank = tank;
     }
 
-    public int getDurability() {
+    public float getDurability() {
         return durability;
     }
 
-    public void setDurability(int durability) {
+    public void setDurability(float durability) {
         this.durability = durability;
     }
 
-    public int getHappiness() {
+    public float getHappiness() {
         return happiness;
     }
 
-    public void setHappiness(int happiness) {
+    public void setHappiness(float happiness) {
         this.happiness = happiness;
     }
 

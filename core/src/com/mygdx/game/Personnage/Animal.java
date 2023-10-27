@@ -5,11 +5,11 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Animal extends Tamagotchi {
 
-    private int life;
-    private int food;
-    private int hygiene;
-    private int sleep;
-    private int happiness;
+    private float life;
+    private float food;
+    private float hygiene;
+    private float sleep;
+    private float happiness;
 
     private final Random random = new Random();
 
@@ -28,47 +28,47 @@ public abstract class Animal extends Tamagotchi {
         happiness = 1000;
     }
 
-    public int getLife() {
+    public float getLife() {
         return life;
     }
 
-    public void setLife(int life) {
+    public void setLife(float life) {
         this.life = life;
         check();
     }
 
-    public int getFood() {
+    public float getFood() {
         return food;
     }
 
-    public void setFood(int food) {
+    public void setFood(float food) {
         this.food = food;
         check();
     }
 
-    public int getHygiene() {
+    public float getHygiene() {
         return hygiene;
     }
 
-    public void setHygiene(int hygiene) {
+    public void setHygiene(float hygiene) {
         this.hygiene = hygiene;
         check();
     }
 
-    public int getSleep() {
+    public float getSleep() {
         return sleep;
     }
 
-    public void setSleep(int sleep) {
+    public void setSleep(float sleep) {
         this.sleep = sleep;
         check();
     }
 
-    public int getHappiness() {
+    public float getHappiness() {
         return happiness;
     }
 
-    public void setHappiness(int happiness) {
+    public void setHappiness(float happiness) {
         this.happiness = happiness;
         check();
     }
