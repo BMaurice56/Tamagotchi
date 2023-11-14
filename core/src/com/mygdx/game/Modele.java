@@ -73,7 +73,9 @@ public class Modele {
     FileHandle soundFile;
 
     // Emplacement des éléments
-    String emplacement = "core/src/com/mygdx/game/jsonFile";
+    String pathSettingsFile = "core/src/com/mygdx/game/jsonFile/";
+
+    String settingsFileName = "settings.json";
 
     // Drapeau qui gère le thread de jeu
     private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);
@@ -97,22 +99,22 @@ public class Modele {
      * Constructeur de gestion du son (menu)
      */
     public Modele() {
+        // Lecteur de fichier
+        JsonReader jsonReader = new JsonReader();
+
+        // Permet de lire et d'interagir avec le fichier
+        soundFile = new FileHandle(pathSettingsFile + settingsFileName);
+
+        // Lecture du fichier de paramètre json
+        soundBaseReader = jsonReader.parse(soundFile);
     }
 
     /**
      * Constructeur de jeu
      */
     public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save, Controller controller) {
+        this();
         this.controller = controller;
-
-        // Lecteur de fichier
-        JsonReader jsonReader = new JsonReader();
-
-        // Permet de lire et d'interagir avec le fichier
-        soundFile = new FileHandle(emplacement + "settings.json");
-
-        // Lecture du fichier de paramètre json
-        soundBaseReader = jsonReader.parse(soundFile);
 
         if (save != null) {
             System.out.println("Save à faire !");
