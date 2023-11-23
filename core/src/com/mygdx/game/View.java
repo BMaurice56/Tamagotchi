@@ -38,9 +38,12 @@ public class View implements Screen {
     private float screenWidth, screenHeight;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table room1Table, room2Table, room3Table, room4Table, settingsTable;
+    private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable;
 
-    private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, tamagotchiImage;
+    private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage,
+            extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyMenu;
+
+    private final ImageButton tamagotchiImage;
 
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
@@ -49,9 +52,11 @@ public class View implements Screen {
 
     private int screen = 3, widthProgressbar, heightProgressBar;
 
-    private Label moneyLabel, foodLabel, extraFoodLabel;
+    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood;
 
     private final Controller controller;
+
+    private boolean eatOrBuy = false;
 
 
     /**
@@ -167,8 +172,14 @@ public class View implements Screen {
         image5 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image5"), 225, 225);
 
         foodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("foodImage"), 225, 225);
+        buyEatFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("foodImage"), 225, 225);
         extraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
+        buyEatExtraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
         moneyImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("moneyImage"), 225, 225);
+
+        quitBuyMenu = new BoutonImage(new MultiSkin("image"), "images/croix.png", 225, 225);
+
+        home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
 
         sleep = new TextButton("Dormir  ", new MultiSkin("text"));
         work = new TextButton("Travailler", new MultiSkin("text"));
@@ -178,7 +189,7 @@ public class View implements Screen {
         play = new TextButton("Jouer", new MultiSkin("text"));
         resume = new TextButton("Reprise", new MultiSkin("text"));
         settings2 = new TextButton("Settings", new MultiSkin("text"));
-        home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
+
     }
 
     /**
@@ -250,6 +261,12 @@ public class View implements Screen {
 
         room1Table = new Table();
         room1Table.add(play).row();
+
+        foodTable = new Table();
+        foodTable.add(whichFood);
+        foodTable.add(quitBuyMenu).width(50).height(50).row();
+        foodTable.add(buyEatFoodImage).width(100).height(100).left();
+        foodTable.add(buyEatExtraFoodImage).width(100).height(100).left().row();
     }
 
     /**
@@ -259,6 +276,11 @@ public class View implements Screen {
         moneyLabel = new Label("0", new MultiSkin("label"));
         foodLabel = new Label("0", new MultiSkin("label"));
         extraFoodLabel = new Label("0", new MultiSkin("label"));
+
+        action = new Label("0", new MultiSkin("label"));
+        action.setVisible(false);
+
+        whichFood = new Label("Quelle nourriture voulez-vous ?", new MultiSkin("label"));
     }
 
     /**
@@ -349,7 +371,10 @@ public class View implements Screen {
         eat.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.eat();
+                putTable(foodTable);
+                // Empêche le changement d'écran lord du choix de nourriture
+                leftArrow.setVisible(false);
+                rightArrow.setVisible(false);
                 return true;
             }
         });
@@ -357,7 +382,11 @@ public class View implements Screen {
         buy.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.buy();
+                eatOrBuy = true;
+                putTable(foodTable);
+                // Empêche le changement d'écran lord du choix de nourriture
+                leftArrow.setVisible(false);
+                rightArrow.setVisible(false);
                 return true;
             }
         });
@@ -366,6 +395,59 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 controller.play();
+                return true;
+            }
+        });
+
+        buyEatFoodImage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
+                    if (eatOrBuy) {
+                        controller.buy("Oil");
+                    } else {
+                        controller.eat("Oil");
+                    }
+                } else {
+                    if (eatOrBuy) {
+                        controller.buy("Apple");
+                    } else {
+                        controller.eat("Apple");
+                    }
+                }
+
+                return true;
+            }
+        });
+
+        buyEatExtraFoodImage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
+                    if (eatOrBuy) {
+                        controller.buy("ExtraOil");
+                    } else {
+                        controller.eat("ExtraOil");
+                    }
+                } else {
+                    if (eatOrBuy) {
+                        controller.buy("GoldenApple");
+                    } else {
+                        controller.eat("GoldenApple");
+                    }
+                }
+
+                return true;
+            }
+        });
+
+        quitBuyMenu.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                eatOrBuy = false;
+                putTable(room2Table);
+                leftArrow.setVisible(true);
+                rightArrow.setVisible(true);
                 return true;
             }
         });
@@ -573,6 +655,7 @@ public class View implements Screen {
         room3Table.setPosition(screenWidth - 200, 30);
         room4Table.setPosition(screenWidth - 150, 30);
 
+        foodTable.setPosition(screenWidth / 2, screenHeight / 2);
 
         // Placement des images et des labels
         float X = 10;
@@ -597,7 +680,9 @@ public class View implements Screen {
         progressBar4.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
         progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
+        // Action du Tamagotchi
         waitingBar.setPosition(screenWidth / 2 - (float) widthProgressbar / 2, screenHeight / 2 - (float) heightProgressBar / 2);
+        action.setPosition(0, screenHeight / 2 + (float) heightProgressBar / 2);
 
         moneyLabel.setPosition(X + shiftX, Y - shiftY * 6);
         foodLabel.setPosition(X + shiftX, Y - shiftY * 7);
@@ -680,9 +765,13 @@ public class View implements Screen {
      *
      * @param visibility boolean Modifie l'affichage
      */
-    public void actionTamagotchiVisibility(boolean visibility) {
-        // Ajoute la barre à l'affichage
+    public void actionTamagotchiVisibility(boolean visibility, String act) {
+        action.setText(act + " en cours");
+        action.setX(screenWidth / 2 - action.getMinWidth() / 2);
+
+        // Ajoute la barre et le label à l'affichage
         stage.addActor(waitingBar);
+        stage.addActor(action);
 
         // Enlève les éléments inutiles de l'interface
         leftArrow.setVisible(visibility);
@@ -696,8 +785,11 @@ public class View implements Screen {
         buy.setVisible(visibility);
         play.setVisible(visibility);
 
+        foodTable.setVisible(visibility);
+
         // Rend la barre visible
         waitingBar.setVisible(!visibility);
+        action.setVisible(!visibility);
 
         // Si on remet l'affichage, il faut remettre la bonne table
         if (visibility) {
@@ -708,7 +800,10 @@ public class View implements Screen {
                     break;
 
                 case (2):
-                    putTable(room2Table);
+                    putTable(foodTable);
+                    // Empêche le changement d'écran lord du choix de nourriture
+                    leftArrow.setVisible(false);
+                    rightArrow.setVisible(false);
                     break;
 
                 case (3):

@@ -77,8 +77,8 @@ public class Controller {
      *
      * @param visibility true ou false selon où on en est dans l'action
      */
-    public void actionEnCourTamagotchi(boolean visibility) {
-        view.actionTamagotchiVisibility(visibility);
+    public void actionEnCourTamagotchi(boolean visibility, String action) {
+        view.actionTamagotchiVisibility(visibility, action);
     }
 
     /**
@@ -105,15 +105,17 @@ public class Controller {
     /**
      * Fait manger le tamagotchi
      */
-    public void eat() {
-        modele.eat();
+    public void eat(String food) {
+        if (modele.getTamagotchi().getNumberOfFood(food) != 0) {
+            modele.eat(food);
+        }
     }
 
     /**
      * Permet d'acheter de la nourriture
      */
-    public void buy() {
-        modele.buy();
+    public void buy(String food) {
+        modele.buy(food);
     }
 
     /**

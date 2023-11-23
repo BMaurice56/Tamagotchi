@@ -1,7 +1,6 @@
 package com.mygdx.game.Personnage;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public abstract class Animal extends Tamagotchi {
 
@@ -19,8 +18,8 @@ public abstract class Animal extends Tamagotchi {
      *
      * @param difficulty Niveau de difficulty
      */
-    public Animal(int difficulty) {
-        super(difficulty);
+    public Animal(int difficulty, String nom) {
+        super(difficulty, nom);
         life = 1000;
         food = 1000;
         hygiene = 1000;
@@ -32,45 +31,70 @@ public abstract class Animal extends Tamagotchi {
         return life;
     }
 
-    public void setLife(float life) {
-        this.life = life;
-        check();
+    public void setLife(float l) {
+        life = l;
+
+        if (life < 0) {
+            life = 0;
+        } else if (life > 1000) {
+            life = 1000;
+        }
     }
 
     public float getFood() {
         return food;
     }
 
-    public void setFood(float food) {
-        this.food = food;
-        check();
+    public void setFood(float f) {
+        food = f;
+
+        if (food < 0) {
+            food = 0;
+        } else if (food > 1000) {
+            food = 1000;
+        }
     }
 
     public float getHygiene() {
         return hygiene;
     }
 
-    public void setHygiene(float hygiene) {
-        this.hygiene = hygiene;
-        check();
+    public void setHygiene(float h) {
+        hygiene = h;
+
+        if (hygiene < 0) {
+            hygiene = 0;
+        } else if (hygiene > 1000) {
+            hygiene = 1000;
+        }
     }
 
     public float getSleep() {
         return sleep;
     }
 
-    public void setSleep(float sleep) {
-        this.sleep = sleep;
-        check();
+    public void setSleep(float s) {
+        sleep = s;
+
+        if (sleep < 0) {
+            sleep = 0;
+        } else if (sleep > 1000) {
+            sleep = 1000;
+        }
     }
 
     public float getHappiness() {
         return happiness;
     }
 
-    public void setHappiness(float happiness) {
-        this.happiness = happiness;
-        check();
+    public void setHappiness(float h) {
+        happiness = h;
+
+        if (happiness < 0) {
+            happiness = 0;
+        } else if (happiness > 1000) {
+            happiness = 1000;
+        }
     }
 
     public int getNumberApple() {
@@ -97,81 +121,18 @@ public abstract class Animal extends Tamagotchi {
         return number;
     }
 
-    public void Afficher_Attribut() {
-        System.out.println("vie : " + life + "\nfood : " + food + "\nhygiene: " + hygiene + "\nsleep: " + sleep + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
-    }
-
-    /**
-     * Méthode qui vérifie si les attributs sont >= 0 et <= 1000
-     */
-    public void check() {
-        if (life < 0) {
-            life = 0;
-        }
-        if (food < 0) {
-            food = 0;
-        }
-        if (hygiene < 0) {
-            hygiene = 0;
-        }
-        if (sleep < 0) {
-            sleep = 0;
-        }
-        if (happiness < 0) {
-            happiness = 0;
-        }
-        if (life > 1000) {
-            life = 1000;
-        }
-        if (food > 1000) {
-            food = 1000;
-        }
-        if (hygiene > 1000) {
-            hygiene = 1000;
-        }
-        if (sleep > 1000) {
-            sleep = 1000;
-        }
-        if (happiness > 1000) {
-            happiness = 1000;
-        }
-    }
-
-
     /**
      * Travaille pendant 12 secondes pour gagner de l'argent
      * Modifie : wallet, bonheur, hygiene, sleep
      */
     public void work() {
         setWallet(getWallet() + 50);
-        happiness -= getDifficulty() * 100;
-        hygiene -= getDifficulty() * 43;
-        sleep -= getDifficulty() * 60;
-        check();
+
+        setHappiness(getHappiness() - getDifficulty() * 100);
+        setHygiene(getHygiene() - getDifficulty() * 43);
+        setSleep(getSleep() - getDifficulty() * 60);
     }
 
-
-    /**
-     * buy an apple
-     */
-    public void buyApple() {
-        Food f = new Apple();
-        if (getWallet() >= f.getPrice()) {
-            addBasket(f);
-            setWallet(getWallet() - f.getPrice());
-        }
-    }
-
-    /**
-     * buy a golden apple
-     */
-    public void buyGoldenApple() {
-        Food f = new GoldenApple();
-        if (getWallet() >= f.getPrice()) {
-            addBasket(f);
-            setWallet(getWallet() - f.getPrice());
-        }
-    }
 
     /**
      * Supprime food du panier et y ajoute la valeur de point associer
@@ -185,13 +146,11 @@ public abstract class Animal extends Tamagotchi {
             Food food1 = getBasket().get(i); //el actu
 
             if (food.equals(food1.getName())) { //quand trouver
-                this.food += food1.getPoint();
+                setFood(getFood() + food1.getPoint());
                 if (food.equals("GoldenApple")) {
-                    happiness += 75;
+                    setHappiness(getHappiness() + 75);
                 }
                 removePanier(i); //on supprime l'élément dans la liste
-
-                check();
 
                 return;
             }
@@ -205,13 +164,11 @@ public abstract class Animal extends Tamagotchi {
      * modifie : sleep
      */
     public void sleep() {
-        if (sleep <= 200) {
-            setSleep(900 - getDifficulty() * 100); //som sommeil sera 800 ou 700  ou 600  en fonction de la difficulté
+        if (getSleep() <= 200) {
+            setSleep(900 - getDifficulty() * 100); //som sommeil sera 800 ou 700 ou 600  en fonction de la difficulté
         } else {
             setSleep(1000); // sinon son sommeil va au max
         }
-
-        check();
     }
 
     /**
@@ -220,15 +177,14 @@ public abstract class Animal extends Tamagotchi {
      * Modifie : hygiene, bonheur
      */
     public void wash() {
-        happiness += 100;
+        setHappiness(getHappiness() + 100);
 
-        if (hygiene <= 200) {
+        if (getHygiene() <= 200) {
             setHygiene(900 - getDifficulty() * 85);
         } else {
             setHygiene(1000);
         }
 
-        check();
     }
 
     /**
@@ -237,16 +193,34 @@ public abstract class Animal extends Tamagotchi {
      * Modifie : bonheur, hygiene
      */
     public void play() {
-        hygiene -= random.nextInt(75, 200);
+        setHygiene(getHygiene() - random.nextInt(75, 200));
 
-        if (100 <= happiness && happiness <= 200) {
+        if (100 <= getHappiness() && getHappiness() <= 200) {
             setHappiness(900 - getDifficulty() * 100); //som bonheur sera 800 ou 700  ou 600  en fonction de la difficulté
-        } else if (happiness < 100) {
+        } else if (getHappiness() < 100) {
             setHappiness(750 - getDifficulty() * 100); //som bonheur sera 600 ou 500  ou 400  en fonction de la difficulté
         } else {
             setHappiness(1000); // sinon son bonheur va au max
         }
+    }
 
-        check();
+    /**
+     * buy an apple
+     */
+    public void buyApple() {
+        if (getWallet() >= Apple.price) {
+            addBasket(new Apple());
+            setWallet(getWallet() - Apple.price);
+        }
+    }
+
+    /**
+     * buy a golden apple
+     */
+    public void buyGoldenApple() {
+        if (getWallet() >= GoldenApple.price) {
+            addBasket(new GoldenApple());
+            setWallet(getWallet() - GoldenApple.price);
+        }
     }
 }

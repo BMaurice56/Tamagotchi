@@ -1,7 +1,6 @@
 package com.mygdx.game.Personnage;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Robot extends Tamagotchi {
 
@@ -13,8 +12,8 @@ public class Robot extends Tamagotchi {
 
     Random random;
 
-    public Robot(int difficulty) {
-        super(difficulty);
+    public Robot(int difficulty, String nom) {
+        super(difficulty, nom);
         battery = 1000;
         tank = 1000;
         software = 1000;
@@ -28,40 +27,70 @@ public class Robot extends Tamagotchi {
         return battery;
     }
 
-    public void setBattery(float battery) {
-        this.battery = battery;
+    public void setBattery(float b) {
+        battery = b;
+
+        if (battery < 0) {
+            battery = 0;
+        } else if (battery > 1000) {
+            battery = 1000;
+        }
     }
 
     public float getSoftware() {
         return software;
     }
 
-    public void setSoftware(float software) {
-        this.software = software;
+    public void setSoftware(float s) {
+        software = s;
+
+        if (software < 0) {
+            software = 0;
+        } else if (software > 1000) {
+            software = 1000;
+        }
     }
 
     public float getTank() {
         return tank;
     }
 
-    public void setTank(float tank) {
-        this.tank = tank;
+    public void setTank(float t) {
+        tank = t;
+
+        if (tank < 0) {
+            tank = 0;
+        } else if (tank > 1000) {
+            tank = 1000;
+        }
     }
 
     public float getDurability() {
         return durability;
     }
 
-    public void setDurability(float durability) {
-        this.durability = durability;
+    public void setDurability(float d) {
+        durability = d;
+
+        if (durability < 0) {
+            durability = 0;
+        } else if (durability > 1000) {
+            durability = 1000;
+        }
     }
 
     public float getHappiness() {
         return happiness;
     }
 
-    public void setHappiness(float happiness) {
-        this.happiness = happiness;
+    public void setHappiness(float h) {
+        happiness = h;
+
+        if (happiness < 0) {
+            happiness = 0;
+        } else if (happiness > 1000) {
+            happiness = 1000;
+        }
     }
 
     public int getNumberOil() {
@@ -88,79 +117,44 @@ public class Robot extends Tamagotchi {
         return number;
     }
 
-    public void check() {
-        if (battery < 0) {
-            battery = 0;
-        }
-        if (tank < 0) {
-            tank = 0;
-        }
-        if (software < 0) {
-            software = 0;
-        }
-        if (durability < 0) {
-            durability = 0;
-        }
-        if (happiness < 0) {
-            happiness = 0;
-        }
-        if (tank > 1000) {
-            tank = 1000;
-        }
-    }
 
-    public void maintenance() throws InterruptedException {
-
-        int interval = random.nextInt(4);
-
-        TimeUnit.SECONDS.sleep(15 + interval);
-
-        if (durability <= 200) {
+    public void maintenance() {
+        if (getDurability() <= 200) {
             setDurability(900 - getDifficulty() * 100);
         } else {
             setDurability(1000);
         }
     }
 
-    public void updating() throws InterruptedException {
+    public void updating() {
 
-        int interval = random.nextInt(6);
+        setHappiness(getHappiness() + 100);
 
-        TimeUnit.SECONDS.sleep(12 + interval);
-
-        happiness += 100;
-
-        if (happiness > 1000) {
+        if (getHappiness() > 1000) {
             setHappiness(1000);
         }
 
-        if (software <= 200) {
+        if (getSoftware() <= 200) {
             setSoftware(900 - getDifficulty() * 85);
         } else {
             setSoftware(1000);
         }
     }
 
-    public void dance() throws InterruptedException {
+    public void dance() {
 
-        int interval = random.nextInt(6);
+        setSoftware(getSoftware() - random.nextInt(75, 200));
 
-        TimeUnit.SECONDS.sleep(10 + interval);
-
-        software -= random.nextInt(75, 200);
-
-        check();
-
-        if (100 <= happiness && happiness <= 200) {
+        if (100 <= getHappiness() && getHappiness() <= 200) {
             setHappiness(900 - getDifficulty() * 100);
-        } else if (happiness < 100) {
+        } else if (getHappiness() < 100) {
             setHappiness(750 - getDifficulty() * 100);
         } else {
             setHappiness(1000);
         }
     }
 
-    public void fillTank(String tank) throws InterruptedException {
+    public void fillTank(String tank) {
 
         for (int i = 0; i < getBasket().size(); i++) {
 
@@ -168,51 +162,35 @@ public class Robot extends Tamagotchi {
 
             if (tank.equals(food1.getName())) {
                 removePanier(i);
-                tank += food1.getPoint();
 
-                TimeUnit.SECONDS.sleep(5);
+                setTank(getTank() + food1.getPoint());
 
                 if (tank.equals("SuperExtraOil")) {
-                    happiness += 75;
+                    setHappiness(getHappiness() + 75);
                 }
-                if (happiness > 1000) {
-                    setHappiness(1000);
-                }
-                check();
             }
         }
     }
 
-    //public void repair(){}
-
     public void work() {
         setWallet(getWallet() + 50);
-        happiness -= getHappiness() * 100;
-        software -= getSoftware() * 43;
-        durability -= getDurability() * 60;
 
-        check();
+        setHappiness(getHappiness() - getDifficulty() * 100);
+        setSoftware(getSoftware() - getDifficulty() * 43);
+        setDurability(getDurability() - getDifficulty() * 60);
     }
 
     public void buyOil() {
-
-        Food f = new Oil();
-        if (getWallet() >= f.getPrice()) {
-            addBasket(f);
-            setWallet(getWallet() - f.getPrice());
+        if (getWallet() >= Oil.price) {
+            addBasket(new Oil());
+            setWallet(getWallet() - Oil.price);
         }
     }
 
-    public void buySuperExtraOil() {
-
-        Food f = new ExtraOil();
-        if (getWallet() >= f.getPrice()) {
-            addBasket(f);
-            setWallet(getWallet() - f.getPrice());
+    public void buyExtraOil() {
+        if (getWallet() >= ExtraOil.price) {
+            addBasket(new ExtraOil());
+            setWallet(getWallet() - ExtraOil.price);
         }
-    }
-
-    public void Afficher_Attribut() {
-        System.out.println("vie : " + battery + "\nfood : " + tank + "\nhygiene: " + software + "\nsleep: " + durability + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
     }
 }

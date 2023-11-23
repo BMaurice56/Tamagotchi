@@ -8,9 +8,12 @@ public abstract class Tamagotchi {
 
     private final int difficulty;
 
-    public Tamagotchi(int difficulty) {
+    private final String name;
+
+    public Tamagotchi(int difficulty, String nom) {
         basket = new ArrayList<>();
         this.difficulty = difficulty;
+        name = nom;
     }
 
     public int getWallet() {
@@ -28,10 +31,28 @@ public abstract class Tamagotchi {
     public void addBasket(Food nourriture) {
         basket.add(nourriture);
     }
-    public void removePanier(int i){
-        basket.remove(i);}
+
+    public void removePanier(int i) {
+        basket.remove(i);
+    }
 
     public int getDifficulty() {
         return difficulty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumberOfFood(String food) {
+        int number = 0;
+
+        for (int i = 0; i<getBasket().size();i++) {
+            if (basket.get(i).getName().equals(food)){
+                number++;
+            }
+        }
+
+        return number;
     }
 }

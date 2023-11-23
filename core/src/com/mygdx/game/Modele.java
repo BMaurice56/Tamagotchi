@@ -136,19 +136,19 @@ public class Modele {
 
         switch (tamagotchiWished) {
             case (1):
-                animal = new Chat(difficulty);
+                animal = new Chat(difficulty, nomTamagotchi);
                 break;
 
             case (2):
-                animal = new Chien(difficulty);
+                animal = new Chien(difficulty, nomTamagotchi);
                 break;
 
             case (3):
-                animal = new Dinosaure(difficulty);
+                animal = new Dinosaure(difficulty, nomTamagotchi);
                 break;
 
             case (4):
-                robot = new Robot(difficulty);
+                robot = new Robot(difficulty, nomTamagotchi);
         }
     }
 
@@ -304,11 +304,11 @@ public class Modele {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    // Cache les éléments inutiles de l'interface
-                    controller.actionEnCourTamagotchi(false);
-
                     // Sépare les différentes valeurs
                     String[] values = attente.split(";");
+
+                    // Cache les éléments inutiles de l'interface
+                    controller.actionEnCourTamagotchi(false, values[1]);
 
                     // Temps d'attente
                     int time = Integer.parseInt(values[0]);
@@ -322,7 +322,7 @@ public class Modele {
                         controller.setAmountProgressBar("waiting", calculValueWaitingBar(time, System.currentTimeMillis(), temps));
                     }
                     // Reaffiche les éléments de l'interface
-                    controller.actionEnCourTamagotchi(true);
+                    controller.actionEnCourTamagotchi(true, "");
 
                     // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
                     switch (values[2]) {
@@ -335,18 +335,35 @@ public class Modele {
                             break;
 
                         case "sleep":
-                            animal.sleep();
+                            if (animal != null) {
+                                animal.sleep();
+                            } else {
+                                robot.maintenance();
+                            }
                             break;
 
                         case "wash":
-                            animal.wash();
+                            if (animal != null) {
+                                animal.wash();
+                            } else {
+                                robot.updating();
+                            }
                             break;
 
                         case "play":
-                            animal.play();
+                            if (animal != null) {
+                                animal.play();
+                            } else {
+                                robot.dance();
+                            }
                             break;
+
                         case "eat":
-                            animal.eat("Apple");
+                            if (animal != null) {
+                                animal.eat(values[3]);
+                            } else {
+                                robot.fillTank(values[3]);
+                            }
                             break;
 
                     }
@@ -391,29 +408,31 @@ public class Modele {
     /**
      * Fait manger le tamagotchi
      */
-    public void eat() {
-        if (animal != null) {
-            System.out.println("A faire animal eat");
-            attente = "5;Alimentation;eat";
-        } else {
-            System.out.println("A faire robot eat");
-        }
+    public void eat(String food) {
+        attente = "5;Alimentation;eat;" + food;
     }
+
 
     /**
      * Permet d'acheter de la nourriture
      */
-    public void buy() {
-        if (animal != null) {
-            System.out.println("A faire animal buy");
-            int amount = animal.getWallet();
-            if (amount >= Apple.price) {
-                animal.setWallet(amount - Apple.price);
-                animal.addBasket(new Apple());
-            }
+    public void buy(String food) {
+        switch (food) {
+            case "Apple":
+                animal.buyApple();
+                break;
 
-        } else {
-            System.out.println("A faire robot buy");
+            case "GoldenApple":
+                animal.buyGoldenApple();
+                break;
+
+            case "Oil":
+                robot.buyOil();
+                break;
+
+            case "ExtraOil":
+                robot.buyExtraOil();
+                break;
         }
     }
 
