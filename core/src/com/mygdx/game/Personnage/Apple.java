@@ -7,7 +7,7 @@ public class Apple extends Food {
     public static final int price = 20;
 
     public Apple(){
-        super("Apple",point,price);
+        super("Apple",point);
     }
 
 }

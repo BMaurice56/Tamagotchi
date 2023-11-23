@@ -24,7 +24,7 @@ public class Controller {
      * @param difficulty       Niveau de difficulté
      * @param save             Lancement d'une sauvegarde ou non
      */
-    public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) throws InterruptedException {
+    public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) {
         modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, this);
 
         view = new View(this, modele.getTamagotchi());

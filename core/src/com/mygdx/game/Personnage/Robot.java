@@ -10,7 +10,7 @@ public class Robot extends Tamagotchi {
     private float software;
     private float happiness;
 
-    Random random;
+    private final Random random;
 
     public Robot(int difficulty, String nom) {
         super(difficulty, nom);

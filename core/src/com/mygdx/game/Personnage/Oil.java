@@ -6,6 +6,6 @@ public class Oil extends Food {
     public static final int price = 20 ;
 
     public Oil() {
-        super("Oil", point, price);
+        super("Oil", point);
     }
 }

@@ -66,15 +66,15 @@ class Moteur implements Runnable {
 public class Modele {
 
     // Json object
-    JsonValue soundBaseReader;
+    private final JsonValue  soundBaseReader;
 
     // Gestionnaire de fichier
-    FileHandle soundFile;
+    private final FileHandle soundFile;
 
     // Emplacement des éléments
-    String pathSettingsFile = "core/src/com/mygdx/game/jsonFile/";
+    private final String pathSettingsFile = "core/src/com/mygdx/game/jsonFile/";
 
-    String settingsFileName = "settings.json";
+    private final String settingsFileName = "settings.json";
 
     // Drapeau qui gère le thread de jeu
     private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);

@@ -7,6 +7,6 @@ public class ExtraOil extends Food {
     public static final int price = 70;
 
     public ExtraOil() {
-        super("ExtraOil", point, price);
+        super("ExtraOil", point);
     }
 }
