@@ -6,9 +6,9 @@ import java.util.concurrent.TimeUnit;
 public class Robot extends Tamagotchi {
 
     private float battery;
-    private float maintenance;
     private float tank;
     private float durability;
+    private float software;
     private float happiness;
 
     Random random;
@@ -17,7 +17,7 @@ public class Robot extends Tamagotchi {
         super(difficulty);
         battery = 1000;
         tank = 1000;
-        maintenance = 1000;
+        software = 1000;
         durability = 1000;
         happiness = 1000;
 
@@ -32,12 +32,12 @@ public class Robot extends Tamagotchi {
         this.battery = battery;
     }
 
-    public float getMaintenance() {
-        return maintenance;
+    public float getSoftware() {
+        return software;
     }
 
-    public void setMaintenance(float maintenance) {
-        this.maintenance = maintenance;
+    public void setSoftware(float software) {
+        this.software = software;
     }
 
     public float getTank() {
@@ -95,8 +95,8 @@ public class Robot extends Tamagotchi {
         if (tank < 0) {
             tank = 0;
         }
-        if (maintenance < 0) {
-            maintenance = 0;
+        if (software < 0) {
+            software = 0;
         }
         if (durability < 0) {
             durability = 0;
@@ -109,7 +109,7 @@ public class Robot extends Tamagotchi {
         }
     }
 
-    public void reload() throws InterruptedException {
+    public void maintenance() throws InterruptedException {
 
         int interval = random.nextInt(4);
 
@@ -134,10 +134,10 @@ public class Robot extends Tamagotchi {
             setHappiness(1000);
         }
 
-        if (maintenance <= 200) {
-            setMaintenance(900 - getDifficulty() * 85);
+        if (software <= 200) {
+            setSoftware(900 - getDifficulty() * 85);
         } else {
-            setMaintenance(1000);
+            setSoftware(1000);
         }
     }
 
@@ -147,7 +147,7 @@ public class Robot extends Tamagotchi {
 
         TimeUnit.SECONDS.sleep(10 + interval);
 
-        maintenance -= random.nextInt(75, 200);
+        software -= random.nextInt(75, 200);
 
         check();
 
@@ -185,13 +185,10 @@ public class Robot extends Tamagotchi {
 
     //public void repair(){}
 
-    public void work() throws InterruptedException {
-
-        TimeUnit.SECONDS.sleep(12);
-
+    public void work() {
         setWallet(getWallet() + 50);
         happiness -= getHappiness() * 100;
-        maintenance -= getMaintenance() * 43;
+        software -= getSoftware() * 43;
         durability -= getDurability() * 60;
 
         check();
@@ -216,6 +213,6 @@ public class Robot extends Tamagotchi {
     }
 
     public void Afficher_Attribut() {
-        System.out.println("vie : " + battery + "\nfood : " + tank + "\nhygiene: " + maintenance + "\nsleep: " + durability + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
+        System.out.println("vie : " + battery + "\nfood : " + tank + "\nhygiene: " + software + "\nsleep: " + durability + "\nbonheur : " + happiness + "\nwallet :" + this.getWallet());
     }
 }

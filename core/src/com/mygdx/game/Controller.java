@@ -77,8 +77,8 @@ public class Controller {
      *
      * @param visibility true ou false selon où on en est dans l'action
      */
-    public void changeVisibilityWaitingBar(boolean visibility) {
-        view.changeVisibilityWaitingBar(visibility);
+    public void actionEnCourTamagotchi(boolean visibility) {
+        view.actionTamagotchiVisibility(visibility);
     }
 
     /**

@@ -102,7 +102,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Méthode qui vérifie si les attributs sont < 0 et > 1000
+     * Méthode qui vérifie si les attributs sont >= 0 et <= 1000
      */
     public void check() {
         if (life < 0) {

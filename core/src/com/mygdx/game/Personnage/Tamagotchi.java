@@ -3,10 +3,10 @@ package com.mygdx.game.Personnage;
 import java.util.ArrayList;
 
 public abstract class Tamagotchi {
-    private ArrayList<Food> basket;
+    private final ArrayList<Food> basket;
     private int wallet;
 
-    private int difficulty;
+    private final int difficulty;
 
     public Tamagotchi(int difficulty) {
         basket = new ArrayList<>();

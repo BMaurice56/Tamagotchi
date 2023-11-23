@@ -90,8 +90,8 @@ public class SelectTamagotchi implements Screen {
         backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
         playButton = new TextButton("Jouer", new MultiSkin("text"));
 
-        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
-        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
+        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrowWhite.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrowWhite.png", 100, 75);
     }
 
     /**

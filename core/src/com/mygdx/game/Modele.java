@@ -5,7 +5,6 @@ import com.mygdx.game.Personnage.*;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +40,7 @@ class Moteur implements Runnable {
         while (!flagStop.get()) {
             // fait attendre le moteur
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep((long) Modele.tempsAttenteJeu);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -94,6 +93,19 @@ public class Modele {
 
     // Aléatoire
     private final Random random = new Random();
+
+    public final static float tempsAttenteJeu = 100f;
+
+    private final float upperStat_10 = 10 / (tempsAttenteJeu / 10);
+
+    private final float lowerStat_10 = 10 / (tempsAttenteJeu / 10);
+
+    private final float lowerStat_4 = 4 / (tempsAttenteJeu / 10);
+
+    private final float lowerStat_3 = 3 / (tempsAttenteJeu / 10);
+
+    private final float lowerStat_2 = 2 / (tempsAttenteJeu / 10);
+
 
     /**
      * Constructeur de gestion du son (menu)
@@ -192,21 +204,21 @@ public class Modele {
      */
     public void vieTamagotchi() {
         if (animal != null) {
-            animal.setFood((float) (animal.getFood() - 0.4));
-            animal.setHygiene((float) (animal.getHygiene() - 0.4));
-            animal.setSleep((float) (animal.getSleep() - 0.2));
-            animal.setHappiness((float) (animal.getHappiness() - 0.3));
+            animal.setFood(animal.getFood() - lowerStat_4);
+            animal.setHygiene(animal.getHygiene() - lowerStat_4);
+            animal.setSleep(animal.getSleep() - lowerStat_2);
+            animal.setHappiness(animal.getHappiness() - lowerStat_3);
 
             if (animal.getFood() == 0 || animal.getHappiness() == 0 || animal.getHygiene() == 0) {
-                animal.setHappiness((float) (animal.getHappiness() - 0.3));
-                animal.setLife(animal.getLife() - 1);
+                animal.setHappiness(animal.getHappiness() - lowerStat_3);
+                animal.setLife(animal.getLife() - lowerStat_10);
             }
             if (animal.getSleep() == 0) {
-                animal.setHappiness(animal.getHappiness() - 1);
+                animal.setHappiness(animal.getHappiness() - lowerStat_10);
             }
 
             if (animal.getFood() >= 600) {
-                animal.setLife(animal.getLife() + 1);
+                animal.setLife(animal.getLife() + upperStat_10);
             }
 
             if (animal.getLife() == 0) {
@@ -214,21 +226,21 @@ public class Modele {
             }
 
         } else {
-            robot.setTank((float) (robot.getTank() - 0.4));
-            robot.setMaintenance((float) (robot.getMaintenance() - 0.4));
-            robot.setDurability((float) (robot.getDurability() - 0.2));
-            robot.setHappiness((float) (robot.getHappiness() - 0.3));
+            robot.setTank(robot.getTank() - lowerStat_4);
+            robot.setSoftware(robot.getSoftware() - lowerStat_4);
+            robot.setDurability(robot.getDurability() - lowerStat_2);
+            robot.setHappiness(robot.getHappiness() - lowerStat_3);
 
-            if (robot.getTank() == 0 || robot.getHappiness() == 0 || robot.getMaintenance() == 0) {
-                robot.setHappiness((float) (robot.getHappiness() - 0.2));
-                robot.setBattery(robot.getBattery() - 1);
+            if (robot.getTank() == 0 || robot.getHappiness() == 0 || robot.getSoftware() == 0) {
+                robot.setHappiness(robot.getHappiness() - lowerStat_3);
+                robot.setBattery(robot.getBattery() - lowerStat_10);
             }
             if (robot.getDurability() == 0) {
-                robot.setHappiness(robot.getHappiness() - 1);
+                robot.setHappiness(robot.getHappiness() - lowerStat_10);
             }
 
             if (robot.getTank() >= 600) {
-                robot.setBattery(robot.getBattery() + 1);
+                robot.setBattery(robot.getBattery() + upperStat_10);
             }
 
             if (robot.getBattery() == 0) {
@@ -243,18 +255,26 @@ public class Modele {
      */
     public void updateAffichage() {
         if (animal != null) {
-            setAmountProgressBar("life", animal.getLife());
-            setAmountProgressBar("food", animal.getFood());
-            setAmountProgressBar("wash", animal.getHygiene());
-            setAmountProgressBar("sleep", animal.getSleep());
-            setAmountProgressBar("happy", animal.getHappiness());
+            controller.setAmountProgressBar("life", animal.getLife());
+            controller.setAmountProgressBar("food", animal.getFood());
+            controller.setAmountProgressBar("sleep", animal.getSleep());
+            controller.setAmountProgressBar("wash", animal.getHygiene());
+            controller.setAmountProgressBar("happy", animal.getHappiness());
 
-            setAmountLabel("money", animal.getWallet());
-            setAmountLabel("apple", animal.getNumberApple());
-            setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+            controller.setAmountLabel("money", animal.getWallet());
+            controller.setAmountLabel("apple", animal.getNumberApple());
+            controller.setAmountLabel("goldenApple", animal.getNumberGoldenApple());
         } else {
-            System.out.println("a faire affichage robot");
-            throw new NotImplementedException();
+            controller.setAmountProgressBar("battery", robot.getBattery());
+            controller.setAmountProgressBar("tank", robot.getTank());
+            controller.setAmountProgressBar("durability", robot.getDurability());
+            controller.setAmountProgressBar("update", robot.getSoftware());
+            controller.setAmountProgressBar("happy", robot.getHappiness());
+
+            controller.setAmountLabel("money", robot.getWallet());
+            controller.setAmountLabel("oil", robot.getNumberOil());
+            controller.setAmountLabel("superOil", robot.getNumberExtraOil());
+
         }
     }
 
@@ -266,7 +286,7 @@ public class Modele {
      * @param max          Temps final en millisecondes
      * @return float La valeur pour la barre de progression
      */
-    public float getValueWaitingBar(int tempsAttente, double min, double max) {
+    public float calculValueWaitingBar(int tempsAttente, double min, double max) {
         return (float) ((tempsAttente * 1000) - (max - min)) / tempsAttente;
     }
 
@@ -285,7 +305,7 @@ public class Modele {
                 @Override
                 public void run() {
                     // Cache les éléments inutiles de l'interface
-                    controller.changeVisibilityWaitingBar(false);
+                    controller.actionEnCourTamagotchi(false);
 
                     // Sépare les différentes valeurs
                     String[] values = attente.split(";");
@@ -299,15 +319,19 @@ public class Modele {
                     // Tant que l'on n'a pas attendu le temps nécessaire, on continue
                     while (temps > System.currentTimeMillis()) {
                         // Met la bonne valeur sur la barre de progression
-                        controller.setAmountProgressBar("waiting", getValueWaitingBar(time, System.currentTimeMillis(), temps));
+                        controller.setAmountProgressBar("waiting", calculValueWaitingBar(time, System.currentTimeMillis(), temps));
                     }
                     // Reaffiche les éléments de l'interface
-                    controller.changeVisibilityWaitingBar(true);
+                    controller.actionEnCourTamagotchi(true);
 
                     // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
                     switch (values[2]) {
                         case "work":
-                            animal.work();
+                            if (animal != null) {
+                                animal.work();
+                            } else {
+                                robot.work();
+                            }
                             break;
 
                         case "sleep":
@@ -340,59 +364,28 @@ public class Modele {
         }
     }
 
-    /**
-     * Définit la valeur de la barre de progression voulue
-     *
-     * @param progressBar Barre de progression
-     * @param amount      Montant
-     */
-    public void setAmountProgressBar(String progressBar, float amount) {
-        controller.setAmountProgressBar(progressBar, amount);
-    }
-
-    /**
-     * * Définit la valeur du label voulu
-     *
-     * @param label  Label
-     * @param amount Montant
-     */
-    public void setAmountLabel(String label, int amount) {
-        controller.setAmountLabel(label, amount);
-    }
 
     /**
      * Fait dormir le tamagotchi
      */
     public void sleep() {
-        if (animal != null) {
-            int temps = 13 + random.nextInt(4);
-            attente = temps + ";Dodo;sleep";
-        } else {
-            System.out.println("A faire robot sleep");
-        }
+        int temps = 13 + random.nextInt(4);
+        attente = temps + ";Dodo;sleep";
     }
 
     /**
      * Fait travailler le tamagotchi
      */
     public void work() {
-        if (animal != null) {
-            attente = "12;Travaille;work";
-        } else {
-            System.out.println("A faire robot work");
-        }
+        attente = "12;Travaille;work";
     }
 
     /**
      * Fait se laver le tamagotchi
      */
     public void wash() {
-        if (animal != null) {
-            int temps = 10 + random.nextInt(6);
-            attente = temps + ";Lavage;wash";
-        } else {
-            System.out.println("A faire robot wash");
-        }
+        int temps = 10 + random.nextInt(6);
+        attente = temps + ";Lavage;wash";
     }
 
     /**
@@ -428,12 +421,8 @@ public class Modele {
      * Fait jouer le tamagotchi
      */
     public void play() {
-        if (animal != null) {
-            int temps = 10 + random.nextInt(6);
-            attente = temps + ";Jeu;play";
-        } else {
-            System.out.println("A faire robot eat");
-        }
+        int temps = 10 + random.nextInt(6);
+        attente = temps + ";Jeu;play";
     }
 
     /**
@@ -451,26 +440,26 @@ public class Modele {
         attente = null;
 
         if (animal != null) {
-            setAmountProgressBar("life", animal.getLife());
-            setAmountProgressBar("food", animal.getFood());
-            setAmountProgressBar("sleep", animal.getSleep());
-            setAmountProgressBar("wash", animal.getHygiene());
-            setAmountProgressBar("happy", animal.getHappiness());
+            controller.setAmountProgressBar("life", animal.getLife());
+            controller.setAmountProgressBar("food", animal.getFood());
+            controller.setAmountProgressBar("sleep", animal.getSleep());
+            controller.setAmountProgressBar("wash", animal.getHygiene());
+            controller.setAmountProgressBar("happy", animal.getHappiness());
 
-            setAmountLabel("money", animal.getWallet());
-            setAmountLabel("apple", animal.getNumberApple());
-            setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+            controller.setAmountLabel("money", animal.getWallet());
+            controller.setAmountLabel("apple", animal.getNumberApple());
+            controller.setAmountLabel("goldenApple", animal.getNumberGoldenApple());
 
         } else {
-            setAmountProgressBar("battery", robot.getBattery());
-            setAmountProgressBar("tank", robot.getTank());
-            setAmountProgressBar("durability", robot.getDurability());
-            setAmountProgressBar("maintenance", robot.getMaintenance());
-            setAmountProgressBar("happy", robot.getHappiness());
+            controller.setAmountProgressBar("battery", robot.getBattery());
+            controller.setAmountProgressBar("tank", robot.getTank());
+            controller.setAmountProgressBar("durability", robot.getDurability());
+            controller.setAmountProgressBar("maintenance", robot.getSoftware());
+            controller.setAmountProgressBar("happy", robot.getHappiness());
 
-            setAmountLabel("money", robot.getWallet());
-            setAmountLabel("apple", robot.getNumberOil());
-            setAmountLabel("goldenApple", robot.getNumberExtraOil());
+            controller.setAmountLabel("money", robot.getWallet());
+            controller.setAmountLabel("apple", robot.getNumberOil());
+            controller.setAmountLabel("goldenApple", robot.getNumberExtraOil());
         }
 
         // Moteur de jeu

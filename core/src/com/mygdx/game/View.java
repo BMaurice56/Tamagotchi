@@ -156,8 +156,8 @@ public class View implements Screen {
      * Instancie les boutons
      */
     public void createButton() {
-        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrow.png", 100, 75);
-        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrow.png", 100, 75);
+        leftArrow = new BoutonImage(new MultiSkin("image"), "images/leftArrowWhite.png", 100, 75);
+        rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrowWhite.png", 100, 75);
         settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
 
         image1 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image1"), 225, 225);
@@ -475,7 +475,7 @@ public class View implements Screen {
                 break;
 
             case "goldenApple":
-            case "extraOil":
+            case "superOil":
                 extraFoodLabel.setText(String.valueOf(amount));
                 break;
 
@@ -509,7 +509,7 @@ public class View implements Screen {
                     break;
 
                 case "wash":
-                case "maintenance":
+                case "update":
                     progressBar4.setValue(amount);
                     break;
 
@@ -680,7 +680,7 @@ public class View implements Screen {
      *
      * @param visibility boolean Modifie l'affichage
      */
-    public void changeVisibilityWaitingBar(boolean visibility) {
+    public void actionTamagotchiVisibility(boolean visibility) {
         // Ajoute la barre à l'affichage
         stage.addActor(waitingBar);
 
@@ -695,8 +695,6 @@ public class View implements Screen {
         eat.setVisible(visibility);
         buy.setVisible(visibility);
         play.setVisible(visibility);
-
-        tamagotchiImage.setVisible(visibility);
 
         // Rend la barre visible
         waitingBar.setVisible(!visibility);

@@ -5,9 +5,17 @@ Tamagotchi project
 Voici le github pour le projet de Kessler avec son Tamagotchi
 
 Pour modifier le projet avec Intellij, il faut ouvrir le fichier build.gradle en faisant :
-File -> open -> sélectionner le fichier -> Open As project
+File → open → sélectionner le fichier → Open As project
 
 !!! Installer le plugin libGDX dans intellij en en allant dans settings -> plugins !!!
 
-lien important :
+Lien.s important :
 https://lipn.univ-paris13.fr/~gerard/uml-s2/uml-cours05.html
+
+
+Lien actions (ou attribut) animal / robot :
+vie → batterie
+nourriture → reservoir (manger → remplir)
+sommeil → durabilité (dormir → maintenance)
+hygiene → software (se laver → updating)
+bonheur → bonheur (play → dance)
