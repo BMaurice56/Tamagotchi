@@ -24,8 +24,8 @@ public class Controller {
      * @param difficulty       Niveau de difficulté
      * @param save             Lancement d'une sauvegarde ou non
      */
-    public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save) {
-        modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, this);
+    public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numberSave) {
+        modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, numberSave, this);
 
         view = new View(this, modele.getTamagotchi());
 
@@ -137,5 +137,9 @@ public class Controller {
      */
     public void startGame() {
         modele.startGame();
+    }
+
+    public void save() {
+        modele.save();
     }
 }

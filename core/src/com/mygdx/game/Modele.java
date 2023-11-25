@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Personnage.*;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
@@ -18,6 +19,8 @@ class Moteur implements Runnable {
 
     // Controller de jeu
     private final Modele modele;
+
+    private int compteur = 0;
 
     /**
      * Constructeur
@@ -54,6 +57,14 @@ class Moteur implements Runnable {
                 modele.waiting();
             }
 
+            if (compteur == 50) {
+                System.out.println("Sauvegarde automatique effectué");
+                compteur = 0;
+                modele.save();
+            } else {
+                compteur++;
+            }
+
             // Met à jour l'affichage
             modele.updateAffichage();
         }
@@ -66,15 +77,22 @@ class Moteur implements Runnable {
 public class Modele {
 
     // Json object
-    private final JsonValue  soundBaseReader;
+    private final JsonValue soundBaseReader;
 
     // Gestionnaire de fichier
     private final FileHandle soundFile;
+    private FileHandle saveFileParty;
+
+    // Object Json pour la conversion des objets en json
+    private final Json json;
 
     // Emplacement des éléments
     private final String pathSettingsFile = "core/src/com/mygdx/game/jsonFile/";
 
     private final String settingsFileName = "settings.json";
+
+    // Nom du fichier de sauvegarde
+    private String saveFile;
 
     // Drapeau qui gère le thread de jeu
     private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);
@@ -106,9 +124,12 @@ public class Modele {
 
     private final float lowerStat_2 = 2 / (tempsAttenteJeu / 10);
 
+    // Numéro de la sauvegarde
+    private int numberSave;
+
 
     /**
-     * Constructeur de gestion du son (menu)
+     * Constructeur de gestion des fichiers (menu)
      */
     public Modele() {
         // Lecteur de fichier
@@ -119,36 +140,60 @@ public class Modele {
 
         // Lecture du fichier de paramètre json
         soundBaseReader = jsonReader.parse(soundFile);
+
+        // Gestion des fichiers json
+        json = new Json();
     }
 
     /**
      * Constructeur de jeu
      */
-    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, Object save, Controller controller) {
+    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller) {
         this();
         this.controller = controller;
+        numberSave = numSave;
 
-        if (save != null) {
-            System.out.println("Save à faire !");
+        saveFile = "/core/src/com/mygdx/game/jsonFile/save" + numberSave + ".json";
+        saveFileParty = Gdx.files.local(saveFile);
+
+        if (save) {
+            String tamagotchi = saveFileParty.readString();
+            switch (tamagotchiWished) {
+                case (1):
+                    animal = json.fromJson(Chat.class, tamagotchi);
+                    break;
+
+                case (2):
+                    animal = json.fromJson(Chien.class, tamagotchi);
+                    break;
+
+                case (3):
+                    animal = json.fromJson(Dinosaure.class, tamagotchi);
+                    break;
+
+                case (4):
+                    robot = json.fromJson(Robot.class, tamagotchi);
+                    break;
+            }
+
         } else {
-            System.out.println("Pas de save");
-        }
+            switch (tamagotchiWished) {
+                case (1):
+                    animal = new Chat(difficulty, nomTamagotchi);
+                    break;
 
-        switch (tamagotchiWished) {
-            case (1):
-                animal = new Chat(difficulty, nomTamagotchi);
-                break;
+                case (2):
+                    animal = new Chien(difficulty, nomTamagotchi);
+                    break;
 
-            case (2):
-                animal = new Chien(difficulty, nomTamagotchi);
-                break;
+                case (3):
+                    animal = new Dinosaure(difficulty, nomTamagotchi);
+                    break;
 
-            case (3):
-                animal = new Dinosaure(difficulty, nomTamagotchi);
-                break;
-
-            case (4):
-                robot = new Robot(difficulty, nomTamagotchi);
+                case (4):
+                    robot = new Robot(difficulty, nomTamagotchi);
+                    break;
+            }
         }
     }
 
@@ -484,5 +529,22 @@ public class Modele {
         // Moteur de jeu
         Thread Moteur = new Thread(new Moteur(flagStop, flagWait, this));
         Moteur.start();
+    }
+
+    /**
+     * Sauvegarde la partie dans un fichier
+     */
+    public void save() {
+        // String contenant les informations pour le fichier json
+        String tamagotchi;
+
+        if (animal != null) {
+            tamagotchi = "{numberTamagotchi:" + animal.getNumberTamagotchi() + "," + json.toJson(animal).substring(1);
+        } else {
+            tamagotchi = "{numberTamagotchi:" + robot.getNumberTamagotchi() + "," + json.toJson(robot).substring(1);
+        }
+
+        // Ecriture du fichier
+        saveFileParty.writeString(tamagotchi, false);
     }
 }

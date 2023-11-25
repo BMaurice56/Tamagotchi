@@ -180,11 +180,15 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, null);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                int numberSave = ScreenMenu.getLastNumberFromSave(ScreenMenu.getNameSave()) + 1;
+
+                // Si vaut 0 → pas de save
+                if (numberSave == 0) {
+                    numberSave = 1;
                 }
+
+                new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, false, numberSave);
+
                 return true;
             }
         });

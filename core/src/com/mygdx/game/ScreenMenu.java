@@ -5,7 +5,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Classe du menu d'accueil du jeu
@@ -40,13 +50,17 @@ public class ScreenMenu implements Screen {
 
     private BoutonImage playButton, settingsButton, quitButton;
 
-    private TextButton newGameButton, saveGameButton, backButton, backButton2;
+    private TextButton newGameButton, saveGameButton, backButton, backButton2, backButton3;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table homeTable, partyTable, settingsTable;
+    private Table homeTable, partyTable, settingsTable, saveGameTable;
 
     // Modèle du jeu
     private final Modele modele;
+
+    // Créez un objet Path
+    private static final Path currRelativePath = Paths.get(System.getProperty("user.dir") + "/core/src/com/mygdx/game/jsonFile");
+
 
     /**
      * Constructeur
@@ -171,6 +185,7 @@ public class ScreenMenu implements Screen {
         saveGameButton = new TextButton("partie sauvegardée", new MultiSkin("text"));
         backButton = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton2 = new TextButton("Retour au centre", new MultiSkin("text"));
+        backButton3 = new TextButton("Retour en arriere", new MultiSkin("text"));
     }
 
     /**
@@ -257,6 +272,14 @@ public class ScreenMenu implements Screen {
             }
         });
 
+        backButton3.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                putTable(partyTable);
+                return true;
+            }
+        });
+
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -264,6 +287,158 @@ public class ScreenMenu implements Screen {
                 musique.setVolume(volume);
             }
         });
+
+        saveGameButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                int sauvegarde = getLastNumberFromSave(getNameSave());
+
+                // Table d'affichage des sauvegardes
+                saveGameTable = new Table();
+                saveGameTable.setFillParent(true);
+                saveGameTable.center();
+                saveGameTable.setPosition(saveGameTable.getX() - 100, saveGameTable.getY());
+
+                if (sauvegarde == -1) {
+                    saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
+
+                } else {
+                    saveGameTable.add(new Label("Nom du Tamagotchi", new MultiSkin("label")));
+                    saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
+                    saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
+
+                    // Lecteur de json
+                    JsonReader jsonReader = new JsonReader();
+
+                    // Pour toutes les sauvegardes trouvées
+                    for (String save : getNameSave()) {
+                        // Permet de lire et d'interagir avec le fichier
+                        FileHandle saveFile = new FileHandle(currRelativePath + "/" + save);
+
+                        // Lecture du fichier de paramètre json
+                        final JsonValue saveFileReader = jsonReader.parse(saveFile);
+
+                        // Création d'un label avec le nom du Tamagotchi
+                        Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
+
+                        // Récupération du numéro de sauvegarde
+                        String[] values = save.split("save");
+                        final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
+
+                        // Ajout du label à la table
+                        saveGameTable.add(nomTamagotchi);
+                        switch (contains(saveFileReader, "difficulty")) {
+                            case (1):
+                                saveGameTable.add(new Label("Facile", new MultiSkin("label")));
+                                break;
+
+                            case (2):
+                                saveGameTable.add(new Label("Moyen", new MultiSkin("label")));
+                                break;
+
+                            case (3):
+                                saveGameTable.add(new Label("Difficile", new MultiSkin("label")));
+                                break;
+                        }
+
+                        // Bouton Jouer
+                        Label jouer = new Label(" Jouer", new MultiSkin("label"));
+
+                        jouer.addListener(new InputListener() {
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave);
+                                return true;
+                            }
+                        });
+
+                        saveGameTable.add(jouer).row();
+                    }
+                }
+                // Ajout d'un espace et d'un bouton retour
+                saveGameTable.add(new Label("", new MultiSkin("label")));
+                saveGameTable.add(backButton3).row();
+
+                // Ajout de la table à l'écran
+                putTable(saveGameTable);
+
+                return true;
+            }
+        });
+
+    }
+
+    /**
+     * Méthode qui vérifie si le fichier json contient une certaine clé
+     * Renvoi la valeur de la clé ou 1 si non trouvé
+     *
+     * @param jsonValue Fichier json
+     * @param key       clé
+     * @return int la valeur ou 1 si inexistante
+     */
+    public int contains(JsonValue jsonValue, String key) {
+        if (jsonValue.has(key)) {
+            return jsonValue.getInt(key);
+        }
+
+        return 1;
+    }
+
+
+    /**
+     * Méthode qui scan le répèrtoire et renvoi le chiffre correspondant à la dernière sauvegarde
+     *
+     * @return int numéro de la dernière sauvegarde / -1 si pas de sauvegarde
+     */
+    public static int getLastNumberFromSave(ArrayList<String> sauvegarde) {
+        int save = -1;
+
+        // Pour tous les éléments du répertoire
+        for (String str : sauvegarde) {
+
+            String[] values = str.split("save");
+            int temp = Integer.parseInt(values[1].split(".json")[0]);
+
+            if (temp > save) {
+                save = temp;
+            }
+        }
+
+        return save;
+    }
+
+    /**
+     * Méthode qui renvoi tous les noms des sauvegardes
+     *
+     * @return arraylist nom des sauvegarde
+     */
+    public static ArrayList<String> getNameSave() {
+
+        // Objet File à partir du chemin
+        File repertoire = new File(currRelativePath.toString());
+
+        // Liste des éléments dans le répertoire
+        String[] liste = repertoire.list();
+
+        // Liste des noms de sauvegarde
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        // Expression régulière
+        Pattern pattern = Pattern.compile("save[0-9]+.json");
+
+        assert liste != null;
+        // Pour tous les éléments du répertoire
+        for (String string : liste) {
+            // Créer un matcher à partir de l'élément en cour
+            Matcher matcher = pattern.matcher(string);
+
+            // Si match alors c'est une sauvegarde
+            if (matcher.matches()) {
+                arrayList.add(string);
+            }
+        }
+
+        return arrayList;
     }
 
     /**

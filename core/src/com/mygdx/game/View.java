@@ -41,7 +41,7 @@ public class View implements Screen {
     private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable;
 
     private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage,
-            extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyMenu;
+            extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
 
     private final ImageButton tamagotchiImage;
 
@@ -177,7 +177,7 @@ public class View implements Screen {
         buyEatExtraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
         moneyImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("moneyImage"), 225, 225);
 
-        quitBuyMenu = new BoutonImage(new MultiSkin("image"), "images/croix.png", 225, 225);
+        quitBuyEatMenu = new BoutonImage(new MultiSkin("image"), "images/croix.png", 225, 225);
 
         home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
 
@@ -264,7 +264,7 @@ public class View implements Screen {
 
         foodTable = new Table();
         foodTable.add(whichFood);
-        foodTable.add(quitBuyMenu).width(50).height(50).row();
+        foodTable.add(quitBuyEatMenu).width(50).height(50).row();
         foodTable.add(buyEatFoodImage).width(100).height(100).left();
         foodTable.add(buyEatExtraFoodImage).width(100).height(100).left().row();
     }
@@ -338,6 +338,7 @@ public class View implements Screen {
         home.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                controller.save();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
                 return true;
             }
@@ -441,7 +442,7 @@ public class View implements Screen {
             }
         });
 
-        quitBuyMenu.addListener(new InputListener() {
+        quitBuyEatMenu.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 eatOrBuy = false;
