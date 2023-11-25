@@ -44,6 +44,7 @@ public class Controller {
 
             @Override
             public void dispose() {
+                save();
                 stopGame();
             }
         });

@@ -300,12 +300,15 @@ public class ScreenMenu implements Screen {
                 saveGameTable.setPosition(saveGameTable.getX() - 100, saveGameTable.getY());
 
                 if (sauvegarde == -1) {
+                    saveGameTable.add(new Label("", new MultiSkin("label")));
                     saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
+                    saveGameTable.setPosition(saveGameTable.getX() + 100, saveGameTable.getY());
 
                 } else {
                     saveGameTable.add(new Label("Nom du Tamagotchi", new MultiSkin("label")));
                     saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
                     saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
+                    saveGameTable.add(new Label("", new MultiSkin("label"))).row();
 
                     // Lecteur de json
                     JsonReader jsonReader = new JsonReader();
@@ -355,6 +358,7 @@ public class ScreenMenu implements Screen {
                         saveGameTable.add(jouer).row();
                     }
                 }
+                saveGameTable.add(new Label("", new MultiSkin("label"))).row();
                 // Ajout d'un espace et d'un bouton retour
                 saveGameTable.add(new Label("", new MultiSkin("label")));
                 saveGameTable.add(backButton3).row();
