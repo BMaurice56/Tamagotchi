@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -102,9 +101,6 @@ public class Modele {
 
     // Controller de jeu
     private Controller controller;
-
-    // Aléatoire
-    private final Random random = new Random();
 
     public final static float tempsAttenteJeu = 100f;
 
@@ -421,10 +417,10 @@ public class Modele {
     /**
      * Réalise l'action passée en argument
      *
-     * @param time       temps d'attente
-     * @param titre      titre de l'action
-     * @param action     action a effectué
-     * @param food (optionnel) nourriture voulue
+     * @param time   temps d'attente
+     * @param titre  titre de l'action
+     * @param action action a effectué
+     * @param food   (optionnel) nourriture voulue
      */
     public void doAction(int time, String titre, String action, String food) {
         attente = time + ";" + titre + ";" + action + ";" + food;
