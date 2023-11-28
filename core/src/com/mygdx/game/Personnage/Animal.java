@@ -150,7 +150,7 @@ public abstract class Animal extends Tamagotchi {
                 if (food.equals("GoldenApple")) {
                     setHappiness(getHappiness() + 75);
                 }
-                removePanier(i); //on supprime l'élément dans la liste
+                removeFoodFromBasket(i); //on supprime l'élément dans la liste
 
                 return;
             }

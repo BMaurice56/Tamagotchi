@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
  */
 public class MultiSkin extends Skin {
     // Police d'écriture
-    private final BitmapFont font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
 
     /**
      * Constructeur
@@ -22,7 +21,7 @@ public class MultiSkin extends Skin {
         // Appelle du constructeur de la classe mère
         super();
 
-        font.setColor(255,255,255,1);
+        final BitmapFont font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
 
         // Stock le style
         Object style;

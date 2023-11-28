@@ -3,6 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.LifecycleListener;
+import com.mygdx.game.Personnage.Tamagotchi;
+
+import java.util.Random;
 
 /**
  * Classe qui sert de controller pour le jeu
@@ -14,6 +17,9 @@ public class Controller {
 
     // Modèle du jeu
     private final Modele modele;
+
+    // Aléatoire
+    private final Random random = new Random();
 
 
     /**
@@ -86,29 +92,47 @@ public class Controller {
      * Fait dormir le tamagotchi
      */
     public void sleep() {
-        modele.sleep();
+        int temps = 12 + random.nextInt(4);
+
+        if (modele.getTamagotchi().getNumberTamagotchi() != 4) {
+            modele.doAction(temps, "Dodo", "sleep", "");
+        } else {
+            modele.doAction(temps, "Maintenance", "sleep", "");
+        }
     }
 
     /**
      * Fait travailler le tamagotchi
      */
     public void work() {
-        modele.work();
+        modele.doAction(12, "Travaille", "work", "");
     }
 
     /**
-     * Fait se laver le tamagotchi
+     * Fait se laver / mettre à jour le tamagotchi
      */
     public void wash() {
-        modele.wash();
+        int temps = 10 + random.nextInt(6);
+
+        if (modele.getTamagotchi().getNumberTamagotchi() != 4) {
+            modele.doAction(temps, "Lavage", "wash", "");
+        } else {
+            modele.doAction(temps, "Mise a jour", "wash", "");
+        }
     }
 
     /**
      * Fait manger le tamagotchi
      */
     public void eat(String food) {
-        if (modele.getTamagotchi().getNumberOfFood(food) != 0) {
-            modele.eat(food);
+        Tamagotchi tamagotchi = modele.getTamagotchi();
+
+        if (tamagotchi.getNumberOfFood(food) != 0) {
+            if (tamagotchi.getNumberTamagotchi() != 4) {
+                modele.doAction(5, "Alimentation", "eat", food);
+            } else {
+                modele.doAction(5, "Remplissage", "eat", food);
+            }
         }
     }
 
@@ -123,7 +147,9 @@ public class Controller {
      * Fait jouer le tamagotchi
      */
     public void play() {
-        modele.play();
+        int temps = 10 + random.nextInt(6);
+
+        modele.doAction(temps, "Jeu", "play", "");
     }
 
     /**

@@ -40,6 +40,8 @@ class Moteur implements Runnable {
      */
     public void run() {
         // Tant que le drapeau n'est pas levé, on continue
+        float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde / (Modele.tempsAttenteJeu / 1000);
+
         while (!flagStop.get()) {
             // fait attendre le moteur
             try {
@@ -57,7 +59,7 @@ class Moteur implements Runnable {
                 modele.waiting();
             }
 
-            if (compteur == 50) {
+            if (compteur == nombreEntreSauvegarde) {
                 System.out.println("Sauvegarde automatique effectué");
                 compteur = 0;
                 modele.save();
@@ -86,14 +88,6 @@ public class Modele {
     // Object Json pour la conversion des objets en json
     private final Json json;
 
-    // Emplacement des éléments
-    private final String pathSettingsFile = "core/src/com/mygdx/game/jsonFile/";
-
-    private final String settingsFileName = "settings.json";
-
-    // Nom du fichier de sauvegarde
-    private String saveFile;
-
     // Drapeau qui gère le thread de jeu
     private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);
 
@@ -114,18 +108,17 @@ public class Modele {
 
     public final static float tempsAttenteJeu = 100f;
 
-    private final float upperStat_10 = 10 / (tempsAttenteJeu / 10);
+    public final static int tempsEntreSauvegarde = 5;
 
-    private final float lowerStat_10 = 10 / (tempsAttenteJeu / 10);
+    public final float upperStat_10 = 10 / (tempsAttenteJeu / 10);
 
-    private final float lowerStat_4 = 4 / (tempsAttenteJeu / 10);
+    public final float lowerStat_10 = 10 / (tempsAttenteJeu / 10);
 
-    private final float lowerStat_3 = 3 / (tempsAttenteJeu / 10);
+    public final float lowerStat_4 = 4 / (tempsAttenteJeu / 10);
 
-    private final float lowerStat_2 = 2 / (tempsAttenteJeu / 10);
+    public final float lowerStat_3 = 3 / (tempsAttenteJeu / 10);
 
-    // Numéro de la sauvegarde
-    private int numberSave;
+    public final float lowerStat_2 = 2 / (tempsAttenteJeu / 10);
 
 
     /**
@@ -136,7 +129,7 @@ public class Modele {
         JsonReader jsonReader = new JsonReader();
 
         // Permet de lire et d'interagir avec le fichier
-        soundFile = new FileHandle(pathSettingsFile + settingsFileName);
+        soundFile = new FileHandle("core/src/com/mygdx/game/jsonFile/settings.json");
 
         // Lecture du fichier de paramètre json
         soundBaseReader = jsonReader.parse(soundFile);
@@ -151,10 +144,9 @@ public class Modele {
     public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller) {
         this();
         this.controller = controller;
-        numberSave = numSave;
 
-        saveFile = "/core/src/com/mygdx/game/jsonFile/save" + numberSave + ".json";
-        saveFileParty = Gdx.files.local(saveFile);
+        // Fichier de sauvegarde
+        saveFileParty = Gdx.files.local("/core/src/com/mygdx/game/jsonFile/save" + numSave + ".json");
 
         if (save) {
             String tamagotchi = saveFileParty.readString();
@@ -399,7 +391,7 @@ public class Modele {
                             if (animal != null) {
                                 animal.play();
                             } else {
-                                robot.dance();
+                                robot.jouer();
                             }
                             break;
 
@@ -426,35 +418,16 @@ public class Modele {
         }
     }
 
-
     /**
-     * Fait dormir le tamagotchi
+     * Réalise l'action passée en argument
+     *
+     * @param time       temps d'attente
+     * @param titre      titre de l'action
+     * @param action     action a effectué
+     * @param food (optionnel) nourriture voulue
      */
-    public void sleep() {
-        int temps = 13 + random.nextInt(4);
-        attente = temps + ";Dodo;sleep";
-    }
-
-    /**
-     * Fait travailler le tamagotchi
-     */
-    public void work() {
-        attente = "12;Travaille;work";
-    }
-
-    /**
-     * Fait se laver le tamagotchi
-     */
-    public void wash() {
-        int temps = 10 + random.nextInt(6);
-        attente = temps + ";Lavage;wash";
-    }
-
-    /**
-     * Fait manger le tamagotchi
-     */
-    public void eat(String food) {
-        attente = "5;Alimentation;eat;" + food;
+    public void doAction(int time, String titre, String action, String food) {
+        attente = time + ";" + titre + ";" + action + ";" + food;
     }
 
 
@@ -481,13 +454,6 @@ public class Modele {
         }
     }
 
-    /**
-     * Fait jouer le tamagotchi
-     */
-    public void play() {
-        int temps = 10 + random.nextInt(6);
-        attente = temps + ";Jeu;play";
-    }
 
     /**
      * Arrête le jeu

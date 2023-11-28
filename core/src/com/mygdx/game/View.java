@@ -8,15 +8,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.ApplicationListener;
+import com.mygdx.game.Personnage.Tamagotchi;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.game.Personnage.Tamagotchi;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 /**
  * Vue du jeu
@@ -30,7 +29,7 @@ public class View implements Screen {
 
     private Texture room1, room2, room3, room4;
 
-    private HashMap<String, String> hashMapTexture;
+    private HashMap<String, String> hashMapImageAndText;
 
     private final Tamagotchi tamagotchi;
 
@@ -151,10 +150,10 @@ public class View implements Screen {
      * Instancie les textures
      */
     public void createTexture() {
-        room1 = new Texture(getImageFromTamagotchi("room1"));
-        room2 = new Texture(getImageFromTamagotchi("room2"));
-        room3 = new Texture(getImageFromTamagotchi("room3"));
-        room4 = new Texture(getImageFromTamagotchi("room4"));
+        room1 = new Texture(getImageOrTextFromTamagotchi("room1"));
+        room2 = new Texture(getImageOrTextFromTamagotchi("room2"));
+        room3 = new Texture(getImageOrTextFromTamagotchi("room3"));
+        room4 = new Texture(getImageOrTextFromTamagotchi("room4"));
     }
 
     /**
@@ -165,31 +164,30 @@ public class View implements Screen {
         rightArrow = new BoutonImage(new MultiSkin("image"), "images/rightArrowWhite.png", 100, 75);
         settings = new BoutonImage(new MultiSkin("image"), "images/settingsSmall.png", 70, 70);
 
-        image1 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image1"), 225, 225);
-        image2 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image2"), 225, 225);
-        image3 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image3"), 225, 225);
-        image4 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image4"), 225, 225);
-        image5 = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("image5"), 225, 225);
+        image1 = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("image1"), 225, 225);
+        image2 = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("image2"), 225, 225);
+        image3 = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("image3"), 225, 225);
+        image4 = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("image4"), 225, 225);
+        image5 = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("image5"), 225, 225);
 
-        foodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("foodImage"), 225, 225);
-        buyEatFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("foodImage"), 225, 225);
-        extraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
-        buyEatExtraFoodImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("extraFoodImage"), 225, 225);
-        moneyImage = new BoutonImage(new MultiSkin("image"), getImageFromTamagotchi("moneyImage"), 225, 225);
+        foodImage = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("foodImage"), 225, 225);
+        buyEatFoodImage = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("foodImage"), 225, 225);
+        extraFoodImage = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("extraFoodImage"), 225, 225);
+        buyEatExtraFoodImage = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("extraFoodImage"), 225, 225);
+        moneyImage = new BoutonImage(new MultiSkin("image"), getImageOrTextFromTamagotchi("moneyImage"), 225, 225);
 
         quitBuyEatMenu = new BoutonImage(new MultiSkin("image"), "images/croix.png", 225, 225);
 
         home = new TextButton("Retour a l'accueil", new MultiSkin("text"));
 
-        sleep = new TextButton("Dormir  ", new MultiSkin("text"));
-        work = new TextButton("Travailler", new MultiSkin("text"));
-        wash = new TextButton("Se laver", new MultiSkin("text"));
-        eat = new TextButton("Manger  ", new MultiSkin("text"));
-        buy = new TextButton("Acheter", new MultiSkin("text"));
-        play = new TextButton("Jouer", new MultiSkin("text"));
+        sleep = new TextButton(getImageOrTextFromTamagotchi("sleep"), new MultiSkin("text"));
+        work = new TextButton(getImageOrTextFromTamagotchi("work"), new MultiSkin("text"));
+        wash = new TextButton(getImageOrTextFromTamagotchi("wash"), new MultiSkin("text"));
+        eat = new TextButton(getImageOrTextFromTamagotchi("eat"), new MultiSkin("text"));
+        buy = new TextButton(getImageOrTextFromTamagotchi("buy"), new MultiSkin("text"));
+        play = new TextButton(getImageOrTextFromTamagotchi("play"), new MultiSkin("text"));
         resume = new TextButton("Reprise", new MultiSkin("text"));
         settings2 = new TextButton("Settings", new MultiSkin("text"));
-
     }
 
     /**
@@ -506,7 +504,6 @@ public class View implements Screen {
         stage.addActor(leftArrow);
         stage.addActor(rightArrow);
         stage.addActor(settings);
-        stage.addActor(progressBar1);
         stage.addActor(image1);
         stage.addActor(image2);
         stage.addActor(image3);
@@ -711,39 +708,53 @@ public class View implements Screen {
      * Initialise le dictionnaire qui contient le répertoire des images selon le tamagotchi
      */
     public void initializeHashmap() {
-        hashMapTexture = new HashMap<>();
+        hashMapImageAndText = new HashMap<>();
 
         if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
-            hashMapTexture.put("image1", "images/battery.png");
-            hashMapTexture.put("image2", "images/tank.png");
-            hashMapTexture.put("image3", "images/durability.png");
-            hashMapTexture.put("image4", "images/woolWrench.png");
+            hashMapImageAndText.put("image1", "images/battery.png");
+            hashMapImageAndText.put("image2", "images/tank.png");
+            hashMapImageAndText.put("image3", "images/durability.png");
+            hashMapImageAndText.put("image4", "images/software.png");
 
-            hashMapTexture.put("foodImage", "images/oil.png");
-            hashMapTexture.put("extraFoodImage", "images/extraOil.png");
+            hashMapImageAndText.put("foodImage", "images/oil.png");
+            hashMapImageAndText.put("extraFoodImage", "images/extraOil.png");
 
-            hashMapTexture.put("room1", "images/garden.png");
-            hashMapTexture.put("room2", "images/kitchen.jpg");
-            hashMapTexture.put("room3", "images/livingRoom.jpg");
-            hashMapTexture.put("room4", "images/bathroom.jpg");
+            hashMapImageAndText.put("room1", "images/garden.png");
+            hashMapImageAndText.put("room2", "images/kitchen.jpg");
+            hashMapImageAndText.put("room3", "images/livingRoom.jpg");
+            hashMapImageAndText.put("room4", "images/bathroom.jpg");
+
+            hashMapImageAndText.put("sleep", "Maintenance  ");
+            hashMapImageAndText.put("work", "Travailler");
+            hashMapImageAndText.put("wash", "Mettre a jour");
+            hashMapImageAndText.put("eat", "Remplir  ");
+            hashMapImageAndText.put("buy", "Acheter");
+            hashMapImageAndText.put("play", "Jouer");
 
         } else {
-            hashMapTexture.put("image1", "images/heart.png");
-            hashMapTexture.put("image2", "images/food.png");
-            hashMapTexture.put("image3", "images/sleep.png");
-            hashMapTexture.put("image4", "images/soap.png");
+            hashMapImageAndText.put("image1", "images/heart.png");
+            hashMapImageAndText.put("image2", "images/food.png");
+            hashMapImageAndText.put("image3", "images/sleep.png");
+            hashMapImageAndText.put("image4", "images/soap.png");
 
-            hashMapTexture.put("foodImage", "images/apple.png");
-            hashMapTexture.put("extraFoodImage", "images/goldenApple.png");
+            hashMapImageAndText.put("foodImage", "images/apple.png");
+            hashMapImageAndText.put("extraFoodImage", "images/goldenApple.png");
 
-            hashMapTexture.put("room1", "images/garden.png");
-            hashMapTexture.put("room2", "images/kitchen.jpg");
-            hashMapTexture.put("room3", "images/livingRoom.jpg");
-            hashMapTexture.put("room4", "images/bathroom.jpg");
+            hashMapImageAndText.put("room1", "images/garden.png");
+            hashMapImageAndText.put("room2", "images/kitchen.jpg");
+            hashMapImageAndText.put("room3", "images/livingRoom.jpg");
+            hashMapImageAndText.put("room4", "images/bathroom.jpg");
+
+            hashMapImageAndText.put("sleep", "Dormir  ");
+            hashMapImageAndText.put("work", "Travailler");
+            hashMapImageAndText.put("wash", "Se laver");
+            hashMapImageAndText.put("eat", "Manger  ");
+            hashMapImageAndText.put("buy", "Acheter");
+            hashMapImageAndText.put("play", "Jouer");
         }
 
-        hashMapTexture.put("image5", "images/happy.png");
-        hashMapTexture.put("moneyImage", "images/money.png");
+        hashMapImageAndText.put("image5", "images/happy.png");
+        hashMapImageAndText.put("moneyImage", "images/money.png");
     }
 
     /**
@@ -752,13 +763,8 @@ public class View implements Screen {
      * @param key clef
      * @return String chemin de la texture
      */
-    public String getImageFromTamagotchi(String key) {
-        if (hashMapTexture.containsKey(key)) {
-            return hashMapTexture.get(key);
-        } else {
-            throw new NoSuchElementException("Clef inconnu du dictionnaire");
-        }
-
+    public String getImageOrTextFromTamagotchi(String key) {
+        return hashMapImageAndText.get(key);
     }
 
     /**

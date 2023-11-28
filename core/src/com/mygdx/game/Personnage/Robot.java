@@ -145,7 +145,7 @@ public class Robot extends Tamagotchi {
         }
     }
 
-    public void dance() {
+    public void jouer() {
 
         setSoftware(getSoftware() - random.nextInt(75, 200));
 
@@ -165,7 +165,7 @@ public class Robot extends Tamagotchi {
             Food food1 = getBasket().get(i);
 
             if (tank.equals(food1.getName())) {
-                removePanier(i);
+                removeFoodFromBasket(i);
 
                 setTank(getTank() + food1.getPoint());
 

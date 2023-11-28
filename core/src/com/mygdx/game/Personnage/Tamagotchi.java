@@ -10,8 +10,15 @@ public abstract class Tamagotchi {
 
     private final int difficulty;
 
-    private final String name;
+    final String name;
 
+    /**
+     * Constructeur
+     *
+     * @param difficulty       int niveau
+     * @param nom              String nom
+     * @param numberTamagotchi int numéro
+     */
     public Tamagotchi(int difficulty, String nom, int numberTamagotchi) {
         basket = new ArrayList<>();
         this.difficulty = difficulty;
@@ -35,15 +42,30 @@ public abstract class Tamagotchi {
         basket.add(nourriture);
     }
 
-    public void removePanier(int i) {
+    /**
+     * Méthode qui enlève une nourriture dans le panier selon son index
+     *
+     * @param i int index
+     */
+    public void removeFoodFromBasket(int i) {
         basket.remove(i);
     }
 
+    /**
+     * Getter niveau de difficulté
+     *
+     * @return int difficulté
+     */
     public int getDifficulty() {
         return difficulty;
     }
 
-
+    /**
+     * Renvoi le nombre de nourritures selon son nom
+     *
+     * @param food String nom de la nourriture
+     * @return int leurs nombres
+     */
     public int getNumberOfFood(String food) {
         int number = 0;
 
@@ -56,6 +78,11 @@ public abstract class Tamagotchi {
         return number;
     }
 
+    /**
+     * Renvoie le nombre du tamagotchi
+     *
+     * @return int son nombre
+     */
     public int getNumberTamagotchi() {
         return numberTamagotchi;
     }
