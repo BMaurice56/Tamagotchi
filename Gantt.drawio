@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-05T11:31:03.328Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="q2qxuJLk-yFhJ4K3uHW3" version="22.1.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-05T11:46:51.916Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="AhN_vnzdCB5NvMMCP-hJ" version="22.1.5" type="github">
   <diagram name="Page-1" id="2c4490ee-f0b8-94ab-5012-d5dc3445f7a3">
     <mxGraphModel dx="1648" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
@@ -32,7 +32,7 @@
           <mxGeometry y="639" width="160" height="61" as="geometry" />
         </mxCell>
         <mxCell id="KohmYElV7J4Lf4DfOWHx-5" value="Donovan Casagrande" style="whiteSpace=wrap;html=1;align=center;strokeColor=#CCCCCC;" parent="1" vertex="1">
-          <mxGeometry y="719" width="160" height="41" as="geometry" />
+          <mxGeometry y="719" width="160" height="61" as="geometry" />
         </mxCell>
         <mxCell id="6z6v71Y1guzTuRLKmEV8-2" value="Semaine 2" style="strokeWidth=1;fontStyle=0;html=1;" parent="1" vertex="1">
           <mxGeometry x="240" y="460" width="80" height="20" as="geometry" />
@@ -1010,10 +1010,10 @@
           <mxGeometry x="240" y="740" width="80" height="40" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-59" value="Diagramme de cas d&#39;utilisations" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="360" y="580" width="240" height="20" as="geometry" />
+          <mxGeometry x="400" y="560" width="240" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-60" value="Cas d&#39;Utilisations" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="560" y="560" width="160" height="20" as="geometry" />
+          <mxGeometry x="560" y="580" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-61" value="Conception de l&#39;architecture&lt;br&gt;du logiciel" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="320" y="640" width="160" height="40" as="geometry" />
@@ -1025,13 +1025,40 @@
           <mxGeometry x="560" y="760" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-64" value="Diagramme de classes" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="320" y="480" width="240" height="20" as="geometry" />
+          <mxGeometry x="320" y="480" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-65" value="Diagramme de séquence" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="560" y="480" width="160" height="20" as="geometry" />
+          <mxGeometry x="480" y="480" width="240" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-66" value="Diagramme &lt;br&gt;de classes" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="480" y="640" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-68" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="720" y="479" as="sourcePoint" />
+            <mxPoint x="720" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-69" value="19 Octobre" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-70" value="Tests&lt;br&gt;d&#39;intégration" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="480" y="680" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-71" value="Début de la réalisation du &lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="560" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-72" value="Amélioration du cahier des Charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="720" y="720" width="400" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-73" value="Suite de la réalisation du &lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="720" y="640" width="560" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-74" value="Suite de la réalisation du &lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="720" y="480" width="560" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-75" value="Diagramme &lt;br&gt;de classes" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="320" y="560" width="80" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
