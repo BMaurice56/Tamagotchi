@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-05T11:46:51.916Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="AhN_vnzdCB5NvMMCP-hJ" version="22.1.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-05T11:51:51.832Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="bJbjuqnbvjRQu4ZBHz6h" version="22.1.5" type="github">
   <diagram name="Page-1" id="2c4490ee-f0b8-94ab-5012-d5dc3445f7a3">
     <mxGraphModel dx="1648" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
@@ -1018,7 +1018,7 @@
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-61" value="Conception de l&#39;architecture&lt;br&gt;du logiciel" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="320" y="640" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-58" value="Cahier des Charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-58" value="Cahier des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="320" y="720" width="400" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-63" value="Cas de tests" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
@@ -1042,14 +1042,14 @@
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-69" value="19 Octobre" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="660" y="840" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-70" value="Tests&lt;br&gt;d&#39;intégration" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-70" value="Définition des&lt;br&gt;tests&lt;br&gt;d&#39;intégration" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="480" y="680" width="80" height="40" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-71" value="Début de la réalisation du &lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="560" y="640" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-72" value="Amélioration du cahier des Charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="720" y="720" width="400" height="20" as="geometry" />
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-72" value="Amélioration du cahier des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="720" y="720" width="320" height="20" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-73" value="Suite de la réalisation du &lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="720" y="640" width="560" height="40" as="geometry" />
@@ -1059,6 +1059,15 @@
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-75" value="Diagramme &lt;br&gt;de classes" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
           <mxGeometry x="320" y="560" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-76" value="Définition des&lt;br&gt;tests&lt;br&gt;d&#39;intégration" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="480" y="740" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-78" value="Amélioration du cahier&lt;br&gt;des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="720" y="560" width="160" height="40.5" as="geometry" />
+        </mxCell>
+        <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-80" value="Cahier des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="320" y="600" width="160" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
