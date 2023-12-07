@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 class Moteur implements Runnable {
 
     // Drapeau qui régule le moteur
-    private final AtomicBoolean flagStop, flagWait;
+    private final AtomicBoolean flagStop, flagWait, flagSave;
 
     // Controller de jeu
     private final Modele modele;
@@ -28,9 +28,10 @@ class Moteur implements Runnable {
      * @param flagWait Fait attendre le moteur
      * @param modele   controller de jeu
      */
-    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, Modele modele) {
+    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, Modele modele) {
         this.flagStop = flagStop;
         this.flagWait = flagWait;
+        this.flagSave = flagSave;
         this.modele = modele;
     }
 
@@ -59,9 +60,11 @@ class Moteur implements Runnable {
             }
 
             if (compteur == nombreEntreSauvegarde) {
-                System.out.println("Sauvegarde automatique effectué");
-                compteur = 0;
-                modele.save();
+                if (flagSave.get()) {
+                    System.out.println("Sauvegarde automatique effectué");
+                    compteur = 0;
+                    modele.save();
+                }
             } else {
                 compteur++;
             }
@@ -88,7 +91,7 @@ public class Modele {
     private final Json json;
 
     // Drapeau qui gère le thread de jeu
-    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true);
+    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true), flagSave = new AtomicBoolean(true);
 
     // Tamagotchi animale
     private Animal animal;
@@ -358,6 +361,7 @@ public class Modele {
                     controller.actionEnCourTamagotchi(true, "");
 
                     // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
+                    flagSave.set(false);
                     switch (values[2]) {
                         case "work":
                             if (animal != null) {
@@ -405,6 +409,7 @@ public class Modele {
                     attente = null;
 
                     // Réautorise le moteur à appeler cette fonction
+                    flagSave.set(true);
                     flagWait.set(true);
                 }
             });
@@ -431,6 +436,8 @@ public class Modele {
      * Permet d'acheter de la nourriture
      */
     public void buy(String food) {
+        flagSave.set(false);
+
         switch (food) {
             case "Apple":
                 animal.buyApple();
@@ -448,6 +455,8 @@ public class Modele {
                 robot.buyExtraOil();
                 break;
         }
+
+        flagSave.set(true);
     }
 
 
@@ -489,7 +498,7 @@ public class Modele {
         }
 
         // Moteur de jeu
-        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, this));
+        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, this));
         Moteur.start();
     }
 
