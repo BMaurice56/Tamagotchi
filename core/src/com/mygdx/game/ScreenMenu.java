@@ -53,7 +53,7 @@ public class ScreenMenu implements Screen {
     private TextButton newGameButton, saveGameButton, backButton, backButton2, backButton3;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table homeTable, partyTable, settingsTable, saveGameTable;
+    private Table homeTable, partyTable, settingsTable, saveGameTable, maxSaveTable;
 
     // Modèle du jeu
     private final Modele modele;
@@ -110,10 +110,6 @@ public class ScreenMenu implements Screen {
         // Efface l'écran
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Récupère les dimensions de la fenêtre
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
 
         // Dessine l'image de fond
         batch.begin();
@@ -239,7 +235,22 @@ public class ScreenMenu implements Screen {
         newGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi());
+                int sauvegarde = getLastNumberFromSave(getNameSave());
+
+                if (sauvegarde == 10) {
+                    maxSaveTable = new Table();
+                    maxSaveTable.setFillParent(true);
+                    maxSaveTable.center();
+
+                    maxSaveTable.add(new Label("Nombre maximale de sauvegarde atteint", new MultiSkin("label"))).row();
+                    maxSaveTable.add(backButton3).row();
+
+                    putTable(maxSaveTable);
+
+                } else {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi());
+                }
+
                 return true;
             }
         });

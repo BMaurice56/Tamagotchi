@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -54,6 +56,15 @@ public class MultiSkin extends Skin {
                 TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
                 textFieldStyle.font = font;
                 textFieldStyle.fontColor = new Color(1, 1, 1, 1);
+
+                Label oneCharSizeCalibrationThrowAway = new Label("|", new MultiSkin("label"));
+                Pixmap cursorColor = new Pixmap((int) oneCharSizeCalibrationThrowAway.getWidth(),
+                        (int) oneCharSizeCalibrationThrowAway.getHeight(),
+                        Pixmap.Format.RGB888);
+                cursorColor.setColor(Color.WHITE);
+                cursorColor.fill();
+
+                textFieldStyle.cursor = new Image(new Texture(cursorColor)).getDrawable();
 
                 style = textFieldStyle;
                 break;
