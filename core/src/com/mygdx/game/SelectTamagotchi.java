@@ -270,7 +270,7 @@ public class SelectTamagotchi implements Screen {
                     if (nomTamagotchi.getText().isEmpty()) {
                         message.setText("Entrer un nom pour le Tamagotchi.");
                     } else {
-                        message.setText("       Nom incorrecte. \n\nN'utilisez que des lettres \n    ou chiffres ou tiret");
+                        message.setText("       Nom incorrect. \n\nN'utilisez que des lettres \n    ou chiffres ou tirets");
                     }
 
                     posAndSizeElement();
