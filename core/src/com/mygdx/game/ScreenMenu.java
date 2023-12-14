@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.io.File;
+import java.util.Arrays;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -235,9 +236,9 @@ public class ScreenMenu implements Screen {
         newGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                int sauvegarde = getLastNumberFromSave(getNameSave());
+                int sauvegarde = getAvailableNumber(getNameSave());
 
-                if (sauvegarde == 10) {
+                if (sauvegarde == -1) {
                     maxSaveTable = new Table();
                     maxSaveTable.setFillParent(true);
                     maxSaveTable.center();
@@ -302,7 +303,7 @@ public class ScreenMenu implements Screen {
         saveGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                int sauvegarde = getLastNumberFromSave(getNameSave());
+                int sauvegarde = getAvailableNumber(getNameSave());
 
                 // Table d'affichage des sauvegardes
                 saveGameTable = new Table();
@@ -310,13 +311,13 @@ public class ScreenMenu implements Screen {
                 saveGameTable.center();
                 saveGameTable.setPosition(saveGameTable.getX() - 100, saveGameTable.getY());
 
-                if (sauvegarde == -1) {
+                if (sauvegarde == 1) {
                     saveGameTable.add(new Label("", new MultiSkin("label")));
                     saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
                     saveGameTable.setPosition(saveGameTable.getX() + 100, saveGameTable.getY());
 
                 } else {
-                    saveGameTable.add(new Label("Nom du Tamagotchi", new MultiSkin("label")));
+                    saveGameTable.add(new Label("Nom du \nTamagotchi", new MultiSkin("label")));
                     saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
                     saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
                     saveGameTable.add(new Label("", new MultiSkin("label"))).row();
@@ -399,27 +400,38 @@ public class ScreenMenu implements Screen {
         return 1;
     }
 
-
     /**
-     * Méthode qui scan le répèrtoire et renvoi le chiffre correspondant à la dernière sauvegarde
+     * Renvoie un numéro disponible pour la sauvegarde
+     * Renvoie -1 si aucun numéro disponible
      *
-     * @return int numéro de la dernière sauvegarde / -1 si pas de sauvegarde
+     * @param sauvegarde liste des sauvegardes
+     * @return int numéro disponible ou -1
      */
-    public static int getLastNumberFromSave(ArrayList<String> sauvegarde) {
-        int save = -1;
+    public static int getAvailableNumber(ArrayList<String> sauvegarde) {
+        int nombreMaxSave = 10;
 
-        // Pour tous les éléments du répertoire
-        for (String str : sauvegarde) {
+        int[] number = new int[nombreMaxSave];
 
-            String[] values = str.split("save");
-            int temp = Integer.parseInt(values[1].split(".json")[0]);
+        // Remplie le tableau de -1
+        Arrays.fill(number, -1);
 
-            if (temp > save) {
-                save = temp;
+        // Récupère tous les numéros de sauvegarde
+        for (String save : sauvegarde) {
+            String[] values = save.split("save");
+            int numero = Integer.parseInt(values[1].split(".json")[0]);
+
+            number[numero - 1] = 1;
+        }
+
+        // S'il y a un -1 -> numéro disponible
+        for (int j = 0; j < nombreMaxSave; j++) {
+            if (number[j] == -1) {
+                return j + 1;
             }
         }
 
-        return save;
+        // Sinon pas de numéro disponible
+        return -1;
     }
 
     /**

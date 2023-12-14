@@ -258,10 +258,10 @@ public class SelectTamagotchi implements Screen {
                 boolean b = m.matches();
 
                 if (b) {
-                    int numberSave = ScreenMenu.getLastNumberFromSave(ScreenMenu.getNameSave()) + 1;
+                    int numberSave = ScreenMenu.getAvailableNumber(ScreenMenu.getNameSave());
 
-                    // Si vaut 0 → pas de save
-                    if (numberSave == 0) {
+                    // Si vaut -1 → pas de save
+                    if (numberSave == -1) {
                         numberSave = 1;
                     }
 

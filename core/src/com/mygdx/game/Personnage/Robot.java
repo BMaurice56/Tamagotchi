@@ -157,6 +157,8 @@ public class Robot extends Tamagotchi {
                 if (tank.equals("SuperExtraOil")) {
                     setHappiness(getHappiness() + 75);
                 }
+
+                return;
             }
         }
     }
