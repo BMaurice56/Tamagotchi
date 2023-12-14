@@ -98,27 +98,12 @@ public abstract class Animal extends Tamagotchi {
     }
 
     public int getNumberApple() {
-        int number = 0;
-
-        for (Food food : getBasket()) {
-            if (food.getName().equals("Apple")) {
-                number++;
-            }
-        }
-
-        return number;
+        return getPanier().getNumberOfFood("Apple");
     }
 
     public int getNumberGoldenApple() {
-        int number = 0;
+        return getPanier().getNumberOfFood("GoldenApple");
 
-        for (Food food : getBasket()) {
-            if (food.getName().equals("GoldenApple")) {
-                number++;
-            }
-        }
-
-        return number;
     }
 
     /**
@@ -141,9 +126,9 @@ public abstract class Animal extends Tamagotchi {
      *             modifie : foods, bonheur
      */
     public void eat(String food) {
-        for (int i = 0; i < getBasket().size(); i++) { //parcourt l'attribut panier
+        for (int i = 0; i < getPanier().getBasket().size(); i++) { //parcourt l'attribut panier
 
-            Food food1 = getBasket().get(i); //el actu
+            Food food1 = getPanier().getBasket().get(i); //el actu
 
             if (food.equals(food1.getName())) { //quand trouver
                 setFood(getFood() + food1.getPoint());

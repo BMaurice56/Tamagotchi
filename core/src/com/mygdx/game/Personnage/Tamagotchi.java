@@ -1,9 +1,7 @@
 package com.mygdx.game.Personnage;
 
-import java.util.ArrayList;
-
 public abstract class Tamagotchi {
-    private final ArrayList<Food> basket;
+    private final Panier basket;
     private int wallet;
 
     private final int numberTamagotchi;
@@ -20,7 +18,7 @@ public abstract class Tamagotchi {
      * @param numberTamagotchi int numéro
      */
     public Tamagotchi(int difficulty, String nom, int numberTamagotchi) {
-        basket = new ArrayList<>();
+        basket = new Panier();
         this.difficulty = difficulty;
         name = nom;
         this.numberTamagotchi = numberTamagotchi;
@@ -34,12 +32,12 @@ public abstract class Tamagotchi {
         this.wallet = wallet;
     }
 
-    public ArrayList<Food> getBasket() {
+    public Panier getPanier() {
         return basket;
     }
 
     public void addBasket(Food nourriture) {
-        basket.add(nourriture);
+        basket.addBasket(nourriture);
     }
 
     /**
@@ -48,7 +46,7 @@ public abstract class Tamagotchi {
      * @param i int index
      */
     public void removeFoodFromBasket(int i) {
-        basket.remove(i);
+        basket.removeFoodFromBasket(i);
     }
 
     /**
@@ -67,15 +65,7 @@ public abstract class Tamagotchi {
      * @return int leurs nombres
      */
     public int getNumberOfFood(String food) {
-        int number = 0;
-
-        for (int i = 0; i < getBasket().size(); i++) {
-            if (basket.get(i).getName().equals(food)) {
-                number++;
-            }
-        }
-
-        return number;
+        return basket.getNumberOfFood(food);
     }
 
     /**

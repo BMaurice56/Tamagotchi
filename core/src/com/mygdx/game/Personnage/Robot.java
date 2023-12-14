@@ -98,27 +98,12 @@ public class Robot extends Tamagotchi {
     }
 
     public int getNumberOil() {
-        int number = 0;
-
-        for (Food food : getBasket()) {
-            if (food.getName().equals("Oil")) {
-                number++;
-            }
-        }
-
-        return number;
+        return getPanier().getNumberOfFood("Oil");
     }
 
     public int getNumberExtraOil() {
-        int number = 0;
 
-        for (Food food : getBasket()) {
-            if (food.getName().equals("ExtraOil")) {
-                number++;
-            }
-        }
-
-        return number;
+        return getPanier().getNumberOfFood("ExtraOil");
     }
 
 
@@ -160,9 +145,9 @@ public class Robot extends Tamagotchi {
 
     public void fillTank(String tank) {
 
-        for (int i = 0; i < getBasket().size(); i++) {
+        for (int i = 0; i < getPanier().getBasket().size(); i++) {
 
-            Food food1 = getBasket().get(i);
+            Food food1 = getPanier().getBasket().get(i);
 
             if (tank.equals(food1.getName())) {
                 removeFoodFromBasket(i);
