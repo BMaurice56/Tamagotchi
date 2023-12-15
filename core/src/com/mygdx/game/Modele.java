@@ -47,10 +47,15 @@ class Moteur implements Runnable {
         switch (difficulte) {
             case (1):
                 durationPluie = 10;
+                break;
+
             case (2):
                 durationPluie = 15;
+                break;
+
             case (3):
                 durationPluie = 20;
+                break;
         }
 
         this.modele = modele;
@@ -60,10 +65,10 @@ class Moteur implements Runnable {
      * Méthode appelée pour exécuter le thread
      */
     public void run() {
-        // Tant que le drapeau n'est pas levé, on continue
         float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde / (Modele.tempsAttenteJeu / 1000);
         float nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
 
+        // Tant que le drapeau n'est pas levé, on continue
         while (!flagStop.get()) {
             // fait attendre le moteur
             try {
@@ -76,12 +81,13 @@ class Moteur implements Runnable {
             modele.vieTamagotchi();
 
             // Si on peut faire une action, on l'effectue
-            // Permet d'éviter de rappeler la fonction si on l'a déja appelé et qu'elle effectue une action
+            // Permet d'éviter de rappeler la fonction si on l'a déja appelé et qu'elle effectue une action actuellement
             if (flagWait.get()) {
                 modele.waiting();
             }
 
             if (compteur == nombreEntreSauvegarde) {
+                // Si pas d'action en cours, donc on peut sauvegarder
                 if (flagSave.get()) {
                     System.out.println("Sauvegarde automatique effectué");
                     compteur = 0;
@@ -93,6 +99,7 @@ class Moteur implements Runnable {
 
             // Met la pluie
             if (compteurPluie.get() == nombreEntrePluie) {
+                // Si pas d'action en cours, donc on peut effectuer la pluie
                 if (flagSave.get()) {
                     flagPluie.set(true);
                     nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
@@ -101,9 +108,12 @@ class Moteur implements Runnable {
 
                 // Enlève la pluie au bout de 10/15/20 secondes
             } else if (compteurPluie.get() == durationPluie / (Modele.tempsAttenteJeu / 1000)) {
+                // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
                     compteurPluie.set(0);
+
+                    // Sinon on continue
                 } else {
                     compteurPluie.set(compteurPluie.get() + 1);
                 }
@@ -134,9 +144,7 @@ public class Modele {
     private final Json json;
 
     // Drapeau qui gère le thread de jeu
-    private final AtomicBoolean flagStop = new AtomicBoolean(false),
-            flagWait = new AtomicBoolean(true),
-            flagSave = new AtomicBoolean(true);
+    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true), flagSave = new AtomicBoolean(true);
 
     // Drapeau qui active ou non la pluie
     private AtomicBoolean flagPluie;
