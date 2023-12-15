@@ -7,31 +7,52 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 class Moteur implements Runnable {
 
     // Drapeau qui régule le moteur
-    private final AtomicBoolean flagStop, flagWait, flagSave;
+    private final AtomicBoolean flagStop, flagWait, flagSave, flagPluie;
+
+    private final AtomicInteger compteurPluie;
 
     // Controller de jeu
     private final Modele modele;
 
-    private int compteur = 0;
+    // Compteur
+    private int compteur = 0, durationPluie;
+
+    private final Random random = new Random();
 
     /**
      * Constructeur
      *
-     * @param flagStop Arrête le moteur
-     * @param flagWait Fait attendre le moteur
-     * @param modele   controller de jeu
+     * @param flagStop      Arrête le moteur
+     * @param flagWait      Fait attendre le moteur
+     * @param flagSave      Sauvegarde ou non le jeu
+     * @param flagPluie     Active la pluie
+     * @param compteurPluie Sauvegarde le nombre de tours de boucle pour la pluie
+     * @param modele        controller de jeu
      */
-    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, Modele modele) {
+    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, AtomicBoolean flagPluie, AtomicInteger compteurPluie, int difficulte, Modele modele) {
         this.flagStop = flagStop;
         this.flagWait = flagWait;
         this.flagSave = flagSave;
+        this.flagPluie = flagPluie;
+        this.compteurPluie = compteurPluie;
+        switch (difficulte) {
+            case (1):
+                durationPluie = 10;
+            case (2):
+                durationPluie = 15;
+            case (3):
+                durationPluie = 20;
+        }
+
         this.modele = modele;
     }
 
@@ -41,6 +62,7 @@ class Moteur implements Runnable {
     public void run() {
         // Tant que le drapeau n'est pas levé, on continue
         float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde / (Modele.tempsAttenteJeu / 1000);
+        float nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
 
         while (!flagStop.get()) {
             // fait attendre le moteur
@@ -69,6 +91,27 @@ class Moteur implements Runnable {
                 compteur++;
             }
 
+            // Met la pluie
+            if (compteurPluie.get() == nombreEntrePluie) {
+                if (flagSave.get()) {
+                    flagPluie.set(true);
+                    nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
+                    compteurPluie.set(0);
+                }
+
+                // Enlève la pluie au bout de 10/15/20 secondes
+            } else if (compteurPluie.get() == durationPluie / (Modele.tempsAttenteJeu / 1000)) {
+                if (flagPluie.get()) {
+                    flagPluie.set(false);
+                    compteurPluie.set(0);
+                } else {
+                    compteurPluie.set(compteurPluie.get() + 1);
+                }
+
+            } else {
+                compteurPluie.set(compteurPluie.get() + 1);
+            }
+
             // Met à jour l'affichage
             modele.updateAffichage();
         }
@@ -91,7 +134,15 @@ public class Modele {
     private final Json json;
 
     // Drapeau qui gère le thread de jeu
-    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true), flagSave = new AtomicBoolean(true);
+    private final AtomicBoolean flagStop = new AtomicBoolean(false),
+            flagWait = new AtomicBoolean(true),
+            flagSave = new AtomicBoolean(true);
+
+    // Drapeau qui active ou non la pluie
+    private AtomicBoolean flagPluie;
+
+    // Stock le compteur de pluie même si le jeu est arrêté
+    private final AtomicInteger compteurPluie = new AtomicInteger(0);
 
     // Tamagotchi animale
     private Animal animal;
@@ -108,6 +159,10 @@ public class Modele {
     public final static float tempsAttenteJeu = 100f;
 
     public final static int tempsEntreSauvegarde = 5;
+
+    public final static int tempsMinimalPluie = 30;
+
+    public final static int tempsMaximalPluie = 60;
 
     public final float upperStat_10 = 10 / (tempsAttenteJeu / 10);
 
@@ -140,9 +195,10 @@ public class Modele {
     /**
      * Constructeur de jeu
      */
-    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller, int skin) {
+    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller, int skin, AtomicBoolean flagPluie) {
         this();
         this.controller = controller;
+        this.flagPluie = flagPluie;
 
         // Fichier de sauvegarde
         saveFileParty = Gdx.files.local("/core/src/com/mygdx/game/jsonFile/save" + numSave + ".json");
@@ -191,6 +247,7 @@ public class Modele {
 
     /**
      * Renvoie le niveau de son du jeu
+     * Renvoie 0.5 si pas de fichier de son ou de valeur
      *
      * @return float son
      */
@@ -334,7 +391,9 @@ public class Modele {
         // S'il y a bien une chaine de caractère, alors une action doit être effectuée
         if (attente != null) {
             // Bloque le moteur de reappeler cette fonction
+            // Bloque la sauvegarde
             flagWait.set(false);
+            flagSave.set(false);
 
             // Thread qui met à jour la barre de progression sans bloquer le jeu
             Thread t = new Thread(new Runnable() {
@@ -361,7 +420,6 @@ public class Modele {
                     controller.actionEnCourTamagotchi(true, "");
 
                     // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
-                    flagSave.set(false);
                     switch (values[2]) {
                         case "work":
                             if (animal != null) {
@@ -498,7 +556,7 @@ public class Modele {
         }
 
         // Moteur de jeu
-        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, this));
+        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, flagPluie, compteurPluie, getTamagotchi().getDifficulty(), this));
         Moteur.start();
     }
 
@@ -515,7 +573,7 @@ public class Modele {
             tamagotchi = "{numberTamagotchi:" + robot.getNumberTamagotchi() + "," + json.toJson(robot).substring(1);
         }
 
-        // Ecriture du fichier
+        // Écriture du fichier
         saveFileParty.writeString(tamagotchi, false);
     }
 }

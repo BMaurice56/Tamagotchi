@@ -10,12 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.mygdx.game.Personnage.Tamagotchi;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Vue du jeu
@@ -27,35 +31,51 @@ public class View implements Screen {
     // Stage qui gère les entrées utilisateurs (inputProcessor)
     private final Stage stage = new Stage(new ScreenViewport());
 
+    // Image de fond
     private Texture room1, room2, room3, room4;
 
+    // Image de fond de pluie (jardin)
+    private Animation<TextureRegion> room1Rain;
+
+    // Stock les noms de fichiers selon le type de tamagotchi
     private HashMap<String, String> hashMapImageAndText;
 
+    // Tamagotchi
     private final Tamagotchi tamagotchi;
 
     // Taille de la fenêtre
-    private float screenWidth, screenHeight;
+    private float screenWidth, screenHeight, elapsed;
 
     // Table qui gère le placement des objets sur la fenêtre
     private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable;
 
+    // Image du jeu
     private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage,
             extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
 
+    // Image du tamagotchi
     private final ImageButton tamagotchiImage;
 
+    // Bouton texte d'action
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
 
     // Barres de progressions
     private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
 
+    // Numéro de l'écran et taille des barres
     private int screen = 3, widthProgressbar, heightProgressBar;
 
+    // Label
     private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood;
 
+    // Controller de jeu
     private final Controller controller;
 
-    private boolean eatOrBuy = false;
+    // Différencie l'achat ou la consommation de nourriture
+    private boolean eatOrBuy = false, previousWeather;
+
+    // Active la pluie ou non
+    private final AtomicBoolean flagPluie;
 
 
     /**
@@ -64,8 +84,11 @@ public class View implements Screen {
      * @param controller Controller de jeu
      * @param tamagotchi Tamagotchi
      */
-    public View(Controller controller, Tamagotchi tamagotchi) {
+    public View(Controller controller, Tamagotchi tamagotchi, AtomicBoolean flagPluie) {
         this.tamagotchi = tamagotchi;
+        this.flagPluie = flagPluie;
+
+        previousWeather = flagPluie.get();
 
         int skin = tamagotchi.getSkin();
 
@@ -125,11 +148,32 @@ public class View implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        elapsed += Gdx.graphics.getDeltaTime();
+
+        // Si passage de pluie à soleil et inversement, on place la bonne table
+        if (screen == 1 && previousWeather != flagPluie.get()) {
+            previousWeather = flagPluie.get();
+            int numberActors = stage.getActors().size;
+
+            // Si l'on se trouve dans les paramètres lors d'un changement d'état, on ne fait aucun changement
+            if (numberActors == 3) {
+                previousWeather = !flagPluie.get();
+            } else if (previousWeather) {
+                putGameTable();
+            } else {
+                putTable(room1Table);
+            }
+        }
+
         // Dessine l'image de fond
         batch.begin();
         switch (screen) {
             case 1:
-                batch.draw(room1, 0, 0, screenWidth, screenHeight);
+                if (previousWeather) {
+                    batch.draw(room1Rain.getKeyFrame(elapsed), 0, 0, screenWidth, screenHeight);
+                } else {
+                    batch.draw(room1, 0, 0, screenWidth, screenHeight);
+                }
                 break;
             case 2:
                 batch.draw(room2, 0, 0, screenWidth, screenHeight);
@@ -156,6 +200,8 @@ public class View implements Screen {
         room2 = new Texture(getImageOrTextFromTamagotchi("room2"));
         room3 = new Texture(getImageOrTextFromTamagotchi("room3"));
         room4 = new Texture(getImageOrTextFromTamagotchi("room4"));
+
+        room1Rain = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal(getImageOrTextFromTamagotchi("room1Rain")).read());
     }
 
     /**
@@ -318,7 +364,11 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 switch (screen) {
                     case (1):
-                        putTable(room1Table);
+                        if (flagPluie.get()) {
+                            putGameTable();
+                        } else {
+                            putTable(room1Table);
+                        }
                         break;
                     case (2):
                         putTable(room2Table);
@@ -461,7 +511,12 @@ public class View implements Screen {
         screen -= 1;
         switch (screen) {
             case (1):
-                putTable(room1Table);
+                if (flagPluie.get()) {
+                    putGameTable();
+                } else {
+                    putTable(room1Table);
+                }
+
                 leftArrow.setVisible(false);
                 break;
 
@@ -749,6 +804,7 @@ public class View implements Screen {
             hashMapImageAndText.put("extraFoodImage", "images/extraOil.png");
 
             hashMapImageAndText.put("room1", "images/garden.png");
+            hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
             hashMapImageAndText.put("room2", "images/kitchen.jpg");
             hashMapImageAndText.put("room3", "images/livingRoom.jpg");
             hashMapImageAndText.put("room4", "images/bathroom.jpg");
@@ -770,6 +826,7 @@ public class View implements Screen {
             hashMapImageAndText.put("extraFoodImage", "images/goldenApple.png");
 
             hashMapImageAndText.put("room1", "images/garden.png");
+            hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
             hashMapImageAndText.put("room2", "images/kitchen.jpg");
             hashMapImageAndText.put("room3", "images/livingRoom.jpg");
             hashMapImageAndText.put("room4", "images/bathroom.jpg");
@@ -801,7 +858,7 @@ public class View implements Screen {
      *
      * @param visibility boolean Modifie l'affichage
      */
-    public void actionTamagotchiVisibility(boolean visibility, String act) {
+    public void actionTamagotchiChangeVisibility(boolean visibility, String act) {
         action.setText(act + " en cours");
         action.setX(screenWidth / 2 - action.getMinWidth() / 2);
 

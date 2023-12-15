@@ -160,20 +160,16 @@ public class ScreenMenu implements Screen {
 
     /**
      * Instancie la table de sauvegarde
-     *
-     * @param empty Si la table est vide ou non
      */
-    public void createSaveTable(boolean empty) {
-
+    public void createSaveTable() {
         // Table d'affichage des sauvegardes
         saveGameTable = new Table();
         saveGameTable.setFillParent(true);
         saveGameTable.center();
 
-        // Définie la police de la table
-        posAndSizeElement();
+        ArrayList<String> sauvegarde = getNamesSave();
 
-        if (empty) {
+        if (sauvegarde.isEmpty()) {
             saveGameTable.add(new Label("", new MultiSkin("label")));
             saveGameTable.add(noSave).row();
 
@@ -188,7 +184,7 @@ public class ScreenMenu implements Screen {
             JsonReader jsonReader = new JsonReader();
 
             // Pour toutes les sauvegardes trouvées
-            for (String save : getNamesSave()) {
+            for (String save : sauvegarde) {
                 // Permet de lire et d'interagir avec le fichier
                 final FileHandle saveFile = new FileHandle(currRelativePath + "/" + save);
 
@@ -218,11 +214,11 @@ public class ScreenMenu implements Screen {
                         break;
                 }
 
-                // Ajout du label à la table
+                // Ajout des labels à la table
                 saveGameTable.add(nomTamagotchi);
                 saveGameTable.add(difficulty);
 
-                // Bouton Jouer
+                // Bouton Jouer et supprimer
                 Label jouer = new Label(" Jouer ", new MultiSkin("label"));
                 Label supprimer = new Label("  Supprimer", new MultiSkin("label"));
 
@@ -237,16 +233,18 @@ public class ScreenMenu implements Screen {
                 supprimer.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        message.setText("Etes vous sur de vouloir supprimer : " + nomTamagotchi.getText());
+
                         Label oui = new Label("Oui", new MultiSkin("label"));
                         Label non = new Label("Non", new MultiSkin("label"));
-
-                        message.setText("Etes vous sur de vouloir supprimer : " + nomTamagotchi.getText());
 
                         multiLabels.add(oui);
                         multiLabels.add(non);
 
+                        // Place les éléments de l'affichage
                         posAndSizeElement();
 
+                        // Affichage du message de confirmation
                         stage.clear();
                         stage.addActor(message);
                         stage.addActor(oui);
@@ -292,14 +290,15 @@ public class ScreenMenu implements Screen {
 
     /**
      * Place la table de sauvegarde à l'écran
+     * Permet de remettre à jour la table si suppression de sauvegarde
      */
     public void putSaveTable() {
-        ArrayList<String> sauvegarde = getNamesSave();
-
-        createSaveTable(sauvegarde.isEmpty());
+        // Crée la table
+        createSaveTable();
 
         putTable(saveGameTable);
 
+        // Placement les éléments de la table
         posAndSizeElement();
     }
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.LifecycleListener;
 import com.mygdx.game.Personnage.Tamagotchi;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Classe qui sert de controller pour le jeu
@@ -31,9 +32,11 @@ public class Controller {
      * @param save             Lancement d'une sauvegarde ou non
      */
     public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numberSave, int skin) {
-        modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, numberSave, this, skin);
+        AtomicBoolean flagPluie = new AtomicBoolean(false);
 
-        view = new View(this, modele.getTamagotchi());
+        modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, numberSave, this, skin, flagPluie);
+
+        view = new View(this, modele.getTamagotchi(), flagPluie);
 
         // Définit l'écran de jeu
         ((Game) Gdx.app.getApplicationListener()).setScreen(view);
@@ -85,7 +88,7 @@ public class Controller {
      * @param visibility true ou false selon où on en est dans l'action
      */
     public void actionEnCourTamagotchi(boolean visibility, String action) {
-        view.actionTamagotchiVisibility(visibility, action);
+        view.actionTamagotchiChangeVisibility(visibility, action);
     }
 
     /**
