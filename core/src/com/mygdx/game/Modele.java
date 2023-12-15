@@ -86,7 +86,7 @@ class Moteur implements Runnable {
                 modele.waiting();
             }
 
-            if (compteur == nombreEntreSauvegarde) {
+            if (compteur >= nombreEntreSauvegarde) {
                 // Si pas d'action en cours, donc on peut sauvegarder
                 if (flagSave.get()) {
                     System.out.println("Sauvegarde automatique effectué");
@@ -98,7 +98,7 @@ class Moteur implements Runnable {
             }
 
             // Met la pluie
-            if (compteurPluie.get() == nombreEntrePluie) {
+            if (compteurPluie.get() >= nombreEntrePluie) {
                 // Si pas d'action en cours, donc on peut effectuer la pluie
                 if (flagSave.get()) {
                     flagPluie.set(true);
