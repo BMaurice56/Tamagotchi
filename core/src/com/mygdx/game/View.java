@@ -67,21 +67,23 @@ public class View implements Screen {
     public View(Controller controller, Tamagotchi tamagotchi) {
         this.tamagotchi = tamagotchi;
 
+        int skin = tamagotchi.getSkin();
+
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
-                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat" + skin + ".png", 500, 500);
                 break;
 
             case ("com.mygdx.game.Personnage.Chien"):
-                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog.png", 800, 723);
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog" + skin + ".png", 500, 500);
                 break;
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
-                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur.png", 1240, 1240);
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur" + skin + ".png", 500, 500);
                 break;
 
             case ("com.mygdx.game.Personnage.Robot"):
-                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot.png", 1200, 800);
+                tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
                 break;
 
             default:
@@ -89,7 +91,7 @@ public class View implements Screen {
         }
 
         // Met à jour les variables de taille de l'écran
-        updateAttributScreenSize();
+        updateAttributScreenSizeProgressBar();
 
         // Définit le controller et instancie les différents éléments
         this.controller = controller;
@@ -618,7 +620,7 @@ public class View implements Screen {
         waitingBar.setSize(widthProgressbar, heightProgressBar);
 
         // Taille des images
-        float widthImage = 50f, heightImage = 50f;
+        float widthImage = screenHeight * (50f / 900f), heightImage = screenHeight * (50f / 900f);
 
         image1.setSize(widthImage, heightImage);
         image2.setSize(widthImage, heightImage);
@@ -630,28 +632,34 @@ public class View implements Screen {
         extraFoodImage.setSize(widthImage, heightImage);
 
         // Tamagotchi
-        float widthTamagotchi = 150;
-        float heightTamagotchi = 150;
+        float widthTamagotchi = screenHeight * (150f / 900f);
+        float heightTamagotchi = screenHeight * (150f / 900f);
 
         tamagotchiImage.setSize(widthTamagotchi, heightTamagotchi);
-        tamagotchiImage.setPosition(screenWidth / 2 - widthTamagotchi / 2, 70);
+        tamagotchiImage.setPosition(screenWidth / 2 - widthTamagotchi / 2, screenHeight * (60f / 900f));
 
 
         // Flèche de changement d'écran
-
         float adjustPositionArrow = 150;
+        float arrowXSize = screenHeight * (100f / 900f);
+        float arrowYSize = screenHeight * (75f / 900f);
 
         leftArrow.setPosition(5, screenHeight / 2 - adjustPositionArrow);
         rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2 - adjustPositionArrow);
 
+        leftArrow.setSize(arrowXSize, arrowYSize);
+        rightArrow.setSize(arrowXSize, arrowYSize);
+
         // Paramètre
+        float XYSettingsSize = screenHeight * (70f / 900f);
+        settings.setSize(XYSettingsSize, XYSettingsSize);
         settings.setPosition(10, 10);
 
         // Position des tables
-        room1Table.setPosition(screenWidth - 150, 30);
-        room2Table.setPosition(screenWidth - 175, 30);
-        room3Table.setPosition(screenWidth - 200, 30);
-        room4Table.setPosition(screenWidth - 150, 30);
+        room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 30);
+        room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), 30);
+        room3Table.setPosition(screenWidth - room3Table.getMinWidth() + room3Table.getMinWidth() * (100f / 300), 30);
+        room4Table.setPosition(screenWidth - room4Table.getMinWidth() + room4Table.getMinWidth() * (40f / 123), 30);
 
         foodTable.setPosition(screenWidth / 2, screenHeight / 2);
 
@@ -678,19 +686,40 @@ public class View implements Screen {
         progressBar4.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
         progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
+        float fontScale = screenHeight * (1f / 900f);
+        if (fontScale > 1) {
+            fontScale = 1;
+        }
+
+        float ajustementLabelFood = 1 / (fontScale / 5);
+
         // Action du Tamagotchi
         waitingBar.setPosition(screenWidth / 2 - (float) widthProgressbar / 2, screenHeight / 2 - (float) heightProgressBar / 2);
         action.setPosition(0, screenHeight / 2 + (float) heightProgressBar / 2);
 
-        moneyLabel.setPosition(X + shiftX, Y - shiftY * 6);
-        foodLabel.setPosition(X + shiftX, Y - shiftY * 7);
-        extraFoodLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7);
+        moneyLabel.setPosition(X + shiftX, Y - shiftY * 6 - (1 / (fontScale / 4)));
+        foodLabel.setPosition(X + shiftX, Y - shiftY * 7 - ajustementLabelFood);
+        extraFoodLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7 - ajustementLabelFood);
+
+        moneyLabel.setFontScale(fontScale);
+        foodLabel.setFontScale(fontScale);
+        extraFoodLabel.setFontScale(fontScale);
+
+        eat.getLabel().setFontScale(fontScale);
+        buy.getLabel().setFontScale(fontScale);
+        wash.getLabel().setFontScale(fontScale);
+        play.getLabel().setFontScale(fontScale);
+        work.getLabel().setFontScale(fontScale);
+        sleep.getLabel().setFontScale(fontScale);
+        resume.getLabel().setFontScale(fontScale);
+        settings2.getLabel().setFontScale(fontScale);
+        home.getLabel().setFontScale(fontScale);
     }
 
     /**
      * Récupère la taille de la fenêtre et met à jour les attributs
      */
-    public void updateAttributScreenSize() {
+    public void updateAttributScreenSizeProgressBar() {
         // Récupère les dimensions de la fenêtre
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -699,8 +728,8 @@ public class View implements Screen {
         widthProgressbar = (int) (screenWidth / 6);
         heightProgressBar = (int) (screenHeight / 30);
 
-        if (heightProgressBar > 50) {
-            heightProgressBar = 50;
+        if (heightProgressBar > 70) {
+            heightProgressBar = 70;
         }
     }
 
@@ -835,7 +864,7 @@ public class View implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        updateAttributScreenSize();
+        updateAttributScreenSizeProgressBar();
 
         // Met à jour la position des éléments
         posAndSizeElement();

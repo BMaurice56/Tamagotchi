@@ -140,7 +140,7 @@ public class Modele {
     /**
      * Constructeur de jeu
      */
-    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller) {
+    public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller, int skin) {
         this();
         this.controller = controller;
 
@@ -170,19 +170,19 @@ public class Modele {
         } else {
             switch (tamagotchiWished) {
                 case (1):
-                    animal = new Chat(difficulty, nomTamagotchi);
+                    animal = new Chat(difficulty, nomTamagotchi, skin);
                     break;
 
                 case (2):
-                    animal = new Chien(difficulty, nomTamagotchi);
+                    animal = new Chien(difficulty, nomTamagotchi, skin);
                     break;
 
                 case (3):
-                    animal = new Dinosaure(difficulty, nomTamagotchi);
+                    animal = new Dinosaure(difficulty, nomTamagotchi, skin);
                     break;
 
                 case (4):
-                    robot = new Robot(difficulty, nomTamagotchi);
+                    robot = new Robot(difficulty, nomTamagotchi, skin);
                     break;
             }
         }

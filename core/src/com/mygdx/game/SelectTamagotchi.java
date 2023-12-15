@@ -43,7 +43,7 @@ public class SelectTamagotchi implements Screen {
 
     private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message;
 
-    private int tamagotchiSelection = 1, difficultyLevel = 1;
+    private int tamagotchiSelection = 1, difficultyLevel = 1, skin = 1;
 
     /**
      * Constructeur
@@ -78,6 +78,12 @@ public class SelectTamagotchi implements Screen {
         tamagotchiSelected.getStyle().imageUp = tamagotchiSelected.getStyle().imageDown = drawable;
     }
 
+    public void setSkin(String image) {
+        Texture img = new Texture(Gdx.files.internal("images/" + image));
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(img));
+        tamagotchiSelected.getStyle().imageUp = tamagotchiSelected.getStyle().imageDown = drawable;
+    }
+
     /**
      * Ajout les éléments à l'interface
      */
@@ -104,12 +110,12 @@ public class SelectTamagotchi implements Screen {
      */
     public void createButton() {
         // Boutons de selection du Tamagotchi
-        pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
-        pixelDog = new BoutonImage(new MultiSkin("image"), "images/pixelDog.png", 800, 723);
-        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur.png", 1240, 1240);
-        pixelRobot = new BoutonImage(new MultiSkin("image"), "images/pixelRobot.png", 1200, 800);
+        pixelCat = new BoutonImage(new MultiSkin("image"), "images/pixelCat1.png", 500, 500);
+        pixelDog = new BoutonImage(new MultiSkin("image"), "images/pixelDog1.png", 500, 500);
+        pixelDinosaur = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur1.png", 500, 500);
+        pixelRobot = new BoutonImage(new MultiSkin("image"), "images/pixelRobot1.png", 500, 500);
 
-        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "images/pixelCat.png", 920, 1104);
+        tamagotchiSelected = new BoutonImage(new MultiSkin("image"), "images/pixelCat1.png", 500, 500);
 
         backButton = new TextButton("Retour en arriere", new MultiSkin("text"));
         playButton = new TextButton("Jouer", new MultiSkin("text"));
@@ -139,15 +145,19 @@ public class SelectTamagotchi implements Screen {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        float tailleImage = screenHeight * ((float) 200 / 900);
-        float xArrow = screenHeight * ((float) 100 / 900);
-        float yArrow = screenHeight * (float) 75 / 900;
-        float shift = screenHeight * ((float) 30 / 900);
-        float ajustementXElement = screenHeight * ((float) 35 / 900);
-        float ajustementYElement = screenHeight * ((float) 200 / 900);
-        float fontScale = ((float) 1 / 900) * screenHeight;
-        float middleX = screenWidth / 2;
-        float middleY = screenHeight / 2;
+        float tailleImage = screenHeight * (150f / 900f);
+        float xArrow = screenHeight * (100f / 900f);
+        float yArrow = screenHeight * (75f / 900f);
+        float shift = screenHeight * (30f / 900f);
+        float ajustementXElement = screenHeight * (35f / 900f);
+        float ajustementYElement = screenHeight * (200f / 900f);
+        float fontScale = screenHeight * (1f / 900f);
+        float middleX = screenWidth / 2f;
+        float middleY = screenHeight / 2f;
+
+        if (fontScale > 1) {
+            fontScale = 1;
+        }
 
         pixelCat.setSize(tailleImage, tailleImage);
         pixelDog.setSize(tailleImage, tailleImage);
@@ -171,16 +181,16 @@ public class SelectTamagotchi implements Screen {
         pixelDinosaur.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY - tailleImage - shift + ajustementYElement);
         pixelRobot.setPosition(middleX + shift + ajustementXElement, middleY - tailleImage - shift + ajustementYElement);
 
-        labelTamagotchiSelection.setPosition(middleX - labelTamagotchiSelection.getMinWidth() - ajustementXElement, (float) (middleY - (tailleImage / 1.2)));
-        tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, (float) (middleY - (tailleImage / 1.2)));
+        labelTamagotchiSelection.setPosition(middleX - labelTamagotchiSelection.getMinWidth() - ajustementXElement, middleY - (tailleImage / 1.2f));
+        tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.2f));
 
-        labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, (float) (middleY - tailleImage - shift * 2.2));
-        nomTamagotchi.setPosition((middleX + shift * 3), (float) (middleY - tailleImage - shift * 2.2));
+        labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
+        nomTamagotchi.setPosition(middleX + (shift * 3f), middleY - tailleImage - (shift * 2.2f));
 
-        labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, middleY - tailleImage - shift * 5);
+        labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 5f));
         leftArrow.setPosition(middleX, middleY - tailleImage - shift * 4 - labelLevelDifficult.getMinHeight());
-        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + ajustementXElement / 2, middleY - tailleImage - shift * 5);
-        rightArrow.setPosition((float) (middleX + labelLevelDifficult.getMinWidth() + ajustementXElement * 4.2), middleY - tailleImage - shift * 4 - labelLevelDifficult.getMinHeight());
+        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement / 2f), middleY - tailleImage - (shift * 5f));
+        rightArrow.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement * 4.2f), middleY - tailleImage - (shift * 4f) - labelLevelDifficult.getMinHeight());
 
         if (backButton.getMinWidth() <= 220) {
             backButton.setPosition(middleX - 220 - ajustementXElement, 20);
@@ -190,8 +200,8 @@ public class SelectTamagotchi implements Screen {
 
         playButton.setPosition(middleX + playButton.getMinWidth(), 20);
 
-        message.setPosition(screenWidth / 2 - message.getMinWidth() / 2, screenHeight / 2);
-        retour.setPosition(screenWidth / 2 - retour.getMinWidth() / 2, screenHeight / 2 - message.getMinHeight() - 20);
+        message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
+        retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);
     }
 
     /**
@@ -258,14 +268,14 @@ public class SelectTamagotchi implements Screen {
                 boolean b = m.matches();
 
                 if (b) {
-                    int numberSave = ScreenMenu.getAvailableNumber(ScreenMenu.getNameSave());
+                    int numberSave = ScreenMenu.getAvailableNumber(ScreenMenu.getNamesSave());
 
                     // Si vaut -1 → pas de save
                     if (numberSave == -1) {
                         numberSave = 1;
                     }
 
-                    new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, false, numberSave);
+                    new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, false, numberSave, skin);
                 } else {
                     if (nomTamagotchi.getText().isEmpty()) {
                         message.setText("Entrer un nom pour le Tamagotchi.");
@@ -332,6 +342,40 @@ public class SelectTamagotchi implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 addActorStage();
+                return true;
+            }
+        });
+
+        tamagotchiSelected.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (skin) {
+                    case (1):
+                        skin = 2;
+                        break;
+
+                    case (2):
+                        skin = 1;
+                        break;
+                }
+                switch (tamagotchiSelection) {
+                    case (1):
+                        setSkin("pixelCat" + skin + ".png");
+                        break;
+
+                    case (2):
+                        setSkin("pixelDog" + skin + ".png");
+                        break;
+
+                    case (3):
+                        setSkin("pixelDinosaur" + skin + ".png");
+                        break;
+
+                    case (4):
+                        setSkin("pixelRobot" + skin + ".png");
+                        break;
+                }
+
                 return true;
             }
         });

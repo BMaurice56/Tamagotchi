@@ -18,8 +18,8 @@ public abstract class Animal extends Tamagotchi {
      *
      * @param difficulty Niveau de difficulty
      */
-    public Animal(int difficulty, String nom, int numberTamagotchi) {
-        super(difficulty, nom, numberTamagotchi);
+    public Animal(int difficulty, String nom, int numberTamagotchi, int skin) {
+        super(difficulty, nom, numberTamagotchi, skin);
         life = 1000;
         food = 1000;
         hygiene = 1000;

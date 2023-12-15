@@ -10,6 +10,8 @@ public abstract class Tamagotchi {
 
     final String name;
 
+    final int skin;
+
     /**
      * Constructeur
      *
@@ -17,11 +19,12 @@ public abstract class Tamagotchi {
      * @param nom              String nom
      * @param numberTamagotchi int numéro
      */
-    public Tamagotchi(int difficulty, String nom, int numberTamagotchi) {
+    public Tamagotchi(int difficulty, String nom, int numberTamagotchi, int skin) {
         basket = new Panier();
         this.difficulty = difficulty;
         name = nom;
         this.numberTamagotchi = numberTamagotchi;
+        this.skin = skin;
     }
 
     public int getWallet() {
@@ -41,7 +44,7 @@ public abstract class Tamagotchi {
     }
 
     /**
-     * Méthode qui enlève une nourriture dans le panier selon son index
+     * Enlève une nourriture dans le panier selon son index
      *
      * @param i int index
      */
@@ -50,13 +53,20 @@ public abstract class Tamagotchi {
     }
 
     /**
-     * Getter niveau de difficulté
+     * Assesseur niveau de difficulté
      *
      * @return int difficulté
      */
     public int getDifficulty() {
         return difficulty;
     }
+
+    /**
+     * Assesseur numéro de la texture
+     *
+     * @return
+     */
+    public int getSkin() {return skin;}
 
     /**
      * Renvoi le nombre de nourritures selon son nom

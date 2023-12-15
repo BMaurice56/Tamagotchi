@@ -88,84 +88,12 @@ public class ScreenMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    // Deuxième constructeur
+    /*
+     * Deuxième constructeur
+     */
     public ScreenMenu(boolean ignoredMenuGestionGame) {
         this();
         putTable(partyTable);
-    }
-
-    /**
-     * Called when this screen becomes the current screen for a {@link Game}.
-     */
-    @Override
-    public void show() {
-    }
-
-    /**
-     * Called when the screen should render itself.
-     *
-     * @param delta The time in seconds since the last render.
-     */
-    @Override
-    public void render(float delta) {
-        // Efface l'écran
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Dessine l'image de fond
-        batch.begin();
-        batch.draw(background, 0, 0, screenWidth, screenHeight);
-        batch.end();
-
-        // Dessine le stage
-        stage.draw();
-    }
-
-
-    @Override
-    public void dispose() {
-        batch.dispose();
-        stage.dispose();
-    }
-
-    /**
-     * Méthode appelée lorsque la fenêtre est redimensionnée
-     *
-     * @param width  la nouvelle largeur en pixels
-     * @param height la nouvelle hauteur en pixels
-     */
-    @Override
-    public void resize(int width, int height) {
-        // Met à jour les nouvelles dimensions de la fenêtre
-        screenWidth = width;
-        screenHeight = height;
-
-        // Met à jour la projection du SpriteBatch
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
-
-        // Appelle la méthode resize du Stage
-        stage.getViewport().update(width, height, true);
-    }
-
-    /**
-     * @see ApplicationListener#pause()
-     */
-    @Override
-    public void pause() {
-    }
-
-    /**
-     * @see ApplicationListener#resume()
-     */
-    @Override
-    public void resume() {
-    }
-
-    /**
-     * Called when this screen is no longer the current screen for a {@link Game}.
-     */
-    @Override
-    public void hide() {
     }
 
     /**
@@ -211,7 +139,103 @@ public class ScreenMenu implements Screen {
 
         settingsTable.add(volumeSlider).row();
         settingsTable.add(backButton2).row();
+    }
 
+    /**
+     * Instancie la table de sauvegarde
+     *
+     * @param empty Si la table est vide ou non
+     */
+    public void createSaveTable(boolean empty) {
+
+        // Table d'affichage des sauvegardes
+        saveGameTable = new Table();
+        saveGameTable.setFillParent(true);
+        saveGameTable.center();
+
+        // Définie la police de la table
+        posAndSizeElement();
+
+        if (empty) {
+            saveGameTable.add(new Label("", new MultiSkin("label")));
+            saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
+            saveGameTable.setPosition(saveGameTable.getX() + 100, saveGameTable.getY());
+
+        } else {
+            saveGameTable.add(new Label("Nom du \nTamagotchi", new MultiSkin("label")));
+            saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
+            saveGameTable.add(new Label("     ", new MultiSkin("label")));
+            saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
+            saveGameTable.add(new Label("", new MultiSkin("label"))).row();
+
+            // Lecteur de json
+            JsonReader jsonReader = new JsonReader();
+
+            // Pour toutes les sauvegardes trouvées
+            for (String save : getNamesSave()) {
+                // Permet de lire et d'interagir avec le fichier
+                final FileHandle saveFile = new FileHandle(currRelativePath + "/" + save);
+
+                // Lecture du fichier de paramètre json
+                final JsonValue saveFileReader = jsonReader.parse(saveFile);
+
+                // Création d'un label avec le nom du Tamagotchi
+                Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
+
+                // Récupération du numéro de sauvegarde
+                String[] values = save.split("save");
+                final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
+
+                // Ajout du label à la table
+                saveGameTable.add(nomTamagotchi);
+                switch (contains(saveFileReader, "difficulty")) {
+                    case (1):
+                        saveGameTable.add(new Label("Facile", new MultiSkin("label")));
+                        break;
+
+                    case (2):
+                        saveGameTable.add(new Label("Moyen", new MultiSkin("label")));
+                        break;
+
+                    case (3):
+                        saveGameTable.add(new Label("Difficile", new MultiSkin("label")));
+                        break;
+                }
+
+                // Bouton Jouer
+                Label jouer = new Label(" Jouer ", new MultiSkin("label"));
+                Label supprimer = new Label("  Supprimer", new MultiSkin("label"));
+
+                jouer.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave, contains(saveFileReader, "skin"));
+                        return true;
+                    }
+                });
+
+                supprimer.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        saveFile.delete();
+                        ArrayList<String> sauvegarde = getNamesSave();
+
+                        createSaveTable(sauvegarde.isEmpty());
+
+                        putTable(saveGameTable);
+                        return true;
+                    }
+                });
+
+
+                saveGameTable.add(jouer);
+                saveGameTable.add(supprimer).row();
+            }
+        }
+        saveGameTable.add(new Label("", new MultiSkin("label"))).row();
+        // Ajout d'un espace et d'un bouton retour
+        saveGameTable.add(new Label("", new MultiSkin("label")));
+        saveGameTable.add(backButton3).row();
     }
 
     /**
@@ -236,7 +260,7 @@ public class ScreenMenu implements Screen {
         newGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                int sauvegarde = getAvailableNumber(getNameSave());
+                int sauvegarde = getAvailableNumber(getNamesSave());
 
                 if (sauvegarde == -1) {
                     maxSaveTable = new Table();
@@ -303,77 +327,11 @@ public class ScreenMenu implements Screen {
         saveGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                int sauvegarde = getAvailableNumber(getNameSave());
+                ArrayList<String> sauvegarde = getNamesSave();
 
-                // Table d'affichage des sauvegardes
-                saveGameTable = new Table();
-                saveGameTable.setFillParent(true);
-                saveGameTable.center();
-                saveGameTable.setPosition(saveGameTable.getX() - 100, saveGameTable.getY());
+                createSaveTable(sauvegarde.isEmpty());
 
-                if (sauvegarde == 1) {
-                    saveGameTable.add(new Label("", new MultiSkin("label")));
-                    saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
-                    saveGameTable.setPosition(saveGameTable.getX() + 100, saveGameTable.getY());
-
-                } else {
-                    saveGameTable.add(new Label("Nom du \nTamagotchi", new MultiSkin("label")));
-                    saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
-                    saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
-                    saveGameTable.add(new Label("", new MultiSkin("label"))).row();
-
-                    // Lecteur de json
-                    JsonReader jsonReader = new JsonReader();
-
-                    // Pour toutes les sauvegardes trouvées
-                    for (String save : getNameSave()) {
-                        // Permet de lire et d'interagir avec le fichier
-                        FileHandle saveFile = new FileHandle(currRelativePath + "/" + save);
-
-                        // Lecture du fichier de paramètre json
-                        final JsonValue saveFileReader = jsonReader.parse(saveFile);
-
-                        // Création d'un label avec le nom du Tamagotchi
-                        Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
-
-                        // Récupération du numéro de sauvegarde
-                        String[] values = save.split("save");
-                        final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
-
-                        // Ajout du label à la table
-                        saveGameTable.add(nomTamagotchi);
-                        switch (contains(saveFileReader, "difficulty")) {
-                            case (1):
-                                saveGameTable.add(new Label("Facile", new MultiSkin("label")));
-                                break;
-
-                            case (2):
-                                saveGameTable.add(new Label("Moyen", new MultiSkin("label")));
-                                break;
-
-                            case (3):
-                                saveGameTable.add(new Label("Difficile", new MultiSkin("label")));
-                                break;
-                        }
-
-                        // Bouton Jouer
-                        Label jouer = new Label(" Jouer", new MultiSkin("label"));
-
-                        jouer.addListener(new InputListener() {
-                            @Override
-                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave);
-                                return true;
-                            }
-                        });
-
-                        saveGameTable.add(jouer).row();
-                    }
-                }
-                saveGameTable.add(new Label("", new MultiSkin("label"))).row();
-                // Ajout d'un espace et d'un bouton retour
-                saveGameTable.add(new Label("", new MultiSkin("label")));
-                saveGameTable.add(backButton3).row();
+                posAndSizeElement();
 
                 // Ajout de la table à l'écran
                 putTable(saveGameTable);
@@ -382,6 +340,39 @@ public class ScreenMenu implements Screen {
             }
         });
 
+    }
+
+    /**
+     * Place et redimensionne les éléments à l'écran
+     */
+    public void posAndSizeElement() {
+        float fontScale = ((float) 1 / 900) * screenHeight;
+
+        if (fontScale > 1) {
+            fontScale = 1;
+        }
+
+        newGameButton.getLabel().setFontScale(fontScale);
+        saveGameButton.getLabel().setFontScale(fontScale);
+        backButton.getLabel().setFontScale(fontScale);
+        backButton2.getLabel().setFontScale(fontScale);
+        backButton3.getLabel().setFontScale(fontScale);
+
+        // Si la table n'est pas null, alors on redimensionne les polices d'écriture
+        if (saveGameTable != null) {
+            for (Cell cell : saveGameTable.getCells()) {
+                Actor actor = cell.getActor();
+
+                if (actor instanceof Label) {
+                    Label label = (Label) actor;
+                    label.setFontScale(fontScale);
+
+                } else {
+                    TextButton textButton = (TextButton) actor;
+                    textButton.getLabel().setFontScale(fontScale);
+                }
+            }
+        }
     }
 
     /**
@@ -439,7 +430,7 @@ public class ScreenMenu implements Screen {
      *
      * @return arraylist nom des sauvegarde
      */
-    public static ArrayList<String> getNameSave() {
+    public static ArrayList<String> getNamesSave() {
 
         // Objet File à partir du chemin
         File repertoire = new File(currRelativePath.toString());
@@ -476,5 +467,81 @@ public class ScreenMenu implements Screen {
     public void putTable(Table table) {
         stage.clear();
         stage.addActor(table);
+    }
+
+    /**
+     * Called when the screen should render itself.
+     *
+     * @param delta The time in seconds since the last render.
+     */
+    @Override
+    public void render(float delta) {
+        // Efface l'écran
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Dessine l'image de fond
+        batch.begin();
+        batch.draw(background, 0, 0, screenWidth, screenHeight);
+        batch.end();
+
+        // Dessine le stage
+        stage.draw();
+    }
+
+    /**
+     * Méthode appelée lorsque la fenêtre est redimensionnée
+     *
+     * @param width  la nouvelle largeur en pixels
+     * @param height la nouvelle hauteur en pixels
+     */
+    @Override
+    public void resize(int width, int height) {
+        // Met à jour les nouvelles dimensions de la fenêtre
+        screenWidth = width;
+        screenHeight = height;
+
+        posAndSizeElement();
+
+        // Met à jour la projection du SpriteBatch
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
+
+        // Appelle la méthode resize du Stage
+        stage.getViewport().update(width, height, true);
+    }
+
+    /**
+     * @see ApplicationListener#pause()
+     */
+    @Override
+
+    public void pause() {
+    }
+
+    /**
+     * @see ApplicationListener#resume()
+     */
+    @Override
+    public void resume() {
+    }
+
+    /**
+     * Called when this screen is no longer the current screen for a {@link Game}.
+     */
+    @Override
+    public void hide() {
+    }
+
+    /**
+     * Called when this screen becomes the current screen for a {@link Game}.
+     */
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        stage.dispose();
     }
 }
