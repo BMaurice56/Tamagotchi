@@ -63,7 +63,7 @@ public class View implements Screen {
     private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
 
     // Numéro de l'écran et taille des barres
-    private int screen = 3, widthProgressbar, heightProgressBar;
+    private int screen, widthProgressbar, heightProgressBar;
 
     // Label
     private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood;
@@ -129,8 +129,32 @@ public class View implements Screen {
         // Positionne les éléments
         posAndSizeElement();
 
+        screen = tamagotchi.getNumeroSalle();
+
         // Affiche la table de jeu
-        putTable(room3Table);
+        switch (screen) {
+            case (1):
+                if (flagPluie.get()) {
+                    putGameTable();
+                } else {
+                    putTable(room1Table);
+                }
+                leftArrow.setVisible(false);
+                break;
+
+            case (2):
+                putTable(room2Table);
+                break;
+
+            case (3):
+                putTable(room3Table);
+                break;
+
+            case (4):
+                putTable(room4Table);
+                rightArrow.setVisible(false);
+                break;
+        }
 
         // Définit le stage comme gestionnaire des entrées
         Gdx.input.setInputProcessor(stage);
@@ -851,6 +875,15 @@ public class View implements Screen {
      */
     public String getImageOrTextFromTamagotchi(String key) {
         return hashMapImageAndText.get(key);
+    }
+
+    /**
+     * Renvoie le numéro de l'écran où se trouve le tamagotchi
+     *
+     * @return int numéro
+     */
+    public int getNumberRoom() {
+        return screen;
     }
 
     /**

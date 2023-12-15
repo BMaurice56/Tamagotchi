@@ -230,7 +230,6 @@ public class Modele {
                     robot = json.fromJson(Robot.class, tamagotchi);
                     break;
             }
-
         } else {
             switch (tamagotchiWished) {
                 case (1):
@@ -249,6 +248,14 @@ public class Modele {
                     robot = new Robot(difficulty, nomTamagotchi, skin);
                     break;
             }
+        }
+
+        if (tamagotchiWished == 4) {
+            flagPluie.set(robot.getPluie());
+            compteurPluie.set(robot.getCompteurPluie());
+        } else {
+            flagPluie.set(animal.getPluie());
+            compteurPluie.set(animal.getCompteurPluie());
         }
     }
 
@@ -572,6 +579,16 @@ public class Modele {
      * Sauvegarde la partie dans un fichier
      */
     public void save() {
+        if (animal != null) {
+            animal.setCompteurPluie(compteurPluie.get());
+            animal.setNumeroSalle(controller.getRoomTamagotchi());
+            animal.setPluie(flagPluie.get());
+        } else {
+            robot.setCompteurPluie(compteurPluie.get());
+            robot.setNumeroSalle(controller.getRoomTamagotchi());
+            robot.setPluie(flagPluie.get());
+        }
+
         // String contenant les informations pour le fichier json
         String tamagotchi;
 

@@ -12,6 +12,10 @@ public abstract class Tamagotchi {
 
     final int skin;
 
+    int compteurPluie = 0, numeroSalle = 3;
+
+    boolean pluie = false;
+
     /**
      * Constructeur
      *
@@ -64,9 +68,11 @@ public abstract class Tamagotchi {
     /**
      * Assesseur numéro de la texture
      *
-     * @return
+     * @return int numéro
      */
-    public int getSkin() {return skin;}
+    public int getSkin() {
+        return skin;
+    }
 
     /**
      * Renvoi le nombre de nourritures selon son nom
@@ -85,5 +91,59 @@ public abstract class Tamagotchi {
      */
     public int getNumberTamagotchi() {
         return numberTamagotchi;
+    }
+
+    /**
+     * Définie le compteur de la pluie
+     *
+     * @param compteurPluie numéro
+     */
+    public void setCompteurPluie(int compteurPluie) {
+        this.compteurPluie = compteurPluie;
+    }
+
+    /**
+     * Définie le numéro de la salle
+     *
+     * @param numeroSalle numéro
+     */
+    public void setNumeroSalle(int numeroSalle) {
+        this.numeroSalle = numeroSalle;
+    }
+
+    /**
+     * Renvoie le compteur de pluie
+     *
+     * @return int
+     */
+    public int getCompteurPluie() {
+        return compteurPluie;
+    }
+
+    /**
+     * Renvoie le numéro de la salle
+     *
+     * @return int
+     */
+    public int getNumeroSalle() {
+        return numeroSalle;
+    }
+
+    /**
+     * Renvoie si oui ou non, il pleuvait sur le tamagotchi
+     *
+     * @return boolean
+     */
+    public boolean getPluie() {
+        return pluie;
+    }
+
+    /**
+     * Définie s'il pleut ou non au moment de la sauvegarde
+     *
+     * @param pluie boolean
+     */
+    public void setPluie(boolean pluie) {
+        this.pluie = pluie;
     }
 }

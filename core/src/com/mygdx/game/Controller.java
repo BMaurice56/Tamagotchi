@@ -92,6 +92,15 @@ public class Controller {
     }
 
     /**
+     * Renvoi le numéro de l'écran où se trouve le tamagotchi
+     *
+     * @return int numéro
+     */
+    public int getRoomTamagotchi() {
+        return view.getNumberRoom();
+    }
+
+    /**
      * Fait dormir le tamagotchi
      */
     public void sleep() {
