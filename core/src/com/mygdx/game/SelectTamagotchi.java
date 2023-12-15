@@ -41,7 +41,7 @@ public class SelectTamagotchi implements Screen {
     // Zone de texte
     private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
-    private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message;
+    private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message, changeSkin;
 
     private int tamagotchiSelection = 1, difficultyLevel = 1, skin = 1;
 
@@ -103,6 +103,7 @@ public class SelectTamagotchi implements Screen {
         stage.addActor(rightArrow);
         stage.addActor(backButton);
         stage.addActor(playButton);
+        stage.addActor(changeSkin);
     }
 
     /**
@@ -136,6 +137,7 @@ public class SelectTamagotchi implements Screen {
         labelLevelDifficult = new Label("Facile", new MultiSkin("label"));
 
         message = new Label("", new MultiSkin("label"));
+        changeSkin = new Label("Cliquer dessus pour changer d'apparence ->", new MultiSkin("label"));
     }
 
     /**
@@ -175,6 +177,7 @@ public class SelectTamagotchi implements Screen {
         nomTamagotchi.getStyle().font.getData().setScale(fontScale);
         backButton.getLabel().setFontScale(fontScale);
         playButton.getLabel().setFontScale(fontScale);
+        changeSkin.setFontScale(fontScale / 2);
 
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
         pixelDog.setPosition(middleX + shift + ajustementXElement, middleY + shift + ajustementYElement);
@@ -183,6 +186,7 @@ public class SelectTamagotchi implements Screen {
 
         labelTamagotchiSelection.setPosition(middleX - labelTamagotchiSelection.getMinWidth() - ajustementXElement, middleY - (tailleImage / 1.2f));
         tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.2f));
+        changeSkin.setPosition(middleX - changeSkin.getMinWidth() - ajustementXElement, labelTamagotchiSelection.getY() - changeSkin.getMinHeight());
 
         labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
         nomTamagotchi.setPosition(middleX + (shift * 3f), middleY - tailleImage - (shift * 2.2f));
@@ -263,7 +267,7 @@ public class SelectTamagotchi implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Pattern p = Pattern.compile("[a-zA-Z0-9-_]+");
+                Pattern p = Pattern.compile("[a-zA-Z0-9-_.]+");
                 Matcher m = p.matcher(nomTamagotchi.getText());
                 boolean b = m.matches();
 
@@ -280,7 +284,7 @@ public class SelectTamagotchi implements Screen {
                     if (nomTamagotchi.getText().isEmpty()) {
                         message.setText("Entrer un nom pour le Tamagotchi.");
                     } else {
-                        message.setText("       Nom incorrect. \n\nN'utilisez que des lettres \n    ou chiffres ou tirets");
+                        message.setText("       Nom incorrect. \n\nN'utilisez pas de caracteres speciaux");
                     }
 
                     posAndSizeElement();
