@@ -26,11 +26,18 @@ public abstract class Animal extends Tamagotchi {
         sleep = 1000;
         happiness = 1000;
     }
-
+    /**
+     * Obtient la valeur actuelle de la jauge de vie de l'animal.
+     * @return La valeur de la jauge de vie.
+     */
     public float getLife() {
         return life;
     }
 
+    /**
+     * Modifie la valeur de la jauge de vie de l'animal en vérifiant les limites (entre 0 et 1000).
+     * @param l Nouvelle valeur de la jauge de vie.
+     */
     public void setLife(float l) {
         life = l;
 
@@ -96,10 +103,21 @@ public abstract class Animal extends Tamagotchi {
             happiness = 1000;
         }
     }
-
+    /**
+     * Obtient le nombre d'éléments de type "Apple" actuellement présents dans le panier de l'animal.
+     * Utilise la méthode getNumberOfFood() de l'objet panier pour obtenir ce nombre.
+     *
+     * @return Le nombre d'éléments de type "Apple" dans le panier.
+     */
     public int getNumberApple() {
         return getPanier().getNumberOfFood("Apple");
     }
+    /**
+     * Obtient le nombre d'éléments de type "Food" actuellement présents dans le panier de l'animal.
+     * Utilise la méthode getNumberOfFood() de l'objet panier pour obtenir ce nombre.
+     *
+     * @return Le nombre d'éléments de type "Apple" dans le panier.
+     */
 
     public int getNumberGoldenApple() {
         return getPanier().getNumberOfFood("GoldenApple");
@@ -107,8 +125,8 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Travaille pendant 12 secondes pour gagner de l'argent
-     * Modifie : wallet, bonheur, hygiene, sleep
+     * Description : Méthode dormir qui ajuste la jauge de sommeil à son maximum sauf si elle est inférieure à 200.
+     * Modifie : La jauge de sommeil.
      */
     public void work() {
         setWallet(getWallet() + 50);
@@ -120,10 +138,8 @@ public abstract class Animal extends Tamagotchi {
 
 
     /**
-     * Supprime food du panier et y ajoute la valeur de point associer
-     *
-     * @param food apple or golden apple
-     *             modifie : foods, bonheur
+     * Supprime de la nourriture du panier et ajuste les jauges en conséquence
+     * @param food Type de nourriture (Apple ou GoldenApple).
      */
     public void eat(String food) {
         for (int i = 0; i < getPanier().getBasket().size(); i++) { //parcourt l'attribut panier
@@ -144,7 +160,6 @@ public abstract class Animal extends Tamagotchi {
 
 
     /**
-     * Auteur : Arthur
      * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
      * modifie : sleep
      */
@@ -157,7 +172,6 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Auteur : Arthur
      * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
      * Modifie : hygiene, bonheur
      */
@@ -190,7 +204,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * buy an apple
+     * Achète une pomme si le portefeuille le permet.
      */
     public void buyApple() {
         if (getWallet() >= Apple.price) {
@@ -200,7 +214,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * buy a golden apple
+     * Achète une pomme dorée si le portefeuille le permet.
      */
     public void buyGoldenApple() {
         if (getWallet() >= GoldenApple.price) {
