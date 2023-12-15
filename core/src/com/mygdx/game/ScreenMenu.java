@@ -62,6 +62,12 @@ public class ScreenMenu implements Screen {
     // Créez un objet Path
     private static final Path currRelativePath = Paths.get(System.getProperty("user.dir") + "/core/src/com/mygdx/game/jsonFile");
 
+    // Label
+    private Label noSave, columnTitleName, columnTitleDifficulty, message;
+
+    // Stock tous les labels de chaque sauvegarde pour l'affichage
+    private final ArrayList<Label> multiLabels = new ArrayList<>();
+
 
     /**
      * Constructeur
@@ -78,6 +84,7 @@ public class ScreenMenu implements Screen {
 
         // Création des objets
         createButton();
+        createLabel();
         createTable();
         addButtonListeners();
 
@@ -111,6 +118,16 @@ public class ScreenMenu implements Screen {
         backButton = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton2 = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton3 = new TextButton("Retour en arriere", new MultiSkin("text"));
+    }
+
+    /**
+     * Instancie les labels
+     */
+    public void createLabel() {
+        noSave = new Label("Pas de sauvegarde", new MultiSkin("label"));
+        columnTitleName = new Label("Nom du \nTamagotchi", new MultiSkin("label"));
+        columnTitleDifficulty = new Label("Difficulte", new MultiSkin("label"));
+        message = new Label("", new MultiSkin("label"));
     }
 
     /**
@@ -158,12 +175,11 @@ public class ScreenMenu implements Screen {
 
         if (empty) {
             saveGameTable.add(new Label("", new MultiSkin("label")));
-            saveGameTable.add(new Label("Pas de sauvegarde", new MultiSkin("label"))).row();
-            saveGameTable.setPosition(saveGameTable.getX() + 100, saveGameTable.getY());
+            saveGameTable.add(noSave).row();
 
         } else {
-            saveGameTable.add(new Label("Nom du \nTamagotchi", new MultiSkin("label")));
-            saveGameTable.add(new Label("Difficulte", new MultiSkin("label")));
+            saveGameTable.add(columnTitleName);
+            saveGameTable.add(columnTitleDifficulty);
             saveGameTable.add(new Label("     ", new MultiSkin("label")));
             saveGameTable.add(new Label("     ", new MultiSkin("label"))).row();
             saveGameTable.add(new Label("", new MultiSkin("label"))).row();
@@ -180,27 +196,31 @@ public class ScreenMenu implements Screen {
                 final JsonValue saveFileReader = jsonReader.parse(saveFile);
 
                 // Création d'un label avec le nom du Tamagotchi
-                Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
+                final Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
 
                 // Récupération du numéro de sauvegarde
                 String[] values = save.split("save");
                 final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
 
-                // Ajout du label à la table
-                saveGameTable.add(nomTamagotchi);
+                Label difficulty = null;
+
                 switch (contains(saveFileReader, "difficulty")) {
                     case (1):
-                        saveGameTable.add(new Label("Facile", new MultiSkin("label")));
+                        difficulty = new Label("Facile", new MultiSkin("label"));
                         break;
 
                     case (2):
-                        saveGameTable.add(new Label("Moyen", new MultiSkin("label")));
+                        difficulty = new Label("Moyen", new MultiSkin("label"));
                         break;
 
                     case (3):
-                        saveGameTable.add(new Label("Difficile", new MultiSkin("label")));
+                        difficulty = new Label("Difficile", new MultiSkin("label"));
                         break;
                 }
+
+                // Ajout du label à la table
+                saveGameTable.add(nomTamagotchi);
+                saveGameTable.add(difficulty);
 
                 // Bouton Jouer
                 Label jouer = new Label(" Jouer ", new MultiSkin("label"));
@@ -217,16 +237,48 @@ public class ScreenMenu implements Screen {
                 supprimer.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        saveFile.delete();
-                        ArrayList<String> sauvegarde = getNamesSave();
+                        Label oui = new Label("Oui", new MultiSkin("label"));
+                        Label non = new Label("Non", new MultiSkin("label"));
 
-                        createSaveTable(sauvegarde.isEmpty());
+                        message.setText("Etes vous sur de vouloir supprimer : " + nomTamagotchi.getText());
 
-                        putTable(saveGameTable);
+                        multiLabels.add(oui);
+                        multiLabels.add(non);
+
+                        posAndSizeElement();
+
+                        stage.clear();
+                        stage.addActor(message);
+                        stage.addActor(oui);
+                        stage.addActor(non);
+
+                        oui.addListener(new InputListener() {
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                saveFile.delete();
+
+                                putSaveTable();
+                                return true;
+                            }
+                        });
+
+                        non.addListener(new InputListener() {
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                putSaveTable();
+                                return true;
+                            }
+                        });
+
                         return true;
                     }
                 });
 
+                // Sauvegarde des labels
+                multiLabels.add(nomTamagotchi);
+                multiLabels.add(difficulty);
+                multiLabels.add(jouer);
+                multiLabels.add(supprimer);
 
                 saveGameTable.add(jouer);
                 saveGameTable.add(supprimer).row();
@@ -236,6 +288,19 @@ public class ScreenMenu implements Screen {
         // Ajout d'un espace et d'un bouton retour
         saveGameTable.add(new Label("", new MultiSkin("label")));
         saveGameTable.add(backButton3).row();
+    }
+
+    /**
+     * Place la table de sauvegarde à l'écran
+     */
+    public void putSaveTable() {
+        ArrayList<String> sauvegarde = getNamesSave();
+
+        createSaveTable(sauvegarde.isEmpty());
+
+        putTable(saveGameTable);
+
+        posAndSizeElement();
     }
 
     /**
@@ -327,14 +392,7 @@ public class ScreenMenu implements Screen {
         saveGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ArrayList<String> sauvegarde = getNamesSave();
-
-                createSaveTable(sauvegarde.isEmpty());
-
-                posAndSizeElement();
-
-                // Ajout de la table à l'écran
-                putTable(saveGameTable);
+                putSaveTable();
 
                 return true;
             }
@@ -357,6 +415,24 @@ public class ScreenMenu implements Screen {
         backButton.getLabel().setFontScale(fontScale);
         backButton2.getLabel().setFontScale(fontScale);
         backButton3.getLabel().setFontScale(fontScale);
+
+        noSave.setFontScale(fontScale);
+        columnTitleName.setFontScale(fontScale);
+        columnTitleDifficulty.setFontScale(fontScale);
+
+        message.setFontScale(fontScale);
+        message.setPosition(screenWidth / 2 - message.getMinWidth() / 2, screenHeight / 2);
+
+        for (Label label : multiLabels) {
+            label.setFontScale(fontScale);
+
+            if (label.getText().toString().equals("Oui")) {
+                label.setPosition(screenWidth / 2 - label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
+            } else if (label.getText().toString().equals("Non")) {
+                label.setPosition(screenWidth / 2 + label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
+            }
+        }
+
 
         // Si la table n'est pas null, alors on redimensionne les polices d'écriture
         if (saveGameTable != null) {
