@@ -330,7 +330,9 @@ public class Modele {
             }
 
             if (animal.getLife() == 0) {
-                Gdx.app.exit();
+                stopGame();
+                Controller.deleteSave(saveFileParty);
+                controller.mortTamagotchi();
             }
 
         } else {
@@ -352,7 +354,9 @@ public class Modele {
             }
 
             if (robot.getBattery() == 0) {
-                Gdx.app.exit();
+                stopGame();
+                Controller.deleteSave(saveFileParty);
+                controller.mortTamagotchi();
             }
         }
 

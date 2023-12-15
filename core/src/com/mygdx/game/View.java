@@ -50,14 +50,13 @@ public class View implements Screen {
     private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable;
 
     // Image du jeu
-    private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage,
-            extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
+    private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
 
     // Image du tamagotchi
     private final ImageButton tamagotchiImage;
 
     // Bouton texte d'action
-    private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume;
+    private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume, menu;
 
     // Barres de progressions
     private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
@@ -66,7 +65,7 @@ public class View implements Screen {
     private int screen, widthProgressbar, heightProgressBar;
 
     // Label
-    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood;
+    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood, empty, death;
 
     // Controller de jeu
     private final Controller controller;
@@ -260,6 +259,7 @@ public class View implements Screen {
         play = new TextButton(getImageOrTextFromTamagotchi("play"), new MultiSkin("text"));
         resume = new TextButton("Reprise", new MultiSkin("text"));
         settings2 = new TextButton("Settings", new MultiSkin("text"));
+        menu = new TextButton("Retour au menu", new MultiSkin("text"));
     }
 
     /**
@@ -351,6 +351,8 @@ public class View implements Screen {
         action.setVisible(false);
 
         whichFood = new Label("Quelle nourriture voulez-vous ?", new MultiSkin("label"));
+        death = new Label("Votre Tamagotchi est mort. \nIl est important d'en prendre soin.", new MultiSkin("label"));
+        empty = new Label("", new MultiSkin("label"));
     }
 
     /**
@@ -413,6 +415,14 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 controller.save();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
+                return true;
+            }
+        });
+
+        menu.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
                 return true;
             }
@@ -793,6 +803,8 @@ public class View implements Screen {
         resume.getLabel().setFontScale(fontScale);
         settings2.getLabel().setFontScale(fontScale);
         home.getLabel().setFontScale(fontScale);
+        menu.getLabel().setFontScale(fontScale);
+        death.setFontScale(fontScale);
     }
 
     /**
@@ -943,6 +955,22 @@ public class View implements Screen {
             }
 
         }
+    }
+
+    /**
+     * Affichage le message de la mort du tamagotchi
+     */
+    public void messageMortTamagotchi() {
+        Table message = new Table();
+        message.setFillParent(true);
+        message.center();
+
+        message.add(death).row();
+        message.add(empty).row();
+        message.add(menu).row();
+
+        stage.clear();
+        stage.addActor(message);
     }
 
     /**

@@ -253,7 +253,7 @@ public class ScreenMenu implements Screen {
                         oui.addListener(new InputListener() {
                             @Override
                             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                saveFile.delete();
+                                Controller.deleteSave(saveFile);
 
                                 putSaveTable();
                                 return true;

@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.Personnage.Tamagotchi;
 
 import java.util.Random;
@@ -165,6 +166,13 @@ public class Controller {
     }
 
     /**
+     * Affichage le message de la mort du tamagotchi
+     */
+    public void mortTamagotchi() {
+        view.messageMortTamagotchi();
+    }
+
+    /**
      * Arrête le jeu
      */
     public void stopGame() {
@@ -178,7 +186,21 @@ public class Controller {
         modele.startGame();
     }
 
+    /**
+     * Sauvegarde le jeu
+     */
     public void save() {
         modele.save();
+    }
+
+    /**
+     * Supprime le fichier de sauvegarde passé en paramètre
+     *
+     * @param file fichier
+     */
+    public static void deleteSave(FileHandle file) {
+        while (file.exists()) {
+            file.delete();
+        }
     }
 }

@@ -17,7 +17,7 @@ public class MultiSkin extends Skin {
     /**
      * Constructeur
      *
-     * @param type String type de button ("texte", "image", "slider");
+     * @param type String type de button ("text", "image", "slider", "label", "textfield");
      */
     public MultiSkin(String type) throws IllegalArgumentException {
         // Appelle du constructeur de la classe mère
