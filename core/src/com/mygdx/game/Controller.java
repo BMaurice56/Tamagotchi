@@ -199,8 +199,10 @@ public class Controller {
      * @param file fichier
      */
     public static void deleteSave(FileHandle file) {
-        while (file.exists()) {
-            file.delete();
+        boolean suppression = file.delete();
+
+        while (!suppression) {
+            suppression = file.delete();
         }
     }
 }

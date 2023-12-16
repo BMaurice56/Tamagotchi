@@ -47,7 +47,7 @@ public class View implements Screen {
     private float screenWidth, screenHeight, elapsed;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable;
+    private Table room1Table, room2Table, room3Table, room4Table, foodTable, settingsTable, deathTamagotchi;
 
     // Image du jeu
     private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
@@ -65,7 +65,7 @@ public class View implements Screen {
     private int screen, widthProgressbar, heightProgressBar;
 
     // Label
-    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood, empty, death;
+    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood, death;
 
     // Controller de jeu
     private final Controller controller;
@@ -337,6 +337,12 @@ public class View implements Screen {
         foodTable.add(quitBuyEatMenu).width(50).height(50).row();
         foodTable.add(buyEatFoodImage).width(100).height(100).left();
         foodTable.add(buyEatExtraFoodImage).width(100).height(100).left().row();
+
+        deathTamagotchi = new Table();
+        deathTamagotchi.setFillParent(true);
+
+        deathTamagotchi.add(death).row();
+        deathTamagotchi.add(menu).row();
     }
 
     /**
@@ -351,8 +357,7 @@ public class View implements Screen {
         action.setVisible(false);
 
         whichFood = new Label("Quelle nourriture voulez-vous ?", new MultiSkin("label"));
-        death = new Label("Votre Tamagotchi est mort. \nIl est important d'en prendre soin.", new MultiSkin("label"));
-        empty = new Label("", new MultiSkin("label"));
+        death = new Label("Votre Tamagotchi est mort. \nIl est important d'en prendre soin.\n", new MultiSkin("label"));
     }
 
     /**
@@ -961,16 +966,8 @@ public class View implements Screen {
      * Affichage le message de la mort du tamagotchi
      */
     public void messageMortTamagotchi() {
-        Table message = new Table();
-        message.setFillParent(true);
-        message.center();
-
-        message.add(death).row();
-        message.add(empty).row();
-        message.add(menu).row();
-
         stage.clear();
-        stage.addActor(message);
+        stage.addActor(deathTamagotchi);
     }
 
     /**
