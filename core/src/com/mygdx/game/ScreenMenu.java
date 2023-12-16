@@ -435,7 +435,7 @@ public class ScreenMenu implements Screen {
 
         // Si la table n'est pas null, alors on redimensionne les polices d'écriture
         if (saveGameTable != null) {
-            for (Cell cell : saveGameTable.getCells()) {
+            for (Cell<?> cell : saveGameTable.getCells()) {
                 Actor actor = cell.getActor();
 
                 if (actor instanceof Label) {

@@ -2,8 +2,10 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.LifecycleListener;
+import com.mygdx.game.Personnage.Robot;
+import com.mygdx.game.Personnage.Animal;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.LifecycleListener;
 import com.mygdx.game.Personnage.Tamagotchi;
 
 import java.util.Random;
@@ -54,14 +56,21 @@ public class Controller {
 
             @Override
             public void dispose() {
-                save();
-                stopGame();
+                Tamagotchi tamagotchi = modele.getTamagotchi();
+
+                if (tamagotchi instanceof Animal) {
+                    Animal animal = (Animal) tamagotchi;
+                    stopGame(!(animal.getLife() <= 0));
+                } else {
+                    Robot robot = (Robot) tamagotchi;
+                    stopGame(!(robot.getBattery() <= 0));
+                }
+
             }
         });
 
         startGame();
     }
-
 
     /*
      * Définit la valeur du label voulu
@@ -168,15 +177,16 @@ public class Controller {
     /**
      * Affichage le message de la mort du tamagotchi
      */
-    public void mortTamagotchi() {
+    public void mortTamagotchi(FileHandle file) {
+        deleteSave(file);
         view.messageMortTamagotchi();
     }
 
     /**
      * Arrête le jeu
      */
-    public void stopGame() {
-        modele.stopGame();
+    public void stopGame(boolean save) {
+        modele.stopGame(save);
     }
 
     /**

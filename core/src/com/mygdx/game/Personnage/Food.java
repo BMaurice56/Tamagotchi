@@ -7,8 +7,8 @@ public abstract class Food {
 
     /**
      * Constructeur de la classe Food
-     * @param name
-     * @param point
+     * @param name Nom de la nourriture
+     * @param point point qu'elle rapporte
      */
     public Food(String name, int point) {
         this.name = name;

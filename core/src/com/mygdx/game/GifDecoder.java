@@ -255,7 +255,7 @@ public class GifDecoder {
         if (frameCount <= 0)
             return null;
         n = n % frameCount;
-        return ((GifFrame) frames.elementAt(n)).image;
+        return frames.elementAt(n).image;
     }
 
     /**
@@ -279,6 +279,7 @@ public class GifDecoder {
             status = STATUS_OPEN_ERROR;
         }
         try {
+            assert is != null;
             is.close();
         } catch (Exception e) {
         }
@@ -405,7 +406,7 @@ public class GifDecoder {
     protected void init() {
         status = STATUS_OK;
         frameCount = 0;
-        frames = new Vector<GifFrame>();
+        frames = new Vector<>();
         gct = null;
         lct = null;
     }
@@ -433,7 +434,7 @@ public class GifDecoder {
         int n = 0;
         if (blockSize > 0) {
             try {
-                int count = 0;
+                int count;
                 while (n < blockSize) {
                     count = in.read(block, n, blockSize - n);
                     if (count == -1) {
@@ -503,11 +504,11 @@ public class GifDecoder {
                             break;
                         case 0xff: // application extension
                             readBlock();
-                            String app = "";
+                            StringBuilder app = new StringBuilder();
                             for (int i = 0; i < 11; i++) {
-                                app += (char) block[i];
+                                app.append((char) block[i]);
                             }
-                            if (app.equals("NETSCAPE2.0")) {
+                            if (app.toString().equals("NETSCAPE2.0")) {
                                 readNetscapeExt();
                             } else {
                                 skip(); // don't care
@@ -553,11 +554,11 @@ public class GifDecoder {
      * Reads GIF file header information.
      */
     protected void readHeader() {
-        String id = "";
+        StringBuilder id = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            id += (char) read();
+            id.append((char) read());
         }
-        if (!id.startsWith("GIF")) {
+        if (!id.toString().startsWith("GIF")) {
             status = STATUS_FORMAT_ERROR;
             return;
         }
@@ -638,7 +639,7 @@ public class GifDecoder {
     }
 
     /**
-     * Reads Netscape extenstion to obtain iteration count
+     * Reads Netscape extension to obtain iteration count
      */
     protected void readNetscapeExt() {
         do {
@@ -691,7 +692,7 @@ public class GifDecoder {
         Pixmap frame = getFrame(0);
         int width = frame.getWidth();
         int height = frame.getHeight();
-        int vzones = (int) Math.sqrt((double) nrFrames);
+        int vzones = (int) Math.sqrt(nrFrames);
         int hzones = vzones;
 
         while (vzones * hzones < nrFrames) vzones++;
@@ -711,7 +712,7 @@ public class GifDecoder {
         }
 
         Texture texture = new Texture(target);
-        Array<TextureRegion> texReg = new Array<TextureRegion>();
+        Array<TextureRegion> texReg = new Array<>();
 
         for (h = 0; h < hzones; h++) {
             for (v = 0; v < vzones; v++) {
@@ -724,9 +725,8 @@ public class GifDecoder {
         }
         float frameDuration = (float) getDelay(0);
         frameDuration /= 1000; // convert milliseconds into seconds
-        Animation<TextureRegion> result = new Animation<TextureRegion>(frameDuration, texReg, playMode);
 
-        return result;
+        return new Animation<>(frameDuration, texReg, playMode);
     }
 
     public static Animation<TextureRegion> loadGIFAnimation(Animation.PlayMode playMode, InputStream is) {

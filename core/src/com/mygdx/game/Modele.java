@@ -136,8 +136,10 @@ public class Modele {
     // Json object
     private final JsonValue soundBaseReader;
 
-    // Gestionnaire de fichier
+    // Gestionnaire du fichier de son
     private final FileHandle soundFile;
+
+    // Gestionnaire du fichier de sauvegarde
     private FileHandle saveFileParty;
 
     // Object Json pour la conversion des objets en json
@@ -164,23 +166,27 @@ public class Modele {
     // Controller de jeu
     private Controller controller;
 
-    public final static float tempsAttenteJeu = 100f;
+    // Temps en milliseconde
+    public final static float tempsAttenteJeu = 50f;
 
+    // Temps en seconde entre chaque sauvegarde
     public final static int tempsEntreSauvegarde = 5;
 
+    // Temps en seconde minimum avant pluie
     public final static int tempsMinimalPluie = 30;
 
+    // Temps en seconde maximum avant pluie
     public final static int tempsMaximalPluie = 60;
 
-    public final float upperStat_10 = 10 / (tempsAttenteJeu / 10);
+    public final float upperStat_10 = tempsAttenteJeu * 10 / 1000;
 
-    public final float lowerStat_10 = 10 / (tempsAttenteJeu / 10);
+    public final float lowerStat_10 = tempsAttenteJeu * 10 / 1000;
 
-    public final float lowerStat_4 = 4 / (tempsAttenteJeu / 10);
+    public final float lowerStat_4 = tempsAttenteJeu * 4 / 1000;
 
-    public final float lowerStat_3 = 3 / (tempsAttenteJeu / 10);
+    public final float lowerStat_3 = tempsAttenteJeu * 3 / 1000;
 
-    public final float lowerStat_2 = 2 / (tempsAttenteJeu / 10);
+    public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
 
     /**
@@ -325,14 +331,17 @@ public class Modele {
                 animal.setHappiness(animal.getHappiness() - lowerStat_10);
             }
 
-            if (animal.getFood() >= 600) {
+            if (animal.getFood() >= 600 && animal.getHappiness() > 0 && animal.getHygiene() > 0 && animal.getSleep() > 0) {
                 animal.setLife(animal.getLife() + upperStat_10);
             }
 
-            if (animal.getLife() == 0) {
-                stopGame();
-                Controller.deleteSave(saveFileParty);
-                controller.mortTamagotchi();
+            if (animal.getLife() <= 0) {
+                stopGame(false);
+                // On attend que la fonction wait se termine complètement (Sinon elle change l'écran)
+                while (!flagWait.get()) {
+                    continue;
+                }
+                controller.mortTamagotchi(saveFileParty);
             }
 
         } else {
@@ -349,14 +358,17 @@ public class Modele {
                 robot.setHappiness(robot.getHappiness() - lowerStat_10);
             }
 
-            if (robot.getTank() >= 600) {
+            if (robot.getTank() >= 600 && robot.getHappiness() > 0 && robot.getSoftware() > 0 && robot.getDurability() > 0) {
                 robot.setBattery(robot.getBattery() + upperStat_10);
             }
 
-            if (robot.getBattery() == 0) {
-                stopGame();
-                Controller.deleteSave(saveFileParty);
-                controller.mortTamagotchi();
+            if (robot.getBattery() <= 0) {
+                stopGame(false);
+                // On attend que la fonction wait se termine complètement (Sinon elle change l'écran)
+                while (!flagWait.get()) {
+                    continue;
+                }
+                controller.mortTamagotchi(saveFileParty);
             }
         }
 
@@ -410,9 +422,7 @@ public class Modele {
         // S'il y a bien une chaine de caractère, alors une action doit être effectuée
         if (attente != null) {
             // Bloque le moteur de reappeler cette fonction
-            // Bloque la sauvegarde
             flagWait.set(false);
-            flagSave.set(false);
 
             // Thread qui met à jour la barre de progression sans bloquer le jeu
             Thread t = new Thread(new Runnable() {
@@ -431,62 +441,69 @@ public class Modele {
                     long temps = System.currentTimeMillis() + (time * 1_000L);
 
                     // Tant que l'on n'a pas attendu le temps nécessaire, on continue
-                    while (temps > System.currentTimeMillis()) {
+                    while (temps > System.currentTimeMillis() && !flagStop.get()) {
                         // Met la bonne valeur sur la barre de progression
                         controller.setAmountProgressBar("waiting", calculValueWaitingBar(time, System.currentTimeMillis(), temps));
                     }
                     // Reaffiche les éléments de l'interface
                     controller.actionEnCourTamagotchi(true, "");
 
-                    // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
-                    switch (values[2]) {
-                        case "work":
-                            if (animal != null) {
-                                animal.work();
-                            } else {
-                                robot.work();
-                            }
-                            break;
+                    // Bloque la sauvegarde
+                    flagSave.set(false);
 
-                        case "sleep":
-                            if (animal != null) {
-                                animal.sleep();
-                            } else {
-                                robot.maintenance();
-                            }
-                            break;
+                    // Permet de savoir si l'on quitte le jeu pendant l'action
+                    if (!flagStop.get()) {
+                        // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
+                        switch (values[2]) {
+                            case "work":
+                                if (animal != null) {
+                                    animal.work();
+                                } else {
+                                    robot.work();
+                                }
+                                break;
 
-                        case "wash":
-                            if (animal != null) {
-                                animal.wash();
-                            } else {
-                                robot.updating();
-                            }
-                            break;
+                            case "sleep":
+                                if (animal != null) {
+                                    animal.sleep();
+                                } else {
+                                    robot.maintenance();
+                                }
+                                break;
 
-                        case "play":
-                            if (animal != null) {
-                                animal.play();
-                            } else {
-                                robot.jouer();
-                            }
-                            break;
+                            case "wash":
+                                if (animal != null) {
+                                    animal.wash();
+                                } else {
+                                    robot.updating();
+                                }
+                                break;
 
-                        case "eat":
-                            if (animal != null) {
-                                animal.eat(values[3]);
-                            } else {
-                                robot.fillTank(values[3]);
-                            }
-                            break;
+                            case "play":
+                                if (animal != null) {
+                                    animal.play();
+                                } else {
+                                    robot.jouer();
+                                }
+                                break;
 
+                            case "eat":
+                                if (animal != null) {
+                                    animal.eat(values[3]);
+                                } else {
+                                    robot.fillTank(values[3]);
+                                }
+                                break;
+
+                        }
                     }
+                    // Réautorise la sauvegarde
+                    flagSave.set(true);
 
                     // Remet à null attente pour pouvoir effectuer la prochaine action
                     attente = null;
 
                     // Réautorise le moteur à appeler cette fonction
-                    flagSave.set(true);
                     flagWait.set(true);
                 }
             });
@@ -536,12 +553,15 @@ public class Modele {
         flagSave.set(true);
     }
 
-
     /**
      * Arrête le jeu
      */
-    public void stopGame() {
+    public void stopGame(boolean save) {
         flagStop.set(true);
+
+        if (save) {
+            save();
+        }
     }
 
     /**

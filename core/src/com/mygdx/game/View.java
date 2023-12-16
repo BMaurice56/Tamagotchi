@@ -357,7 +357,7 @@ public class View implements Screen {
         action.setVisible(false);
 
         whichFood = new Label("Quelle nourriture voulez-vous ?", new MultiSkin("label"));
-        death = new Label("Votre Tamagotchi est mort. \nIl est important d'en prendre soin.\n", new MultiSkin("label"));
+        death = new Label("    Votre Tamagotchi est mort.\nIl est important d'en prendre soin.\n", new MultiSkin("label"));
     }
 
     /**
@@ -385,7 +385,7 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 stage.clear();
                 stage.addActor(settingsTable);
-                controller.stopGame(); // stop le jeu
+                controller.stopGame(true); // stop le jeu
                 return true;
             }
         });
@@ -810,6 +810,10 @@ public class View implements Screen {
         home.getLabel().setFontScale(fontScale);
         menu.getLabel().setFontScale(fontScale);
         death.setFontScale(fontScale);
+
+        action.setFontScale(fontScale);
+        action.setX(screenWidth / 2 - action.getMinWidth() / 2);
+
     }
 
     /**
