@@ -40,7 +40,7 @@ public class SelectTamagotchi implements Screen {
     private TextButton playButton, backButton, retour;
 
     // Zone de texte
-    private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
+    private TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
     private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message, changeSkin;
 
@@ -50,15 +50,13 @@ public class SelectTamagotchi implements Screen {
      * Constructeur
      */
     public SelectTamagotchi() {
-
         createLabel();
         createButton();
         addButtonListeners();
 
-
         nomTamagotchi.setText("Garfield");
         nomTamagotchi.setMaxLength(10);
-        nomTamagotchi.setWidth(300);
+        nomTamagotchi.setWidth(400);
 
         posAndSizeElement();
 
@@ -175,7 +173,16 @@ public class SelectTamagotchi implements Screen {
         playButton.getLabel().setFontScale(fontScale);
         changeSkin.setFontScale(fontScale / 2);
 
-        nomTamagotchi.getStyle().font.getData().setScale(fontScale);
+        String txt = nomTamagotchi.getText();
+
+        TextField nomTamagotchi2 = new TextField(txt, new MultiSkin("textfield"));
+
+        nomTamagotchi2.getStyle().font.getData().setScale(fontScale);
+
+        nomTamagotchi2.setText(txt);
+        nomTamagotchi2.setMaxLength(10);
+        nomTamagotchi2.setWidth(400);
+
 
         /*
          * Permet le redimensionnement de la police du nom du tamagotchi
@@ -184,7 +191,9 @@ public class SelectTamagotchi implements Screen {
         GlyphLayout layout = new GlyphLayout(nomTamagotchi.getStyle().font, nomTamagotchi.getText());
         float textHeight = layout.height;
 
-        nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
+        nomTamagotchi2.setSize(nomTamagotchi.getWidth(), textHeight);
+
+        nomTamagotchi = nomTamagotchi2;
 
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
         pixelDog.setPosition(middleX + shift + ajustementXElement, pixelCat.getY());
@@ -213,6 +222,8 @@ public class SelectTamagotchi implements Screen {
 
         message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
         retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);
+
+        addActorStage();
     }
 
     /**
