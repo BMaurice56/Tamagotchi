@@ -187,9 +187,9 @@ public class SelectTamagotchi implements Screen {
         nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
 
         TextField.TextFieldStyle textFieldStyle = nomTamagotchi.getStyle();
-        Label oneCharSizeCalibrationThrowAway = new Label("|", new MultiSkin("label"));
 
-        Pixmap cursorColor = new Pixmap((int) (screenWidth * 9f / 900f), (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
+
+        Pixmap cursorColor = new Pixmap(9, (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
         cursorColor.setColor(Color.WHITE);
         cursorColor.fill();
 
