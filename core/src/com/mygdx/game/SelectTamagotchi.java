@@ -193,7 +193,7 @@ public class SelectTamagotchi implements Screen {
 
         labelTamagotchiSelection.setPosition(middleX - labelTamagotchiSelection.getMinWidth() - ajustementXElement, middleY - (tailleImage / 1.2f));
         tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.1f));
-        changeSkin.setPosition(middleX - changeSkin.getMinWidth() - ajustementXElement, labelTamagotchiSelection.getY() - changeSkin.getMinHeight());
+        changeSkin.setPosition(middleX - changeSkin.getMinWidth() - (ajustementXElement * 1.1f), labelTamagotchiSelection.getY() - changeSkin.getMinHeight());
 
         labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
         nomTamagotchi.setPosition(middleX + (shift * 3f), labelNomTamagotchi.getY());
