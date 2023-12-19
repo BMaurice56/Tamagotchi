@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-19T16:02:50.015Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="nHaWBZ0po5jJtbQzzQSN" version="22.1.11" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-12-19T16:05:28.617Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="rZeVuNWUZ8YcapVjTC7i" version="22.1.11" type="github" pages="2">
   <diagram name="Page-1" id="X7pbwGflv3DXX_Mfw_il">
     <mxGraphModel dx="474" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -40,7 +40,7 @@
             <mxPoint x="429" y="405" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="tiIni0Ut7755dFK_OPJd-26" value="Création d&#39;une partie" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="tiIni0Ut7755dFK_OPJd-26" value="Création d&#39;une partie" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="237" y="215" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="tiIni0Ut7755dFK_OPJd-27" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=37;" parent="1" vertex="1">
@@ -58,10 +58,10 @@
             <mxPoint x="189" y="644.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="uRGN_aTGuXsyuGhO6wS5-4" value="Parties sauvegardé" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="uRGN_aTGuXsyuGhO6wS5-4" value="Parties sauvegardé" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="189" y="620" width="120" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="uRGN_aTGuXsyuGhO6wS5-5" value="Choix de la sauvegarde" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="uRGN_aTGuXsyuGhO6wS5-5" value="Choix de la sauvegarde" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="389" y="620" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="uRGN_aTGuXsyuGhO6wS5-7" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="uRGN_aTGuXsyuGhO6wS5-4" edge="1">
