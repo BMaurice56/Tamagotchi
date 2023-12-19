@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -173,16 +175,7 @@ public class SelectTamagotchi implements Screen {
         playButton.getLabel().setFontScale(fontScale);
         changeSkin.setFontScale(fontScale / 2);
 
-        String txt = nomTamagotchi.getText();
-
-        TextField nomTamagotchi2 = new TextField(txt, new MultiSkin("textfield"));
-
-        nomTamagotchi2.getStyle().font.getData().setScale(fontScale);
-
-        nomTamagotchi2.setText(txt);
-        nomTamagotchi2.setMaxLength(10);
-        nomTamagotchi2.setWidth(400);
-
+        nomTamagotchi.getStyle().font.getData().setScale(fontScale);
 
         /*
          * Permet le redimensionnement de la police du nom du tamagotchi
@@ -191,9 +184,18 @@ public class SelectTamagotchi implements Screen {
         GlyphLayout layout = new GlyphLayout(nomTamagotchi.getStyle().font, nomTamagotchi.getText());
         float textHeight = layout.height;
 
-        nomTamagotchi2.setSize(nomTamagotchi.getWidth(), textHeight);
+        nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
 
-        nomTamagotchi = nomTamagotchi2;
+        TextField.TextFieldStyle textFieldStyle = nomTamagotchi.getStyle();
+        Label oneCharSizeCalibrationThrowAway = new Label("|", new MultiSkin("label"));
+
+        Pixmap cursorColor = new Pixmap((int) (screenWidth * 9f / 900f), (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
+        cursorColor.setColor(Color.WHITE);
+        cursorColor.fill();
+
+        textFieldStyle.cursor = new Image(new Texture(cursorColor)).getDrawable();
+
+        nomTamagotchi.setStyle(textFieldStyle);
 
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
         pixelDog.setPosition(middleX + shift + ajustementXElement, pixelCat.getY());
