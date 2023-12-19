@@ -158,10 +158,6 @@ public class SelectTamagotchi implements Screen {
         float middleX = screenWidth / 2f;
         float middleY = screenHeight / 2f;
 
-        if (fontScale > 1) {
-            fontScale = 1;
-        }
-
         pixelCat.setSize(tailleImage, tailleImage);
         pixelDog.setSize(tailleImage, tailleImage);
         pixelDinosaur.setSize(tailleImage, tailleImage);

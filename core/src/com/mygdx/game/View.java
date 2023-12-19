@@ -720,10 +720,6 @@ public class View implements Screen {
         progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
         float fontScale = screenHeight * (1f / 900f);
-        if (fontScale > 1) {
-            fontScale = 1;
-        }
-
         float ajustementLabelFood = 1 / (fontScale / 5);
 
         // Action du Tamagotchi
@@ -811,9 +807,9 @@ public class View implements Screen {
 
             hashMapImageAndText.put("room1", "images/garden.png");
             hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
-            hashMapImageAndText.put("room2", "images/kitchen.jpg");
-            hashMapImageAndText.put("room3", "images/livingRoom.jpg");
-            hashMapImageAndText.put("room4", "images/bathroom.jpg");
+            hashMapImageAndText.put("room2", "images/gasStation.png");
+            hashMapImageAndText.put("room3", "images/workshop.jpeg");
+            hashMapImageAndText.put("room4", "images/server.png");
 
             hashMapImageAndText.put("sleep", "Maintenance  ");
             hashMapImageAndText.put("work", "Travailler");
