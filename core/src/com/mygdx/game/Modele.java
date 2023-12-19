@@ -16,8 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 class Moteur implements Runnable {
 
     // Drapeau qui régule le moteur
-    private final AtomicBoolean flagStop, flagWait, flagSave, flagPluie;
+    private final AtomicBoolean flagStop, flagWait, flagSave, flagPluie, flagDoingAction;
 
+    // Compteur de pluie
     private final AtomicInteger compteurPluie;
 
     // Controller de jeu
@@ -26,40 +27,44 @@ class Moteur implements Runnable {
     // Compteur
     private int compteur = 0, durationPluie;
 
+    // Générateur de nombre aléatoire
     private final Random random = new Random();
 
     /**
      * Constructeur
      *
-     * @param flagStop      Arrête le moteur
-     * @param flagWait      Fait attendre le moteur
-     * @param flagSave      Sauvegarde ou non le jeu
-     * @param flagPluie     Active la pluie
-     * @param compteurPluie Sauvegarde le nombre de tours de boucle pour la pluie
-     * @param difficulte    Niveau de difficulté
-     * @param modele        controller de jeu
+     * @param flagStop        Arrête le moteur
+     * @param flagWait        Fait attendre le moteur
+     * @param flagSave        Sauvegarde ou non le jeu
+     * @param flagDoingAction Indique si le tamagotchi effectue une action
+     * @param flagPluie       Active la pluie
+     * @param compteurPluie   Sauvegarde le nombre de tours de boucle pour la pluie
+     * @param difficulte      Niveau de difficulté
+     * @param modele          controller de jeu
      */
-    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, AtomicBoolean flagPluie, AtomicInteger compteurPluie, int difficulte, Modele modele) {
+    public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, AtomicBoolean flagPluie, AtomicBoolean flagDoingAction, AtomicInteger compteurPluie, int difficulte, Modele modele) {
         this.flagStop = flagStop;
         this.flagWait = flagWait;
         this.flagSave = flagSave;
         this.flagPluie = flagPluie;
+        this.flagDoingAction = flagDoingAction;
         this.compteurPluie = compteurPluie;
+        this.modele = modele;
+
         switch (difficulte) {
             case (1):
-                durationPluie = 10;
+                durationPluie = (int) (10 * 1000 / Modele.tempsAttenteJeu);
                 break;
 
             case (2):
-                durationPluie = 15;
+                durationPluie = (int) (15 * 1000 / Modele.tempsAttenteJeu);
                 break;
 
             case (3):
-                durationPluie = 20;
+                durationPluie = (int) (20 * 1000 / Modele.tempsAttenteJeu);
                 break;
         }
 
-        this.modele = modele;
     }
 
     /**
@@ -101,14 +106,14 @@ class Moteur implements Runnable {
             // Met la pluie
             if (compteurPluie.get() >= nombreEntrePluie) {
                 // Si pas d'action en cours, donc on peut effectuer la pluie
-                if (flagSave.get()) {
+                if (modele.getRoomTamagotchi() != 1 || !flagDoingAction.get()) {
                     flagPluie.set(true);
                     nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
                     compteurPluie.set(0);
                 }
 
                 // Enlève la pluie au bout de 10/15/20 secondes
-            } else if (compteurPluie.get() == durationPluie * 1000 / Modele.tempsAttenteJeu) {
+            } else if (compteurPluie.get() == durationPluie) {
                 // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
@@ -143,8 +148,8 @@ public class Modele {
     // Object Json pour la conversion des objets en json
     private final Json json;
 
-    // Drapeau qui gère le thread de jeu
-    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true), flagSave = new AtomicBoolean(true);
+    // Drapeau qui gère les différents threads de jeu
+    private final AtomicBoolean flagStop = new AtomicBoolean(false), flagWait = new AtomicBoolean(true), flagSave = new AtomicBoolean(true), flagDoingAction = new AtomicBoolean(false);
 
     // Drapeau qui active ou non la pluie
     private AtomicBoolean flagPluie;
@@ -471,6 +476,9 @@ public class Modele {
             // Bloque le moteur de reappeler cette fonction
             flagWait.set(false);
 
+            // Indique que le tamagotchi effectue une action
+            flagDoingAction.set(true);
+
             // Thread qui met à jour la barre de progression sans bloquer le jeu
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -493,13 +501,7 @@ public class Modele {
                         valeurWaitingBar = calculValueWaitingBar(time, System.currentTimeMillis(), temps);
                     }
 
-                    // Reaffiche les éléments de l'interface
-                    controller.actionEnCourTamagotchi(true, "");
-
-                    // On repasse à zéro pour la prochaine action
-                    valeurWaitingBar = 0;
-
-                    // Bloque la sauvegarde
+                    // Bloque la sauvegarde, car modification du tamagotchi à suivre
                     flagSave.set(false);
 
                     /*
@@ -551,11 +553,20 @@ public class Modele {
 
                         }
                     }
-                    // Réautorise la sauvegarde
-                    flagSave.set(true);
+                    // Reaffiche les éléments de l'interface
+                    controller.actionEnCourTamagotchi(true, "");
+
+                    // On repasse à zéro pour la prochaine action
+                    valeurWaitingBar = 0;
 
                     // Remet à null attente pour pouvoir effectuer une nouvelle action
                     attente = null;
+
+                    // Réautorise la sauvegarde
+                    flagSave.set(true);
+
+                    // Fin de l'action du tamagotchi
+                    flagDoingAction.set(false);
 
                     // Réautorise le moteur à appeler cette fonction
                     flagWait.set(true);
@@ -608,6 +619,15 @@ public class Modele {
     }
 
     /**
+     * Renvoi la salle où se trouve le tamagotchi
+     *
+     * @return int numéro de la salle
+     */
+    public int getRoomTamagotchi() {
+        return controller.getRoomTamagotchi();
+    }
+
+    /**
      * Arrête le jeu
      */
     public void stopGame(boolean save) {
@@ -623,10 +643,13 @@ public class Modele {
      */
     public void startGame() {
         flagStop.set(false);
+        flagWait.set(true);
+        flagSave.set(true);
+        flagDoingAction.set(false);
         attente = null;
 
         // Moteur de jeu
-        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, flagPluie, compteurPluie, getTamagotchi().getDifficulty(), this));
+        Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, flagPluie, flagDoingAction, compteurPluie, getTamagotchi().getDifficulty(), this));
         Moteur.start();
     }
 
