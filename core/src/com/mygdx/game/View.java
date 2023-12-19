@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.game.Personnage.Robot;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.Personnage.Animal;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.ApplicationListener;
@@ -40,8 +42,11 @@ public class View implements Screen {
     // Stock les noms de fichiers selon le type de tamagotchi
     private HashMap<String, String> hashMapImageAndText;
 
-    // Tamagotchi
-    private final Tamagotchi tamagotchi;
+    // Animal
+    private Animal animal = null;
+
+    // Robot
+    private Robot robot = null;
 
     // Taille de la fenêtre
     private float screenWidth, screenHeight, elapsed;
@@ -84,8 +89,13 @@ public class View implements Screen {
      * @param tamagotchi Tamagotchi
      */
     public View(Controller controller, Tamagotchi tamagotchi, AtomicBoolean flagPluie) {
-        this.tamagotchi = tamagotchi;
         this.flagPluie = flagPluie;
+
+        if (tamagotchi instanceof Animal) {
+            animal = (Animal) tamagotchi;
+        } else {
+            robot = (Robot) tamagotchi;
+        }
 
         previousWeather = flagPluie.get();
 
@@ -159,61 +169,6 @@ public class View implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-
-    /**
-     * Called when the screen should render itself.
-     *
-     * @param delta The time in seconds since the last render.
-     */
-    @Override
-    public void render(float delta) {
-        // Efface l'écran
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        elapsed += Gdx.graphics.getDeltaTime();
-
-        // Si passage de pluie à soleil et inversement, on place la bonne table
-        if (screen == 1 && previousWeather != flagPluie.get()) {
-            previousWeather = flagPluie.get();
-            int numberActors = stage.getActors().size;
-
-            // Si l'on se trouve dans les paramètres lors d'un changement d'état, on ne fait aucun changement
-            if (numberActors == 3) {
-                previousWeather = !flagPluie.get();
-            } else if (previousWeather) {
-                putGameTable();
-            } else {
-                putTable(room1Table);
-            }
-        }
-
-        // Dessine l'image de fond
-        batch.begin();
-        switch (screen) {
-            case 1:
-                if (previousWeather) {
-                    batch.draw(room1Rain.getKeyFrame(elapsed), 0, 0, screenWidth, screenHeight);
-                } else {
-                    batch.draw(room1, 0, 0, screenWidth, screenHeight);
-                }
-                break;
-            case 2:
-                batch.draw(room2, 0, 0, screenWidth, screenHeight);
-                break;
-            case 3:
-                batch.draw(room3, 0, 0, screenWidth, screenHeight);
-                break;
-            case 4:
-                batch.draw(room4, 0, 0, screenWidth, screenHeight);
-                break;
-            // Ajoutez d'autres cas pour d'autres images de fond si nécessaire
-        }
-        batch.end();
-
-        // Dessine le stage
-        stage.draw();
-    }
 
     /**
      * Instancie les textures
@@ -492,17 +447,17 @@ public class View implements Screen {
         buyEatFoodImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
-                    if (eatOrBuy) {
-                        controller.buy("Oil");
-                    } else {
-                        controller.eat("Oil");
-                    }
-                } else {
+                if (animal != null) {
                     if (eatOrBuy) {
                         controller.buy("Apple");
                     } else {
                         controller.eat("Apple");
+                    }
+                } else {
+                    if (eatOrBuy) {
+                        controller.buy("Oil");
+                    } else {
+                        controller.eat("Oil");
                     }
                 }
 
@@ -513,17 +468,17 @@ public class View implements Screen {
         buyEatExtraFoodImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
-                    if (eatOrBuy) {
-                        controller.buy("ExtraOil");
-                    } else {
-                        controller.eat("ExtraOil");
-                    }
-                } else {
+                if (animal != null) {
                     if (eatOrBuy) {
                         controller.buy("GoldenApple");
                     } else {
                         controller.eat("GoldenApple");
+                    }
+                } else {
+                    if (eatOrBuy) {
+                        controller.buy("ExtraOil");
+                    } else {
+                        controller.eat("ExtraOil");
                     }
                 }
 
@@ -839,29 +794,7 @@ public class View implements Screen {
     public void initializeHashmap() {
         hashMapImageAndText = new HashMap<>();
 
-        if (tamagotchi.getClass().getName().equals("com.mygdx.game.Personnage.Robot")) {
-            hashMapImageAndText.put("image1", "images/battery.png");
-            hashMapImageAndText.put("image2", "images/tank.png");
-            hashMapImageAndText.put("image3", "images/durability.png");
-            hashMapImageAndText.put("image4", "images/software.png");
-
-            hashMapImageAndText.put("foodImage", "images/oil.png");
-            hashMapImageAndText.put("extraFoodImage", "images/extraOil.png");
-
-            hashMapImageAndText.put("room1", "images/garden.png");
-            hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
-            hashMapImageAndText.put("room2", "images/kitchen.jpg");
-            hashMapImageAndText.put("room3", "images/livingRoom.jpg");
-            hashMapImageAndText.put("room4", "images/bathroom.jpg");
-
-            hashMapImageAndText.put("sleep", "Maintenance  ");
-            hashMapImageAndText.put("work", "Travailler");
-            hashMapImageAndText.put("wash", "Mettre a jour");
-            hashMapImageAndText.put("eat", "Remplir  ");
-            hashMapImageAndText.put("buy", "Acheter");
-            hashMapImageAndText.put("play", "Jouer");
-
-        } else {
+        if (animal != null) {
             hashMapImageAndText.put("image1", "images/heart.png");
             hashMapImageAndText.put("image2", "images/food.png");
             hashMapImageAndText.put("image3", "images/sleep.png");
@@ -880,6 +813,28 @@ public class View implements Screen {
             hashMapImageAndText.put("work", "Travailler");
             hashMapImageAndText.put("wash", "Se laver");
             hashMapImageAndText.put("eat", "Manger  ");
+            hashMapImageAndText.put("buy", "Acheter");
+            hashMapImageAndText.put("play", "Jouer");
+
+        } else {
+            hashMapImageAndText.put("image1", "images/battery.png");
+            hashMapImageAndText.put("image2", "images/tank.png");
+            hashMapImageAndText.put("image3", "images/durability.png");
+            hashMapImageAndText.put("image4", "images/software.png");
+
+            hashMapImageAndText.put("foodImage", "images/oil.png");
+            hashMapImageAndText.put("extraFoodImage", "images/extraOil.png");
+
+            hashMapImageAndText.put("room1", "images/garden.png");
+            hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
+            hashMapImageAndText.put("room2", "images/kitchen.jpg");
+            hashMapImageAndText.put("room3", "images/livingRoom.jpg");
+            hashMapImageAndText.put("room4", "images/bathroom.jpg");
+
+            hashMapImageAndText.put("sleep", "Maintenance  ");
+            hashMapImageAndText.put("work", "Travailler");
+            hashMapImageAndText.put("wash", "Mettre a jour");
+            hashMapImageAndText.put("eat", "Remplir  ");
             hashMapImageAndText.put("buy", "Acheter");
             hashMapImageAndText.put("play", "Jouer");
         }
@@ -973,6 +928,92 @@ public class View implements Screen {
         stage.clear();
         stage.addActor(deathTamagotchi);
     }
+
+    /**
+     * Met à jour l'affichage avec les bonnes valeurs du tamagotchi
+     */
+    public void updateAttributAffichage() {
+        if (animal != null) {
+            setAmountProgressBar("life", animal.getLife());
+            setAmountProgressBar("food", animal.getFood());
+            setAmountProgressBar("sleep", animal.getSleep());
+            setAmountProgressBar("wash", animal.getHygiene());
+            setAmountProgressBar("happy", animal.getHappiness());
+
+            setAmountLabel("money", animal.getWallet());
+            setAmountLabel("apple", animal.getNumberApple());
+            setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+        } else {
+            setAmountProgressBar("battery", robot.getBattery());
+            setAmountProgressBar("tank", robot.getTank());
+            setAmountProgressBar("durability", robot.getDurability());
+            setAmountProgressBar("update", robot.getSoftware());
+            setAmountProgressBar("happy", robot.getHappiness());
+
+            setAmountLabel("money", robot.getWallet());
+            setAmountLabel("oil", robot.getNumberOil());
+            setAmountLabel("superOil", robot.getNumberExtraOil());
+        }
+    }
+
+    /**
+     * Called when the screen should render itself.
+     *
+     * @param delta The time in seconds since the last render.
+     */
+    @Override
+    public void render(float delta) {
+        // Efface l'écran
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Met à jour les barres de progression avec les attributs du Tamagotchi
+        updateAttributAffichage();
+
+        elapsed += Gdx.graphics.getDeltaTime();
+
+        // Si passage de pluie à soleil et inversement, on place la bonne table
+        if (screen == 1 && previousWeather != flagPluie.get()) {
+            previousWeather = flagPluie.get();
+            int numberActors = stage.getActors().size;
+
+            // Si l'on se trouve dans les paramètres lors d'un changement d'état, on ne fait aucun changement
+            if (numberActors == 3) {
+                previousWeather = !flagPluie.get();
+            } else if (previousWeather) {
+                putGameTable();
+            } else {
+                putTable(room1Table);
+            }
+        }
+
+        // Dessine l'image de fond
+        batch.begin();
+        switch (screen) {
+            case 1:
+                if (previousWeather) {
+                    batch.draw(room1Rain.getKeyFrame(elapsed), 0, 0, screenWidth, screenHeight);
+                } else {
+                    batch.draw(room1, 0, 0, screenWidth, screenHeight);
+                }
+                break;
+            case 2:
+                batch.draw(room2, 0, 0, screenWidth, screenHeight);
+                break;
+            case 3:
+                batch.draw(room3, 0, 0, screenWidth, screenHeight);
+                break;
+            case 4:
+                batch.draw(room4, 0, 0, screenWidth, screenHeight);
+                break;
+            // Ajoutez d'autres cas pour d'autres images de fond si nécessaire
+        }
+        batch.end();
+
+        // Dessine le stage
+        stage.draw();
+    }
+
 
     /**
      * Méthode appelée quand la fenêtre est redimensionnée

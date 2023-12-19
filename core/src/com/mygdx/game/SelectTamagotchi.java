@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -174,35 +175,45 @@ public class SelectTamagotchi implements Screen {
         labelDifficulty.setFontScale(fontScale);
         labelLevelDifficult.setFontScale(fontScale);
         labelNomTamagotchi.setFontScale(fontScale);
-        nomTamagotchi.getStyle().font.getData().setScale(fontScale);
         backButton.getLabel().setFontScale(fontScale);
         playButton.getLabel().setFontScale(fontScale);
         changeSkin.setFontScale(fontScale / 2);
 
+        nomTamagotchi.getStyle().font.getData().setScale(fontScale);
+
+        /*
+         * Permet le redimensionnement de la police du nom du tamagotchi
+         * sans avoir de décalage avec le label
+         */
+        GlyphLayout layout = new GlyphLayout(nomTamagotchi.getStyle().font, nomTamagotchi.getText());
+        float textHeight = layout.height;
+
+        nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
+
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
-        pixelDog.setPosition(middleX + shift + ajustementXElement, middleY + shift + ajustementYElement);
-        pixelDinosaur.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY - tailleImage - shift + ajustementYElement);
-        pixelRobot.setPosition(middleX + shift + ajustementXElement, middleY - tailleImage - shift + ajustementYElement);
+        pixelDog.setPosition(middleX + shift + ajustementXElement, pixelCat.getY());
+        pixelDinosaur.setPosition(pixelCat.getX(), middleY - tailleImage - shift + ajustementYElement);
+        pixelRobot.setPosition(pixelDog.getX(), pixelDinosaur.getY());
 
         labelTamagotchiSelection.setPosition(middleX - labelTamagotchiSelection.getMinWidth() - ajustementXElement, middleY - (tailleImage / 1.2f));
-        tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.2f));
+        tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.1f));
         changeSkin.setPosition(middleX - changeSkin.getMinWidth() - ajustementXElement, labelTamagotchiSelection.getY() - changeSkin.getMinHeight());
 
         labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
-        nomTamagotchi.setPosition(middleX + (shift * 3f), middleY - tailleImage - (shift * 2.2f));
+        nomTamagotchi.setPosition(middleX + (shift * 3f), labelNomTamagotchi.getY());
 
         labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 5f));
-        leftArrow.setPosition(middleX, middleY - tailleImage - shift * 4 - labelLevelDifficult.getMinHeight());
-        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement / 2f), middleY - tailleImage - (shift * 5f));
-        rightArrow.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement * 4.2f), middleY - tailleImage - (shift * 4f) - labelLevelDifficult.getMinHeight());
+        leftArrow.setPosition(middleX, labelDifficulty.getY() - (yArrow / 2) + (labelDifficulty.getMinHeight() / 2));
+        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement / 2f), labelDifficulty.getY());
+        rightArrow.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement * 4.2f), leftArrow.getY());
 
         if (backButton.getMinWidth() <= 220) {
-            backButton.setPosition(middleX - 220 - ajustementXElement, 20);
+            backButton.setPosition(middleX - 220 - ajustementXElement, 5);
         } else {
-            backButton.setPosition(middleX - backButton.getMinWidth() - ajustementXElement, 20);
+            backButton.setPosition(middleX - backButton.getMinWidth() - ajustementXElement, 5);
         }
 
-        playButton.setPosition(middleX + playButton.getMinWidth(), 20);
+        playButton.setPosition(middleX + playButton.getMinWidth(), backButton.getY());
 
         message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
         retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);

@@ -65,8 +65,8 @@ class Moteur implements Runnable {
      * Méthode appelée pour exécuter le thread
      */
     public void run() {
-        float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde / (Modele.tempsAttenteJeu / 1000);
-        float nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
+        float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde * 1000 / Modele.tempsAttenteJeu;
+        float nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
 
         // Tant que le drapeau n'est pas levé, on continue
         while (!flagStop.get()) {
@@ -102,12 +102,12 @@ class Moteur implements Runnable {
                 // Si pas d'action en cours, donc on peut effectuer la pluie
                 if (flagSave.get()) {
                     flagPluie.set(true);
-                    nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) / (Modele.tempsAttenteJeu / 1000);
+                    nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
                     compteurPluie.set(0);
                 }
 
                 // Enlève la pluie au bout de 10/15/20 secondes
-            } else if (compteurPluie.get() == durationPluie / (Modele.tempsAttenteJeu / 1000)) {
+            } else if (compteurPluie.get() == durationPluie * 1000 / Modele.tempsAttenteJeu) {
                 // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
@@ -121,9 +121,6 @@ class Moteur implements Runnable {
             } else {
                 compteurPluie.set(compteurPluie.get() + 1);
             }
-
-            // Met à jour l'affichage
-            modele.updateAffichage();
         }
     }
 }
@@ -337,7 +334,7 @@ public class Modele {
 
             if (animal.getLife() <= 0) {
                 stopGame(false);
-                // On attend que la fonction wait se termine complètement (Sinon elle change l'écran)
+                // On attend que le thread wait se termine complètement (Sinon elle change l'écran)
                 while (!flagWait.get()) {
                     continue;
                 }
@@ -372,34 +369,6 @@ public class Modele {
             }
         }
 
-    }
-
-    /**
-     * Met à jour l'affichage avec les bonnes valeurs du tamagotchi
-     */
-    public void updateAffichage() {
-        if (animal != null) {
-            controller.setAmountProgressBar("life", animal.getLife());
-            controller.setAmountProgressBar("food", animal.getFood());
-            controller.setAmountProgressBar("sleep", animal.getSleep());
-            controller.setAmountProgressBar("wash", animal.getHygiene());
-            controller.setAmountProgressBar("happy", animal.getHappiness());
-
-            controller.setAmountLabel("money", animal.getWallet());
-            controller.setAmountLabel("apple", animal.getNumberApple());
-            controller.setAmountLabel("goldenApple", animal.getNumberGoldenApple());
-        } else {
-            controller.setAmountProgressBar("battery", robot.getBattery());
-            controller.setAmountProgressBar("tank", robot.getTank());
-            controller.setAmountProgressBar("durability", robot.getDurability());
-            controller.setAmountProgressBar("update", robot.getSoftware());
-            controller.setAmountProgressBar("happy", robot.getHappiness());
-
-            controller.setAmountLabel("money", robot.getWallet());
-            controller.setAmountLabel("oil", robot.getNumberOil());
-            controller.setAmountLabel("superOil", robot.getNumberExtraOil());
-
-        }
     }
 
     /**
