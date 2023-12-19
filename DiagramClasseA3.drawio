@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-19T15:47:11.368Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="YSlt3yZGCGrslD1P7vE1" version="22.1.11" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-19T15:49:43.397Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="cr-qJyC_QqYGAjRXUSXc" version="22.1.11" type="github">
   <diagram id="AY7ozsb0nTxLQEQO-qp8" name="Page-2">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -95,7 +95,7 @@
         <mxCell id="CEjjNatdGJ-OlO1aCKFO-10" value="+getName(): String&lt;br&gt;+getPoint() : int&lt;br&gt;+getPrice : int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="CEjjNatdGJ-OlO1aCKFO-7" vertex="1">
           <mxGeometry y="98" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="ASStj21WZhXskgtz9LRV-4" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=1.009;exitY=0.237;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" source="iNTnJNL07J0__oHAqCpz-2" target="efiOF5lhqJqWYbXf3eXv-2" edge="1">
+        <mxCell id="ASStj21WZhXskgtz9LRV-4" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=1.009;exitY=0.237;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" parent="1" source="iNTnJNL07J0__oHAqCpz-2" target="efiOF5lhqJqWYbXf3eXv-2" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="561" y="171.5" as="sourcePoint" />
             <mxPoint x="721" y="171.5" as="targetPoint" />
@@ -237,7 +237,7 @@
         <mxCell id="efiOF5lhqJqWYbXf3eXv-4" value="+addBasket(Food) : void&lt;br&gt;+getBesket(): ArrayList(Food)&lt;br&gt;+removeFoodFromBasket(int): void&lt;br&gt;+getNumberOfFood(String): int" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="efiOF5lhqJqWYbXf3eXv-1" vertex="1">
           <mxGeometry y="60" width="210" height="72" as="geometry" />
         </mxCell>
-        <mxCell id="UWGZW6PHFwanZghe9vZY-1" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.012;entryY=0.297;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#e1d5e7;strokeColor=#9673a6;" edge="1" parent="1" source="efiOF5lhqJqWYbXf3eXv-2" target="CEjjNatdGJ-OlO1aCKFO-8">
+        <mxCell id="UWGZW6PHFwanZghe9vZY-1" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.012;entryY=0.297;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" edge="1" parent="1" source="efiOF5lhqJqWYbXf3eXv-2" target="CEjjNatdGJ-OlO1aCKFO-8">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="890" y="81" as="sourcePoint" />
             <mxPoint x="967" y="80" as="targetPoint" />
