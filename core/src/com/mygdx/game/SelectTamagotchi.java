@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -40,7 +42,7 @@ public class SelectTamagotchi implements Screen {
     private TextButton playButton, backButton, retour;
 
     // Zone de texte
-    private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
+    private TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
     private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message, changeSkin;
 
@@ -50,15 +52,13 @@ public class SelectTamagotchi implements Screen {
      * Constructeur
      */
     public SelectTamagotchi() {
-
         createLabel();
         createButton();
         addButtonListeners();
 
-
         nomTamagotchi.setText("Garfield");
         nomTamagotchi.setMaxLength(10);
-        nomTamagotchi.setWidth(300);
+        nomTamagotchi.setWidth(400);
 
         posAndSizeElement();
 
@@ -186,6 +186,17 @@ public class SelectTamagotchi implements Screen {
 
         nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
 
+        TextField.TextFieldStyle textFieldStyle = nomTamagotchi.getStyle();
+        Label oneCharSizeCalibrationThrowAway = new Label("|", new MultiSkin("label"));
+
+        Pixmap cursorColor = new Pixmap((int) (screenWidth * 9f / 900f), (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
+        cursorColor.setColor(Color.WHITE);
+        cursorColor.fill();
+
+        textFieldStyle.cursor = new Image(new Texture(cursorColor)).getDrawable();
+
+        nomTamagotchi.setStyle(textFieldStyle);
+
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
         pixelDog.setPosition(middleX + shift + ajustementXElement, pixelCat.getY());
         pixelDinosaur.setPosition(pixelCat.getX(), middleY - tailleImage - shift + ajustementYElement);
@@ -213,6 +224,8 @@ public class SelectTamagotchi implements Screen {
 
         message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
         retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);
+
+        addActorStage();
     }
 
     /**
