@@ -54,7 +54,7 @@ public class View implements Screen {
     private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
 
     // Image du tamagotchi
-    private final ImageButton tamagotchiImage;
+    private ImageButton tamagotchiImage;
 
     // Bouton texte d'action
     private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume, menu;
@@ -82,6 +82,7 @@ public class View implements Screen {
      *
      * @param controller Controller de jeu
      * @param tamagotchi Tamagotchi
+     * @param flagPluie  Active la pluie
      */
     public View(Controller controller, Tamagotchi tamagotchi, AtomicBoolean flagPluie) {
         this.flagPluie = flagPluie;
@@ -107,9 +108,6 @@ public class View implements Screen {
             case ("com.mygdx.game.Personnage.Robot"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
                 break;
-
-            default:
-                throw new IllegalArgumentException("Tamagotchi non reconnu");
         }
 
         // Met à jour les variables de taille de l'écran
@@ -580,7 +578,6 @@ public class View implements Screen {
      *
      * @param label  Label voulu
      * @param amount Montant voulu
-     * @throws IllegalArgumentException Si label inconnu
      */
     public void setAmountLabel(String label, int amount) {
         switch (label) {
@@ -606,7 +603,6 @@ public class View implements Screen {
      *
      * @param progressBar Barre de progression voulu
      * @param amount      niveau voulu (0 <= amount <= 1000)
-     * @throws IllegalArgumentException Si barre de progression inconnue
      */
     public void setAmountProgressBar(String progressBar, float amount) {
         if (amount >= 0 || amount <= 1000) {
@@ -832,10 +828,10 @@ public class View implements Screen {
     }
 
     /**
-     * Renvoie la texture voulu selon la clef
+     * Renvoie la texture ou le texte voulu selon la clef
      *
      * @param key clef
-     * @return String chemin de la texture
+     * @return String chemin de la texture ou du texte
      */
     public String getImageOrTextFromTamagotchi(String key) {
         return hashMapImageAndText.get(key);
@@ -854,6 +850,7 @@ public class View implements Screen {
      * Modifie l'affichage pour permettre l'attente de l'action en cours
      *
      * @param visibility boolean Modifie l'affichage
+     * @param act        Action à afficher
      */
     public void actionTamagotchiChangeVisibility(boolean visibility, String act) {
         action.setText(act + " en cours");
@@ -922,27 +919,27 @@ public class View implements Screen {
      */
     public void updateAttributAffichage() {
         if (tamagotchi instanceof Animal) {
-            setAmountProgressBar("life", controller.getDataForProgressBar("life"));
-            setAmountProgressBar("food", controller.getDataForProgressBar("food"));
-            setAmountProgressBar("sleep", controller.getDataForProgressBar("sleep"));
-            setAmountProgressBar("wash", controller.getDataForProgressBar("wash"));
-            setAmountProgressBar("happy", controller.getDataForProgressBar("happy"));
+            setAmountProgressBar("life", controller.getDataTamagotchi("life"));
+            setAmountProgressBar("food", controller.getDataTamagotchi("food"));
+            setAmountProgressBar("sleep", controller.getDataTamagotchi("sleep"));
+            setAmountProgressBar("wash", controller.getDataTamagotchi("wash"));
+            setAmountProgressBar("happy", controller.getDataTamagotchi("happy"));
 
-            setAmountLabel("apple", (int) controller.getDataForProgressBar("apple"));
-            setAmountLabel("goldenApple", (int) controller.getDataForProgressBar("goldenApple"));
+            setAmountLabel("apple", (int) controller.getDataTamagotchi("apple"));
+            setAmountLabel("goldenApple", (int) controller.getDataTamagotchi("goldenApple"));
         } else {
-            setAmountProgressBar("battery", controller.getDataForProgressBar("battery"));
-            setAmountProgressBar("tank", controller.getDataForProgressBar("tank"));
-            setAmountProgressBar("durability", controller.getDataForProgressBar("durability"));
-            setAmountProgressBar("update", controller.getDataForProgressBar("update"));
-            setAmountProgressBar("happy", controller.getDataForProgressBar("happy"));
+            setAmountProgressBar("battery", controller.getDataTamagotchi("battery"));
+            setAmountProgressBar("tank", controller.getDataTamagotchi("tank"));
+            setAmountProgressBar("durability", controller.getDataTamagotchi("durability"));
+            setAmountProgressBar("update", controller.getDataTamagotchi("update"));
+            setAmountProgressBar("happy", controller.getDataTamagotchi("happy"));
 
-            setAmountLabel("oil", (int) controller.getDataForProgressBar("oil"));
-            setAmountLabel("superOil", (int) controller.getDataForProgressBar("superOil"));
+            setAmountLabel("oil", (int) controller.getDataTamagotchi("oil"));
+            setAmountLabel("superOil", (int) controller.getDataTamagotchi("superOil"));
         }
 
-        setAmountProgressBar("waiting", controller.getDataForProgressBar("waiting"));
-        setAmountLabel("money", (int) controller.getDataForProgressBar("money"));
+        setAmountProgressBar("waiting", controller.getDataTamagotchi("waiting"));
+        setAmountLabel("money", (int) controller.getDataTamagotchi("money"));
     }
 
     /**

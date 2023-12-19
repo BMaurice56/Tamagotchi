@@ -25,7 +25,6 @@ public class Controller {
     // Aléatoire
     private final Random random = new Random();
 
-
     /**
      * Constructeur
      *
@@ -33,6 +32,8 @@ public class Controller {
      * @param nomTamagotchi    Nom du tamagotchi
      * @param difficulty       Niveau de difficulté
      * @param save             Lancement d'une sauvegarde ou non
+     * @param numberSave       Numéro de la sauvegarde
+     * @param skin             Numéro de l'apparence
      */
     public Controller(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numberSave, int skin) {
         AtomicBoolean flagPluie = new AtomicBoolean(false);
@@ -75,7 +76,8 @@ public class Controller {
     /**
      * Modifie la visibilité des éléments de l'affichage selon les actions effectuées
      *
-     * @param visibility true ou false selon où on en est dans l'action
+     * @param visibility True ou false selon où on en est dans l'action
+     * @param action     Action à afficher
      */
     public void actionEnCourTamagotchi(boolean visibility, String action) {
         view.actionTamagotchiChangeVisibility(visibility, action);
@@ -114,7 +116,7 @@ public class Controller {
      * Fait se laver / mettre à jour le tamagotchi
      */
     public void wash() {
-        int temps = 10 + random.nextInt(6);
+        int temps = 10 + random.nextInt(4);
 
         if (modele.getTamagotchi().getNumberTamagotchi() != 4) {
             modele.doAction(temps, "Lavage", "wash", "");
@@ -125,6 +127,8 @@ public class Controller {
 
     /**
      * Fait manger le tamagotchi
+     *
+     * @param food String nourriture voulu
      */
     public void eat(String food) {
         Tamagotchi tamagotchi = modele.getTamagotchi();
@@ -140,6 +144,8 @@ public class Controller {
 
     /**
      * Permet d'acheter de la nourriture
+     *
+     * @param food String nourriture voulu
      */
     public void buy(String food) {
         modele.buy(food);
@@ -149,7 +155,7 @@ public class Controller {
      * Fait jouer le tamagotchi
      */
     public void play() {
-        int temps = 10 + random.nextInt(6);
+        int temps = 10 + random.nextInt(4);
 
         modele.doAction(temps, "Jeu", "play", "");
     }
@@ -157,14 +163,17 @@ public class Controller {
     /**
      * Renvoie les données du tamagotchi pour la vue
      *
+     * @param valeur String donnée voulu
      * @return float valeur
      */
-    public float getDataForProgressBar(String valeur) {
+    public float getDataTamagotchi(String valeur) {
         return modele.getValueTamagotchi(valeur);
     }
 
     /**
      * Affichage le message de la mort du tamagotchi
+     *
+     * @param file FileHandle gestionnaire du fichier
      */
     public void mortTamagotchi(FileHandle file) {
         deleteSave(file);
@@ -173,6 +182,8 @@ public class Controller {
 
     /**
      * Arrête le jeu
+     *
+     * @param save True ou false pour activer ou non la sauvegarde
      */
     public void stopGame(boolean save) {
         modele.stopGame(save);
@@ -189,7 +200,7 @@ public class Controller {
     /**
      * Supprime le fichier de sauvegarde passé en paramètre
      *
-     * @param file fichier
+     * @param file FileHandle gestionnaire du fichier
      */
     public static void deleteSave(FileHandle file) {
         boolean suppression = file.delete();

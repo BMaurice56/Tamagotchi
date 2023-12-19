@@ -16,7 +16,10 @@ public abstract class Animal extends Tamagotchi {
      * Constructeur
      * initialise à 1000 tous les attributs sauf son porte-monnaie
      *
-     * @param difficulty Niveau de difficulty
+     * @param difficulty       Niveau de difficulty
+     * @param nom              Nom
+     * @param numberTamagotchi Numéro du tamagotchi
+     * @param skin             Numéro de l'apparence
      */
     public Animal(int difficulty, String nom, int numberTamagotchi, int skin) {
         super(difficulty, nom, numberTamagotchi, skin);
@@ -26,8 +29,10 @@ public abstract class Animal extends Tamagotchi {
         sleep = 1000;
         happiness = 1000;
     }
+
     /**
      * Obtient la valeur actuelle de la jauge de vie de l'animal.
+     *
      * @return La valeur de la jauge de vie.
      */
     public float getLife() {
@@ -36,6 +41,7 @@ public abstract class Animal extends Tamagotchi {
 
     /**
      * Modifie la valeur de la jauge de vie de l'animal en vérifiant les limites (entre 0 et 1000).
+     *
      * @param l Nouvelle valeur de la jauge de vie.
      */
     public void setLife(float l) {
@@ -48,10 +54,20 @@ public abstract class Animal extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter de la faim
+     *
+     * @return float valeur
+     */
     public float getFood() {
         return food;
     }
 
+    /**
+     * Setter de la faim
+     *
+     * @param f float valeur
+     */
     public void setFood(float f) {
         food = f;
 
@@ -62,10 +78,20 @@ public abstract class Animal extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter hygiène
+     *
+     * @return float valeur
+     */
     public float getHygiene() {
         return hygiene;
     }
 
+    /**
+     * Setter hygiène
+     *
+     * @param h float valeur
+     */
     public void setHygiene(float h) {
         hygiene = h;
 
@@ -76,10 +102,20 @@ public abstract class Animal extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter sommeil
+     *
+     * @return float valeur
+     */
     public float getSleep() {
         return sleep;
     }
 
+    /**
+     * Setter sommeil
+     *
+     * @param s float valeur
+     */
     public void setSleep(float s) {
         sleep = s;
 
@@ -90,10 +126,20 @@ public abstract class Animal extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter joie
+     *
+     * @return float valeur
+     */
     public float getHappiness() {
         return happiness;
     }
 
+    /**
+     * Setter joie
+     *
+     * @param h float valeur
+     */
     public void setHappiness(float h) {
         happiness = h;
 
@@ -103,6 +149,7 @@ public abstract class Animal extends Tamagotchi {
             happiness = 1000;
         }
     }
+
     /**
      * Obtient le nombre d'éléments de type "Apple" actuellement présents dans le panier de l'animal.
      * Utilise la méthode getNumberOfFood() de l'objet panier pour obtenir ce nombre.
@@ -112,6 +159,7 @@ public abstract class Animal extends Tamagotchi {
     public int getNumberApple() {
         return getPanier().getNumberOfFood("Apple");
     }
+
     /**
      * Obtient le nombre d'éléments de type "Food" actuellement présents dans le panier de l'animal.
      * Utilise la méthode getNumberOfFood() de l'objet panier pour obtenir ce nombre.
@@ -125,8 +173,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Description : Méthode dormir qui ajuste la jauge de sommeil à son maximum sauf si elle est inférieure à 200.
-     * Modifie : La jauge de sommeil.
+     * Ajuste la valeur de sommeil à son maximum sauf si elle est inférieure à 200.
      */
     public void work() {
         setWallet(getWallet() + 50);
@@ -138,7 +185,8 @@ public abstract class Animal extends Tamagotchi {
 
 
     /**
-     * Supprime de la nourriture du panier et ajuste les jauges en conséquence
+     * Supprime de la nourriture du panier et ajuste les valeurs en conséquence
+     *
      * @param food Type de nourriture (Apple ou GoldenApple).
      */
     public void eat(String food) {
@@ -160,8 +208,7 @@ public abstract class Animal extends Tamagotchi {
 
 
     /**
-     * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
-     * modifie : sleep
+     * Met la valeur de sommeil à max sauf si on a moins de 200
      */
     public void sleep() {
         if (getSleep() <= 200) {
@@ -172,8 +219,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * description : methode dormir qui met votre jauge sommeil à max sauf si on a moins de 200 de sommeil
-     * Modifie : hygiene, bonheur
+     * Met la valeur d'hygiène à max sauf si on a moins de 200
      */
     public void wash() {
         setHappiness(getHappiness() + 100);
@@ -187,9 +233,7 @@ public abstract class Animal extends Tamagotchi {
     }
 
     /**
-     * Auteur : Arthur
-     * descriptif : methode jouer qui rend + heureux le joueur, mais le salin
-     * Modifie : bonheur, hygiene
+     * Rend + heureux le joueur, mais le sali
      */
     public void play() {
         setHygiene(getHygiene() - random.nextInt(75, 200));

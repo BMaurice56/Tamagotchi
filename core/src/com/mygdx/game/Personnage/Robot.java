@@ -16,6 +16,14 @@ public class Robot extends Tamagotchi {
         super(1, "", 4, 1);
     }
 
+    /**
+     * Constructeur
+     * initialise à 1000 tous les attributs sauf son porte-monnaie
+     *
+     * @param difficulty Niveau de difficulty
+     * @param nom        Nom
+     * @param skin       Numéro de l'apparence
+     */
     public Robot(int difficulty, String nom, int skin) {
         super(difficulty, nom, 4, skin);
         battery = 1000;
@@ -27,10 +35,20 @@ public class Robot extends Tamagotchi {
         random = new Random();
     }
 
+    /**
+     * Getter batterie
+     *
+     * @return float valeur
+     */
     public float getBattery() {
         return battery;
     }
 
+    /**
+     * Setter batterie
+     *
+     * @param b float valeur
+     */
     public void setBattery(float b) {
         battery = b;
 
@@ -41,10 +59,20 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter logiciel
+     *
+     * @return float valeur
+     */
     public float getSoftware() {
         return software;
     }
 
+    /**
+     * Setter logiciel
+     *
+     * @param s float valeur
+     */
     public void setSoftware(float s) {
         software = s;
 
@@ -55,10 +83,20 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter réservoir
+     *
+     * @return float valeur
+     */
     public float getTank() {
         return tank;
     }
 
+    /**
+     * Setter réservoir
+     *
+     * @param t float valeur
+     */
     public void setTank(float t) {
         tank = t;
 
@@ -69,10 +107,20 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter durabilité
+     *
+     * @return float valeur
+     */
     public float getDurability() {
         return durability;
     }
 
+    /**
+     * Setter durabilité
+     *
+     * @param d float valeur
+     */
     public void setDurability(float d) {
         durability = d;
 
@@ -83,10 +131,20 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Getter joie
+     *
+     * @return float valeur
+     */
     public float getHappiness() {
         return happiness;
     }
 
+    /**
+     * Setter joie
+     *
+     * @param h float valeur
+     */
     public void setHappiness(float h) {
         happiness = h;
 
@@ -97,16 +155,28 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Renvoie le nombre d'huiles
+     *
+     * @return int nombre
+     */
     public int getNumberOil() {
         return getPanier().getNumberOfFood("Oil");
     }
 
+    /**
+     * Renvoie le nombre de super huiles
+     *
+     * @return int nombre
+     */
     public int getNumberSuperOil() {
-
         return getPanier().getNumberOfFood("SuperOil");
     }
 
 
+    /**
+     * Maintenance du robot
+     */
     public void maintenance() {
         if (getDurability() <= 200) {
             setDurability(900 - getDifficulty() * 100);
@@ -115,6 +185,9 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Mise à jour du robot
+     */
     public void updating() {
 
         setHappiness(getHappiness() + 100);
@@ -130,6 +203,9 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Partie de jeu du robot
+     */
     public void jouer() {
 
         setSoftware(getSoftware() - random.nextInt(75, 200));
@@ -143,6 +219,11 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Remplie le réservoir du robot
+     *
+     * @param tank Huile voulu
+     */
     public void fillTank(String tank) {
 
         for (int i = 0; i < getPanier().getBasket().size(); i++) {
@@ -154,7 +235,7 @@ public class Robot extends Tamagotchi {
 
                 setTank(getTank() + food1.getPoint());
 
-                if (tank.equals("SuperExtraOil")) {
+                if (tank.equals("SuperOil")) {
                     setHappiness(getHappiness() + 75);
                 }
 
@@ -163,6 +244,9 @@ public class Robot extends Tamagotchi {
         }
     }
 
+    /**
+     * Travail du robot
+     */
     public void work() {
         setWallet(getWallet() + 50);
 
@@ -171,6 +255,9 @@ public class Robot extends Tamagotchi {
         setDurability(getDurability() - getDifficulty() * 60);
     }
 
+    /**
+     * Achat d'huile
+     */
     public void buyOil() {
         if (getWallet() >= Oil.price) {
             addBasket(new Oil());
@@ -178,7 +265,10 @@ public class Robot extends Tamagotchi {
         }
     }
 
-    public void buyExtraOil() {
+    /**
+     * Achat de super huile
+     */
+    public void buySuperOil() {
         if (getWallet() >= SuperOil.price) {
             addBasket(new SuperOil());
             setWallet(getWallet() - SuperOil.price);

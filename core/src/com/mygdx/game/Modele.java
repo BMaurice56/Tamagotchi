@@ -36,6 +36,7 @@ class Moteur implements Runnable {
      * @param flagSave      Sauvegarde ou non le jeu
      * @param flagPluie     Active la pluie
      * @param compteurPluie Sauvegarde le nombre de tours de boucle pour la pluie
+     * @param difficulte    Niveau de difficulté
      * @param modele        controller de jeu
      */
     public Moteur(AtomicBoolean flagStop, AtomicBoolean flagWait, AtomicBoolean flagSave, AtomicBoolean flagPluie, AtomicInteger compteurPluie, int difficulte, Modele modele) {
@@ -208,6 +209,15 @@ public class Modele {
 
     /**
      * Constructeur de jeu
+     *
+     * @param tamagotchiWished Numéro du tamagotchi
+     * @param nomTamagotchi    Nom du tamagotchi
+     * @param difficulty       Niveau de difficulté
+     * @param save             True ou false si on provient d'une sauvegarde
+     * @param numSave          Numéro de la sauvegarde
+     * @param controller       Controller de jeu
+     * @param skin             Numéro de l'apparence
+     * @param flagPluie        Active la pluie pour la vue
      */
     public Modele(int tamagotchiWished, String nomTamagotchi, int difficulty, boolean save, int numSave, Controller controller, int skin, AtomicBoolean flagPluie) {
         this();
@@ -479,7 +489,7 @@ public class Modele {
 
                     // Tant que l'on n'a pas attendu le temps nécessaire, on continue
                     while (temps > System.currentTimeMillis() && !flagStop.get()) {
-                        // Met la bonne valeur sur la barre de progression
+                        // Met la bonne valeur pour la barre de progression
                         valeurWaitingBar = calculValueWaitingBar(time, System.currentTimeMillis(), temps);
                     }
 
@@ -492,7 +502,10 @@ public class Modele {
                     // Bloque la sauvegarde
                     flagSave.set(false);
 
-                    // Permet de savoir si l'on quitte le jeu pendant l'action
+                    /*
+                     Permet de savoir si l'on quitte le jeu pendant l'action
+                     Si l'action n'est pas terminé, alors on ne touche pas au tamagotchi
+                     */
                     if (!flagStop.get()) {
                         // Fait l'action voulue pour mettre à jour les valeurs du tamagotchi
                         switch (values[2]) {
@@ -541,7 +554,7 @@ public class Modele {
                     // Réautorise la sauvegarde
                     flagSave.set(true);
 
-                    // Remet à null attente pour pouvoir effectuer la prochaine action
+                    // Remet à null attente pour pouvoir effectuer une nouvelle action
                     attente = null;
 
                     // Réautorise le moteur à appeler cette fonction
@@ -586,8 +599,8 @@ public class Modele {
                 robot.buyOil();
                 break;
 
-            case "ExtraOil":
-                robot.buyExtraOil();
+            case "SuperOil":
+                robot.buySuperOil();
                 break;
         }
 
