@@ -188,7 +188,6 @@ public class SelectTamagotchi implements Screen {
 
         TextField.TextFieldStyle textFieldStyle = nomTamagotchi.getStyle();
 
-
         Pixmap cursorColor = new Pixmap(9, (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
         cursorColor.setColor(Color.WHITE);
         cursorColor.fill();

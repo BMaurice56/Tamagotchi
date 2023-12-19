@@ -337,6 +337,7 @@ public class ScreenMenu implements Screen {
                     putTable(maxSaveTable);
 
                 } else {
+                    musique.dispose();
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi());
                 }
 

@@ -171,6 +171,15 @@ public class Controller {
     }
 
     /**
+     * Renvoi le niveau de son
+     *
+     * @return float valeur
+     */
+    public float getLevelSound() {
+        return modele.getSound();
+    }
+
+    /**
      * Affichage le message de la mort du tamagotchi
      *
      * @param file FileHandle gestionnaire du fichier

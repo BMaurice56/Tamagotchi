@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Personnage.Animal;
@@ -77,6 +78,9 @@ public class View implements Screen {
     // Active la pluie ou non
     private final AtomicBoolean flagPluie;
 
+    // Son du tamagotchi
+    private Sound sound;
+
     /**
      * Constructeur
      *
@@ -95,10 +99,12 @@ public class View implements Screen {
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat" + skin + ".png", 500, 500);
+                sound = Gdx.audio.newSound(Gdx.files.internal("musics/catMeow.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Chien"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog" + skin + ".png", 500, 500);
+                sound = Gdx.audio.newSound(Gdx.files.internal("musics/dogBark.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
@@ -479,6 +485,15 @@ public class View implements Screen {
                 putTable(room2Table);
                 leftArrow.setVisible(true);
                 rightArrow.setVisible(true);
+                return true;
+            }
+        });
+
+        tamagotchiImage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                sound.play(controller.getLevelSound());
+
                 return true;
             }
         });
