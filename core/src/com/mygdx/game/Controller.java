@@ -72,26 +72,6 @@ public class Controller {
         startGame();
     }
 
-    /*
-     * Définit la valeur du label voulu
-     *
-     * @param label  Label
-     * @param amount Montant
-     */
-    public void setAmountLabel(String label, int amount) {
-        view.setAmountLabel(label, amount);
-    }
-
-    /**
-     * Définit la valeur de la barre de progression voulue
-     *
-     * @param progressBar Barre de progression
-     * @param amount      Montant
-     */
-    public void setAmountProgressBar(String progressBar, float amount) {
-        view.setAmountProgressBar(progressBar, amount);
-    }
-
     /**
      * Modifie la visibilité des éléments de l'affichage selon les actions effectuées
      *
@@ -175,6 +155,15 @@ public class Controller {
     }
 
     /**
+     * Renvoie les données du tamagotchi pour la vue
+     *
+     * @return float valeur
+     */
+    public float getDataForProgressBar(String valeur) {
+        return modele.getValueTamagotchi(valeur);
+    }
+
+    /**
      * Affichage le message de la mort du tamagotchi
      */
     public void mortTamagotchi(FileHandle file) {
@@ -196,12 +185,6 @@ public class Controller {
         modele.startGame();
     }
 
-    /**
-     * Sauvegarde le jeu
-     */
-    public void save() {
-        modele.save();
-    }
 
     /**
      * Supprime le fichier de sauvegarde passé en paramètre
@@ -211,6 +194,7 @@ public class Controller {
     public static void deleteSave(FileHandle file) {
         boolean suppression = file.delete();
 
+        // Si la sauvegarde n'est pas supprimée dès le premier appelle de fonction, on retente
         while (!suppression) {
             suppression = file.delete();
         }

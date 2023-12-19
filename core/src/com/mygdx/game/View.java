@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.mygdx.game.Personnage.Robot;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Personnage.Animal;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,11 +41,8 @@ public class View implements Screen {
     // Stock les noms de fichiers selon le type de tamagotchi
     private HashMap<String, String> hashMapImageAndText;
 
-    // Animal
-    private Animal animal = null;
-
-    // Robot
-    private Robot robot = null;
+    // Tamagotchi
+    private final Tamagotchi tamagotchi;
 
     // Taille de la fenêtre
     private float screenWidth, screenHeight, elapsed;
@@ -81,7 +77,6 @@ public class View implements Screen {
     // Active la pluie ou non
     private final AtomicBoolean flagPluie;
 
-
     /**
      * Constructeur
      *
@@ -90,12 +85,7 @@ public class View implements Screen {
      */
     public View(Controller controller, Tamagotchi tamagotchi, AtomicBoolean flagPluie) {
         this.flagPluie = flagPluie;
-
-        if (tamagotchi instanceof Animal) {
-            animal = (Animal) tamagotchi;
-        } else {
-            robot = (Robot) tamagotchi;
-        }
+        this.tamagotchi = tamagotchi;
 
         previousWeather = flagPluie.get();
 
@@ -374,7 +364,6 @@ public class View implements Screen {
         home.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.save();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
                 return true;
             }
@@ -412,7 +401,6 @@ public class View implements Screen {
             }
         });
 
-
         eat.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -447,7 +435,7 @@ public class View implements Screen {
         buyEatFoodImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (animal != null) {
+                if (tamagotchi instanceof Animal) {
                     if (eatOrBuy) {
                         controller.buy("Apple");
                     } else {
@@ -468,7 +456,7 @@ public class View implements Screen {
         buyEatExtraFoodImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (animal != null) {
+                if (tamagotchi instanceof Animal) {
                     if (eatOrBuy) {
                         controller.buy("GoldenApple");
                     } else {
@@ -476,9 +464,9 @@ public class View implements Screen {
                     }
                 } else {
                     if (eatOrBuy) {
-                        controller.buy("ExtraOil");
+                        controller.buy("SuperOil");
                     } else {
-                        controller.eat("ExtraOil");
+                        controller.eat("SuperOil");
                     }
                 }
 
@@ -794,7 +782,7 @@ public class View implements Screen {
     public void initializeHashmap() {
         hashMapImageAndText = new HashMap<>();
 
-        if (animal != null) {
+        if (tamagotchi instanceof Animal) {
             hashMapImageAndText.put("image1", "images/heart.png");
             hashMapImageAndText.put("image2", "images/food.png");
             hashMapImageAndText.put("image3", "images/sleep.png");
@@ -823,7 +811,7 @@ public class View implements Screen {
             hashMapImageAndText.put("image4", "images/software.png");
 
             hashMapImageAndText.put("foodImage", "images/oil.png");
-            hashMapImageAndText.put("extraFoodImage", "images/extraOil.png");
+            hashMapImageAndText.put("extraFoodImage", "images/superOil.png");
 
             hashMapImageAndText.put("room1", "images/garden.png");
             hashMapImageAndText.put("room1Rain", "images/gardenRain.gif");
@@ -933,27 +921,28 @@ public class View implements Screen {
      * Met à jour l'affichage avec les bonnes valeurs du tamagotchi
      */
     public void updateAttributAffichage() {
-        if (animal != null) {
-            setAmountProgressBar("life", animal.getLife());
-            setAmountProgressBar("food", animal.getFood());
-            setAmountProgressBar("sleep", animal.getSleep());
-            setAmountProgressBar("wash", animal.getHygiene());
-            setAmountProgressBar("happy", animal.getHappiness());
+        if (tamagotchi instanceof Animal) {
+            setAmountProgressBar("life", controller.getDataForProgressBar("life"));
+            setAmountProgressBar("food", controller.getDataForProgressBar("food"));
+            setAmountProgressBar("sleep", controller.getDataForProgressBar("sleep"));
+            setAmountProgressBar("wash", controller.getDataForProgressBar("wash"));
+            setAmountProgressBar("happy", controller.getDataForProgressBar("happy"));
 
-            setAmountLabel("money", animal.getWallet());
-            setAmountLabel("apple", animal.getNumberApple());
-            setAmountLabel("goldenApple", animal.getNumberGoldenApple());
+            setAmountLabel("apple", (int) controller.getDataForProgressBar("apple"));
+            setAmountLabel("goldenApple", (int) controller.getDataForProgressBar("goldenApple"));
         } else {
-            setAmountProgressBar("battery", robot.getBattery());
-            setAmountProgressBar("tank", robot.getTank());
-            setAmountProgressBar("durability", robot.getDurability());
-            setAmountProgressBar("update", robot.getSoftware());
-            setAmountProgressBar("happy", robot.getHappiness());
+            setAmountProgressBar("battery", controller.getDataForProgressBar("battery"));
+            setAmountProgressBar("tank", controller.getDataForProgressBar("tank"));
+            setAmountProgressBar("durability", controller.getDataForProgressBar("durability"));
+            setAmountProgressBar("update", controller.getDataForProgressBar("update"));
+            setAmountProgressBar("happy", controller.getDataForProgressBar("happy"));
 
-            setAmountLabel("money", robot.getWallet());
-            setAmountLabel("oil", robot.getNumberOil());
-            setAmountLabel("superOil", robot.getNumberExtraOil());
+            setAmountLabel("oil", (int) controller.getDataForProgressBar("oil"));
+            setAmountLabel("superOil", (int) controller.getDataForProgressBar("superOil"));
         }
+
+        setAmountProgressBar("waiting", controller.getDataForProgressBar("waiting"));
+        setAmountLabel("money", (int) controller.getDataForProgressBar("money"));
     }
 
     /**

@@ -151,6 +151,9 @@ public class Modele {
     // Stock le compteur de pluie même si le jeu est arrêté
     private final AtomicInteger compteurPluie = new AtomicInteger(0);
 
+    // Contient la valeur pour la barre de progression d'attente
+    private float valeurWaitingBar;
+
     // Tamagotchi animale
     private Animal animal;
 
@@ -311,6 +314,71 @@ public class Modele {
     }
 
     /**
+     * Renvoi la donnée voulu par le controller pour la vue
+     *
+     * @param valeur donnée voulue
+     * @return float valeur
+     */
+    public float getValueTamagotchi(String valeur) {
+        switch (valeur) {
+            case "life":
+                return animal.getLife();
+
+            case "battery":
+                return robot.getBattery();
+
+            case "food":
+                return animal.getFood();
+
+            case "tank":
+                return robot.getTank();
+
+            case "sleep":
+                return animal.getSleep();
+
+            case "durability":
+                return robot.getDurability();
+
+            case "wash":
+                return animal.getHygiene();
+
+            case "update":
+                return robot.getSoftware();
+
+            case "happy":
+                if (animal != null) {
+                    return animal.getHappiness();
+                } else {
+                    return robot.getHappiness();
+                }
+
+            case "money":
+                if (animal != null) {
+                    return animal.getWallet();
+                } else {
+                    return robot.getWallet();
+                }
+
+            case "apple":
+                return animal.getNumberApple();
+
+            case "goldenApple":
+                return animal.getNumberGoldenApple();
+
+            case "oil":
+                return robot.getNumberOil();
+
+            case "superOil":
+                return robot.getNumberSuperOil();
+
+            case "waiting":
+                return valeurWaitingBar;
+
+        }
+        return 0f;
+    }
+
+    /**
      * Modifie les valeurs du tamagotchi
      */
     public void vieTamagotchi() {
@@ -412,10 +480,14 @@ public class Modele {
                     // Tant que l'on n'a pas attendu le temps nécessaire, on continue
                     while (temps > System.currentTimeMillis() && !flagStop.get()) {
                         // Met la bonne valeur sur la barre de progression
-                        controller.setAmountProgressBar("waiting", calculValueWaitingBar(time, System.currentTimeMillis(), temps));
+                        valeurWaitingBar = calculValueWaitingBar(time, System.currentTimeMillis(), temps);
                     }
+
                     // Reaffiche les éléments de l'interface
                     controller.actionEnCourTamagotchi(true, "");
+
+                    // On repasse à zéro pour la prochaine action
+                    valeurWaitingBar = 0;
 
                     // Bloque la sauvegarde
                     flagSave.set(false);
@@ -539,29 +611,6 @@ public class Modele {
     public void startGame() {
         flagStop.set(false);
         attente = null;
-
-        if (animal != null) {
-            controller.setAmountProgressBar("life", animal.getLife());
-            controller.setAmountProgressBar("food", animal.getFood());
-            controller.setAmountProgressBar("sleep", animal.getSleep());
-            controller.setAmountProgressBar("wash", animal.getHygiene());
-            controller.setAmountProgressBar("happy", animal.getHappiness());
-
-            controller.setAmountLabel("money", animal.getWallet());
-            controller.setAmountLabel("apple", animal.getNumberApple());
-            controller.setAmountLabel("goldenApple", animal.getNumberGoldenApple());
-
-        } else {
-            controller.setAmountProgressBar("battery", robot.getBattery());
-            controller.setAmountProgressBar("tank", robot.getTank());
-            controller.setAmountProgressBar("durability", robot.getDurability());
-            controller.setAmountProgressBar("maintenance", robot.getSoftware());
-            controller.setAmountProgressBar("happy", robot.getHappiness());
-
-            controller.setAmountLabel("money", robot.getWallet());
-            controller.setAmountLabel("apple", robot.getNumberOil());
-            controller.setAmountLabel("goldenApple", robot.getNumberExtraOil());
-        }
 
         // Moteur de jeu
         Thread Moteur = new Thread(new Moteur(flagStop, flagWait, flagSave, flagPluie, compteurPluie, getTamagotchi().getDifficulty(), this));

@@ -101,9 +101,9 @@ public class Robot extends Tamagotchi {
         return getPanier().getNumberOfFood("Oil");
     }
 
-    public int getNumberExtraOil() {
+    public int getNumberSuperOil() {
 
-        return getPanier().getNumberOfFood("ExtraOil");
+        return getPanier().getNumberOfFood("SuperOil");
     }
 
 
@@ -179,9 +179,9 @@ public class Robot extends Tamagotchi {
     }
 
     public void buyExtraOil() {
-        if (getWallet() >= ExtraOil.price) {
-            addBasket(new ExtraOil());
-            setWallet(getWallet() - ExtraOil.price);
+        if (getWallet() >= SuperOil.price) {
+            addBasket(new SuperOil());
+            setWallet(getWallet() - SuperOil.price);
         }
     }
 }
