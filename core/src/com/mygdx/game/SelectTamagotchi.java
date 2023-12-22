@@ -205,8 +205,11 @@ public class SelectTamagotchi implements Screen {
         float coefficient = 1 + facteur * (900f - screenHeight);
 
         if (coefficient < 1) {
+            facteur = -0.002f;
             coefficient = 1 - facteur * (900f - screenHeight);
         }
+
+        System.out.println(coefficient);
 
         float labelDifficultyY = middleY - tailleImage - (shift * 5f);
         labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, labelDifficultyY);
