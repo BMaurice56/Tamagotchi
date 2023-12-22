@@ -41,7 +41,7 @@ public class SelectTamagotchi implements Screen {
     private TextButton playButton, backButton, retour;
 
     // Zone de texte
-    private TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
+    private final TextField nomTamagotchi = new TextField("Nom", new MultiSkin("textfield"));
 
     private Label labelLevelDifficult, labelTamagotchiSelection, labelNomTamagotchi, labelDifficulty, message, changeSkin;
 
