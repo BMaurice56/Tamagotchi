@@ -205,6 +205,11 @@ public class Modele {
         // Permet de lire et d'interagir avec le fichier
         soundFile = new FileHandle("core/src/com/mygdx/game/jsonFile/settings.json");
 
+        // Si le fichier n'existe pas, on le crée
+        if (!soundFile.exists()) {
+            setSound(0.5f);
+        }
+
         // Lecture du fichier de paramètre json
         soundBaseReader = jsonReader.parse(soundFile);
 
