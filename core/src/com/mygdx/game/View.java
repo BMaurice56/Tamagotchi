@@ -63,6 +63,9 @@ public class View implements Screen {
     // Barres de progressions
     private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
 
+    // Style des barres de progressions
+    private ProgressBar.ProgressBarStyle lifeProgressBarStyle, foodProgressBarStyle, sleepingProgressBarStyle, hygieneProgressBarStyle, happinessProgressBarStyle, waitingProgressBarStyle;
+
     // Numéro de l'écran et taille des barres
     private int screen, widthProgressbar, heightProgressBar;
 
@@ -214,12 +217,28 @@ public class View implements Screen {
      * Instancie les barres de progression
      */
     public void createProgressBar() {
-        ProgressBar.ProgressBarStyle lifeProgressBarStyle = new ProgressBar.ProgressBarStyle();
-        ProgressBar.ProgressBarStyle foodProgressBarStyle = new ProgressBar.ProgressBarStyle();
-        ProgressBar.ProgressBarStyle sleepingProgressBarStyle = new ProgressBar.ProgressBarStyle();
-        ProgressBar.ProgressBarStyle hygieneProgressBarStyle = new ProgressBar.ProgressBarStyle();
-        ProgressBar.ProgressBarStyle happinessProgressBarStyle = new ProgressBar.ProgressBarStyle();
-        ProgressBar.ProgressBarStyle waitingProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        createStyleProgressBar();
+
+        progressBar1 = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
+        progressBar2 = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
+        progressBar3 = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
+        progressBar4 = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
+        progressBar5 = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
+        waitingBar = new ProgressBar(0f, 1000f, 1f, false, waitingProgressBarStyle);
+
+        waitingBar.setVisible(false);
+    }
+
+    /**
+     * Instancie les styles pour les barres de progression
+     */
+    public void createStyleProgressBar() {
+        lifeProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        foodProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        sleepingProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        hygieneProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        happinessProgressBarStyle = new ProgressBar.ProgressBarStyle();
+        waitingProgressBarStyle = new ProgressBar.ProgressBarStyle();
 
         lifeProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
         lifeProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
@@ -244,15 +263,6 @@ public class View implements Screen {
         waitingProgressBarStyle.background = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.RED);
         waitingProgressBarStyle.knob = Utils.getColoredDrawable(0, heightProgressBar, Color.GREEN);
         waitingProgressBarStyle.knobBefore = Utils.getColoredDrawable(widthProgressbar, heightProgressBar, Color.GREEN);
-
-        progressBar1 = new ProgressBar(0f, 1000f, 1f, false, lifeProgressBarStyle);
-        progressBar2 = new ProgressBar(0f, 1000f, 1f, false, foodProgressBarStyle);
-        progressBar3 = new ProgressBar(0f, 1000f, 1f, false, sleepingProgressBarStyle);
-        progressBar4 = new ProgressBar(0f, 1000f, 1f, false, hygieneProgressBarStyle);
-        progressBar5 = new ProgressBar(0f, 1000f, 1f, false, happinessProgressBarStyle);
-        waitingBar = new ProgressBar(0f, 1000f, 1f, false, waitingProgressBarStyle);
-
-        waitingBar.setVisible(false);
     }
 
     /**
@@ -666,6 +676,15 @@ public class View implements Screen {
         progressBar5.setSize(widthProgressbar, heightProgressBar);
         waitingBar.setSize(widthProgressbar, heightProgressBar);
 
+        createStyleProgressBar();
+
+        progressBar1.setStyle(lifeProgressBarStyle);
+        progressBar2.setStyle(foodProgressBarStyle);
+        progressBar3.setStyle(sleepingProgressBarStyle);
+        progressBar4.setStyle(hygieneProgressBarStyle);
+        progressBar5.setStyle(happinessProgressBarStyle);
+        waitingBar.setStyle(waitingProgressBarStyle);
+
         // Taille des images
         float widthImage = screenHeight * (50f / 900f), heightImage = screenHeight * (50f / 900f);
 
@@ -685,11 +704,10 @@ public class View implements Screen {
         tamagotchiImage.setSize(widthTamagotchi, heightTamagotchi);
         tamagotchiImage.setPosition(screenWidth / 2 - widthTamagotchi / 2, screenHeight * (60f / 900f));
 
-
         // Flèche de changement d'écran
         float adjustPositionArrow = 150;
-        float arrowXSize = screenHeight * (100f / 900f);
-        float arrowYSize = screenHeight * (75f / 900f);
+        float arrowXSize = screenHeight * (115f / 900f);
+        float arrowYSize = screenHeight * (86.25f / 900f);
 
         leftArrow.setPosition(5, screenHeight / 2 - adjustPositionArrow);
         rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2 - adjustPositionArrow);
@@ -776,10 +794,6 @@ public class View implements Screen {
         // Taille des barres de progression
         widthProgressbar = (int) (screenWidth / 6);
         heightProgressBar = (int) (screenHeight / 30);
-
-        if (heightProgressBar > 70) {
-            heightProgressBar = 70;
-        }
     }
 
     /**

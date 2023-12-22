@@ -148,8 +148,8 @@ public class SelectTamagotchi implements Screen {
         screenHeight = Gdx.graphics.getHeight();
 
         float tailleImage = screenHeight * (150f / 900f);
-        float xArrow = screenHeight * (100f / 900f);
-        float yArrow = screenHeight * (75f / 900f);
+        float xArrow = screenHeight * (115f / 900f);
+        float yArrow = screenHeight * (86.25f / 900f);
         float shift = screenHeight * (30f / 900f);
         float ajustementXElement = screenHeight * (35f / 900f);
         float ajustementYElement = screenHeight * (200f / 900f);
@@ -207,7 +207,7 @@ public class SelectTamagotchi implements Screen {
 
         // Si l'écran est plus grand, le coefficient est ajustement dans l'autre sens
         if (coefficient < 1) {
-            facteur = -0.001f;
+            facteur = -0.0005f;
             coefficient = 1 - facteur * (900f - screenHeight);
         }
 
@@ -221,7 +221,7 @@ public class SelectTamagotchi implements Screen {
         if (backButton.getMinWidth() <= 220) {
             backButton.setPosition(middleX - 220 - ajustementXElement, 5);
         } else {
-            backButton.setPosition(middleX - backButton.getMinWidth() - ajustementXElement, 5);
+            backButton.setPosition(middleX - backButton.getMinWidth() - ajustementXElement, 10);
         }
 
         playButton.setPosition(middleX + playButton.getMinWidth(), backButton.getY());
