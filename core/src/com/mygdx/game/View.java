@@ -92,8 +92,6 @@ public class View implements Screen {
         this.flagPluie = flagPluie;
         this.tamagotchi = tamagotchi;
 
-        previousWeather = flagPluie.get();
-
         int skin = tamagotchi.getSkin();
 
         switch (tamagotchi.getClass().getName()) {
@@ -132,12 +130,13 @@ public class View implements Screen {
         // Positionne les éléments
         posAndSizeElement();
 
+        previousWeather = flagPluie.get();
         screen = tamagotchi.getNumeroSalle();
 
         // Affiche la table de jeu
         switch (screen) {
             case (1):
-                if (flagPluie.get()) {
+                if (previousWeather) {
                     putGameTable();
                 } else {
                     putTable(room1Table);

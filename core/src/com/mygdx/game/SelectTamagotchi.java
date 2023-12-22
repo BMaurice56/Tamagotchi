@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -175,25 +174,20 @@ public class SelectTamagotchi implements Screen {
         playButton.getLabel().setFontScale(fontScale);
         changeSkin.setFontScale(fontScale / 2);
 
+        labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
+        nomTamagotchi.setPosition(middleX + (shift * 3f), labelNomTamagotchi.getY());
+
         nomTamagotchi.getStyle().font.getData().setScale(fontScale);
-
-        /*
-         * Permet le redimensionnement de la police du nom du tamagotchi
-         * sans avoir de décalage avec le label
-         */
-        GlyphLayout layout = new GlyphLayout(nomTamagotchi.getStyle().font, nomTamagotchi.getText());
-        float textHeight = layout.height;
-
-        nomTamagotchi.setSize(nomTamagotchi.getWidth(), textHeight);
 
         TextField.TextFieldStyle textFieldStyle = nomTamagotchi.getStyle();
 
-        Pixmap cursorColor = new Pixmap(9, (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
+        float largeurCurseur = screenWidth * 9f / 900f;
+
+        Pixmap cursorColor = new Pixmap((int) (largeurCurseur > 9 ? 9 : largeurCurseur), (int) (screenHeight * 45f / 900f), Pixmap.Format.RGB888);
         cursorColor.setColor(Color.WHITE);
         cursorColor.fill();
 
         textFieldStyle.cursor = new Image(new Texture(cursorColor)).getDrawable();
-
         nomTamagotchi.setStyle(textFieldStyle);
 
         pixelCat.setPosition(middleX - tailleImage - shift - ajustementXElement, middleY + shift + ajustementYElement);
@@ -205,13 +199,21 @@ public class SelectTamagotchi implements Screen {
         tamagotchiSelected.setPosition(middleX + shift + ajustementXElement, middleY - (tailleImage / 1.1f));
         changeSkin.setPosition(middleX - changeSkin.getMinWidth() - ajustementXElement, labelTamagotchiSelection.getY() - (changeSkin.getMinHeight() * 1.4f));
 
-        labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
-        nomTamagotchi.setPosition(middleX + (shift * 3f), labelNomTamagotchi.getY());
+        float facteur = 0.003f;
 
-        labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 5f));
-        leftArrow.setPosition(middleX, labelDifficulty.getY() - (yArrow / 2) + (labelDifficulty.getMinHeight() / 2));
-        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement / 2f), labelDifficulty.getY());
+        // Calculer le coefficient en fonction de la hauteur de la fenêtre
+        float coefficient = 1 + facteur * (900f - screenHeight);
+
+        if (coefficient < 1) {
+            coefficient = 1;
+        }
+
+        float labelDifficultyY = middleY - tailleImage - (shift * 5f);
+        labelDifficulty.setPosition(middleX - labelDifficulty.getMinWidth() - ajustementXElement, labelDifficultyY);
+        labelLevelDifficult.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement / 2f), labelDifficultyY);
+        leftArrow.setPosition(middleX, labelDifficultyY - leftArrow.getHeight() / 2 + (labelDifficulty.getMinHeight() / 2 * coefficient));
         rightArrow.setPosition(middleX + labelLevelDifficult.getMinWidth() + (ajustementXElement * 4.2f), leftArrow.getY());
+
 
         if (backButton.getMinWidth() <= 220) {
             backButton.setPosition(middleX - 220 - ajustementXElement, 5);
@@ -223,8 +225,6 @@ public class SelectTamagotchi implements Screen {
 
         message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
         retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);
-
-        addActorStage();
     }
 
     /**
