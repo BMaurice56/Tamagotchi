@@ -225,6 +225,7 @@ public class ScreenMenu implements Screen {
                 jouer.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        musique.dispose();
                         new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave, contains(saveFileReader, "skin"));
                         return true;
                     }
