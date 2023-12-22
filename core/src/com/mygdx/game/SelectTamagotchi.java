@@ -205,7 +205,7 @@ public class SelectTamagotchi implements Screen {
         float coefficient = 1 + facteur * (900f - screenHeight);
 
         if (coefficient < 1) {
-            facteur = -0.002f;
+            facteur = -0.001f;
             coefficient = 1 - facteur * (900f - screenHeight);
         }
 
