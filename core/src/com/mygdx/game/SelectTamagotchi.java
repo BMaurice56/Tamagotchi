@@ -202,8 +202,10 @@ public class SelectTamagotchi implements Screen {
         float facteur = 0.003f;
 
         // Calculer le coefficient en fonction de la hauteur de la fenêtre
+        // Utilisez pour les petites tailles d'écran
         float coefficient = 1 + facteur * (900f - screenHeight);
 
+        // Si l'écran est plus grand, le coefficient est ajustement dans l'autre sens
         if (coefficient < 1) {
             facteur = -0.001f;
             coefficient = 1 - facteur * (900f - screenHeight);
