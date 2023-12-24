@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.Personnage.*;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -83,7 +83,7 @@ public class View implements Screen {
     private final AtomicBoolean flagPluie;
 
     // Son du tamagotchi
-    private Sound sound;
+    private Music sound;
 
     // Gestion du son
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
@@ -102,17 +102,15 @@ public class View implements Screen {
 
         int skin = tamagotchi.getSkin();
 
-        volumeSlider.setValue(controller.getLevelSound());
-
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newSound(Gdx.files.internal("musics/catMeow.mp3"));
+                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Chien"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newSound(Gdx.files.internal("musics/dogBark.mp3"));
+                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/dogBark.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
@@ -123,6 +121,9 @@ public class View implements Screen {
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
                 break;
         }
+
+        volumeSlider.setValue(controller.getLevelSound());
+        sound.setVolume(controller.getLevelSound());
 
         // Met à jour les variables de taille de l'écran
         updateAttributScreenSizeProgressBar();
@@ -431,7 +432,7 @@ public class View implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = volumeSlider.getValue();
-                sound.setVolume(1, volume);
+                sound.setVolume(volume);
                 controller.setLevelSound(volume);
             }
         });
@@ -547,7 +548,7 @@ public class View implements Screen {
         tamagotchiImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                sound.play(controller.getLevelSound());
+                sound.play();
 
                 return true;
             }
