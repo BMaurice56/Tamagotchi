@@ -180,6 +180,15 @@ public class Controller {
     }
 
     /**
+     * Définie et enregistre le niveau du son
+     *
+     * @param son float niveau
+     */
+    public void setLevelSound(float son) {
+        modele.setSound(son);
+    }
+
+    /**
      * Affichage le message de la mort du tamagotchi
      *
      * @param file FileHandle gestionnaire du fichier
