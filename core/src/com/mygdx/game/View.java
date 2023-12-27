@@ -862,7 +862,7 @@ public class View implements Screen {
         float middleX = screenWidth / 2;
         float middleY = screenHeight / 2;
 
-        float facteur = 0.024f;
+        float facteur = 0.023f;
 
         // Calculer le coefficient en fonction de la hauteur de la fenêtre
         // Utilisez pour les petites tailles d'écran
