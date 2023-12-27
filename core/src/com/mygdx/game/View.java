@@ -327,11 +327,11 @@ public class View implements Screen {
         death = new Label("    Votre Tamagotchi est mort.\nIl est important d'en prendre soin.\n", new MultiSkin("label"));
 
         if (tamagotchi instanceof Animal) {
-            priceFood = new Label("" + Apple.price, new MultiSkin("label"));
-            priceSuperFood = new Label("" + GoldenApple.price, new MultiSkin("label"));
+            priceFood = new Label(Apple.price + "$", new MultiSkin("label"));
+            priceSuperFood = new Label(GoldenApple.price + "$", new MultiSkin("label"));
         } else {
-            priceFood = new Label("" + Oil.price, new MultiSkin("label"));
-            priceSuperFood = new Label("" + SuperOil.price, new MultiSkin("label"));
+            priceFood = new Label(Oil.price + "$", new MultiSkin("label"));
+            priceSuperFood = new Label(SuperOil.price + "$", new MultiSkin("label"));
         }
 
     }
@@ -856,14 +856,28 @@ public class View implements Screen {
         float middleX = screenWidth / 2;
         float middleY = screenHeight / 2;
 
+        float facteur = 0.024f;
+
+        // Calculer le coefficient en fonction de la hauteur de la fenêtre
+        // Utilisez pour les petites tailles d'écran
+        float coefficient = 1 + facteur * (900f - screenHeight);
+
+        // Si l'écran est plus grand, le coefficient est ajusté dans l'autre sens
+        if (coefficient < 1) {
+            facteur = -0.024f;
+            coefficient = 1 - facteur * (900f - screenHeight);
+        }
+
+        System.out.println(coefficient);
+
         whichFood.setPosition(middleX - whichFood.getMinWidth() / 2f - 10f, middleY);
-        quitBuyEatMenu.setPosition(whichFood.getX() + whichFood.getMinWidth(), middleY);
+        quitBuyEatMenu.setPosition(whichFood.getX() + whichFood.getMinWidth(), whichFood.getY() + 1 * coefficient);
 
-        priceFood.setPosition(buyEatFoodImage.getX() + xSizeBuyEatImage, whichFood.getY() - ySizeBuyEatImage);
+        buyEatFoodImage.setPosition(whichFood.getX(), whichFood.getY() - ySizeBuyEatImage + 1 * coefficient);
+        buyEatExtraFoodImage.setPosition(buyEatFoodImage.getX() + whichFood.getMinWidth() / 1.5f, buyEatFoodImage.getY());
+
+        priceFood.setPosition(buyEatFoodImage.getX() + xSizeBuyEatImage, buyEatFoodImage.getY() + ySizeBuyEatImage / 2 - priceFood.getMinHeight() / 2 - 1 * coefficient);
         priceSuperFood.setPosition(buyEatExtraFoodImage.getX() + xSizeBuyEatImage, priceFood.getY());
-
-        buyEatFoodImage.setPosition(whichFood.getX(), priceFood.getY());
-        buyEatExtraFoodImage.setPosition(buyEatFoodImage.getX() + whichFood.getMinWidth() / 2f, priceFood.getY());
 
     }
 

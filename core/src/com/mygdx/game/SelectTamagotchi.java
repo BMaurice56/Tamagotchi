@@ -205,7 +205,7 @@ public class SelectTamagotchi implements Screen {
         // Utilisez pour les petites tailles d'écran
         float coefficient = 1 + facteur * (900f - screenHeight);
 
-        // Si l'écran est plus grand, le coefficient est ajustement dans l'autre sens
+        // Si l'écran est plus grand, le coefficient est ajusté dans l'autre sens
         if (coefficient < 1) {
             facteur = -0.0005f;
             coefficient = 1 - facteur * (900f - screenHeight);
