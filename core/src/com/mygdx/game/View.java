@@ -866,14 +866,6 @@ public class View implements Screen {
         // Utilisez pour les petites tailles d'écran
         float coefficient = 1 + facteur * (900f - screenHeight);
 
-        // Si l'écran est plus grand, le coefficient est ajusté dans l'autre sens
-        if (coefficient < 1) {
-            facteur = -0.024f;
-            coefficient = 1 - facteur * (900f - screenHeight);
-        }
-
-        System.out.println(coefficient);
-
         whichFood.setPosition(middleX - whichFood.getMinWidth() / 2f - 10f, middleY);
         quitBuyEatMenu.setPosition(whichFood.getX() + whichFood.getMinWidth(), whichFood.getY() + 1 * coefficient);
 
