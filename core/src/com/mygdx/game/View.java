@@ -115,10 +115,12 @@ public class View implements Screen {
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur" + skin + ".png", 500, 500);
+                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Robot"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
+                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
                 break;
         }
 
@@ -1136,6 +1138,7 @@ public class View implements Screen {
         updateAttributScreenSizeProgressBar();
 
         // Met à jour la position des éléments
+        posAndSizeElement();
         posAndSizeElement();
 
         // Met à jour la projection du SpriteBatch
