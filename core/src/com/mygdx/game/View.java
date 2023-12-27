@@ -464,6 +464,8 @@ public class View implements Screen {
         eat.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                priceFood.setVisible(false);
+                priceSuperFood.setVisible(false);
                 buyOrEatScreen();
                 // Empêche le changement d'écran lord du choix de nourriture
                 leftArrow.setVisible(false);
@@ -476,6 +478,8 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 eatOrBuy = true;
+                priceFood.setVisible(true);
+                priceSuperFood.setVisible(true);
                 buyOrEatScreen();
                 // Empêche le changement d'écran lord du choix de nourriture
                 leftArrow.setVisible(false);
