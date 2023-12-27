@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-12-18T19:13:19.574Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="VDrZk_RzCKplpwTYj9Tw" version="22.1.11" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-27T16:43:08.545Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="rzSsWvN752igLKZouJA5" version="22.1.14" type="github">
   <diagram name="Page-1" id="2c4490ee-f0b8-94ab-5012-d5dc3445f7a3">
-    <mxGraphModel dx="2060" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+    <mxGraphModel dx="1766" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" style=";html=1;" />
         <mxCell id="1" style=";html=1;" parent="0" />
@@ -218,7 +218,7 @@
           <mxGeometry x="690" y="600" width="80" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6z6v71Y1guzTuRLKmEV8-130" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
-          <mxGeometry x="690" y="620" width="80" height="20" as="geometry" />
+          <mxGeometry x="1480" y="611" width="80" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6z6v71Y1guzTuRLKmEV8-131" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
           <mxGeometry x="690" y="640" width="80" height="20" as="geometry" />
@@ -567,9 +567,6 @@
         </mxCell>
         <mxCell id="6z6v71Y1guzTuRLKmEV8-251" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
           <mxGeometry x="1330" y="560" width="80" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="6z6v71Y1guzTuRLKmEV8-252" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
-          <mxGeometry x="1330" y="580" width="80" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6z6v71Y1guzTuRLKmEV8-253" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
           <mxGeometry x="1330" y="600" width="80" height="20" as="geometry" />
@@ -1055,7 +1052,7 @@
           <mxGeometry x="690" y="640" width="480" height="40" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-74" value="Réalisation du code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
-          <mxGeometry x="640" y="480" width="520" height="40" as="geometry" />
+          <mxGeometry x="640" y="480" width="290" height="40" as="geometry" />
         </mxCell>
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-75" value="Diagramme &lt;br&gt;de classes" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="290" y="560" width="80" height="40" as="geometry" />
@@ -1087,17 +1084,53 @@
         <mxCell id="D_p1Tdk2fjc7s-4Ue-eS-86" value="Cas de tests" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="850" y="759.5" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Xc61JS4KRZvFrqE5hFFe-1" value="Révision&lt;br&gt;de l&#39;ensemble&lt;br&gt;du projet" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
-          <mxGeometry x="1250" y="479" width="80" height="301" as="geometry" />
-        </mxCell>
-        <mxCell id="Xc61JS4KRZvFrqE5hFFe-2" value="Design&lt;br&gt;de l&#39;application&lt;br&gt;et de ces&lt;br&gt;composants" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="Xc61JS4KRZvFrqE5hFFe-2" value="Design&lt;br&gt;de l&#39;application&lt;br&gt;et de ces&lt;br&gt;composants" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1170" y="640" width="80" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Xc61JS4KRZvFrqE5hFFe-3" value="Tests Unitaires" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="Xc61JS4KRZvFrqE5hFFe-3" value="Tests Unitaires" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1160" y="480" width="90" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Xc61JS4KRZvFrqE5hFFe-4" value="Amélioration&lt;br&gt;du cahier&lt;br&gt;des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="Xc61JS4KRZvFrqE5hFFe-4" value="Amélioration&lt;br&gt;du cahier&lt;br&gt;des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1170" y="719" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-1" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1490" y="480" as="sourcePoint" />
+            <mxPoint x="1490" y="841" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-2" value="4 Janvier" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-3" value="Réalisation du&lt;br&gt;code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="640" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-4" value="Amélioration&lt;br&gt;du cahier des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-5" value="Tests Unitaires" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="640" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-6" value="Amélioration&lt;br&gt;du cahier&lt;br&gt;des charges" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="480" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-8" value="Cas&lt;br&gt;d&#39;Utilisations" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="930" y="479.25" width="80" height="40.5" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-9" value="Réalisation du code" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="479.5" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-11" value="Tests de&lt;br&gt;l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="480" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-12" value="" style="align=left;strokeColor=#CCCCCC;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="580" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0DvpfSfohYq6to7H7ZtH-10" value="Tests de l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="560" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Xc61JS4KRZvFrqE5hFFe-1" value="Révision&lt;br&gt;de l&#39;ensemble&lt;br&gt;du projet" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
+          <mxGeometry x="1250" y="480" width="80" height="300" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
