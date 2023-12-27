@@ -579,6 +579,7 @@ public class ScreenMenu implements Screen {
         screenHeight = height;
 
         posAndSizeElement();
+        posAndSizeElement();
 
         // Met à jour la projection du SpriteBatch
         batch.getProjectionMatrix().setToOrtho2D(0, 0, screenWidth, screenHeight);
