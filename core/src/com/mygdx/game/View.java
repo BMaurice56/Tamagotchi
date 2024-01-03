@@ -50,7 +50,7 @@ public class View implements Screen {
     private float screenWidth, screenHeight, elapsed;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table room1Table, room2Table, room3Table, room4Table, pauseTable, settingsTable, deathTamagotchi;
+    private Table room1Table, room2Table, room3Table, room4Table, pauseTable, settingsTable, deathTamagotchi, ruleTable;
 
     // Image du jeu
     private ImageButton leftArrow, rightArrow, settings, image1, image2, image3, image4, image5, foodImage, extraFoodImage, moneyImage, buyEatFoodImage, buyEatExtraFoodImage, quitBuyEatMenu;
@@ -71,7 +71,7 @@ public class View implements Screen {
     private int screen, widthProgressbar, heightProgressBar;
 
     // Label
-    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood, death, priceFood, priceSuperFood;
+    private Label moneyLabel, foodLabel, extraFoodLabel, action, whichFood, death, priceFood, priceSuperFood, rule, listRule, goBackFromRule;
 
     // Controller de jeu
     private final Controller controller;
@@ -311,7 +311,14 @@ public class View implements Screen {
         settingsTable.setFillParent(true);
 
         settingsTable.add(volumeSlider).row();
+        settingsTable.add(rule).row();
         settingsTable.add(backButton).row();
+
+        ruleTable = new Table();
+        ruleTable.setFillParent(true);
+
+        ruleTable.add(listRule).row();
+        ruleTable.add(goBackFromRule).row();
     }
 
     /**
@@ -327,6 +334,10 @@ public class View implements Screen {
 
         whichFood = new Label("Quelle nourriture voulez-vous ?", new MultiSkin("label"));
         death = new Label("    Votre Tamagotchi est mort.\nIl est important d'en prendre soin.\n", new MultiSkin("label"));
+
+        rule = new Label("Regles du jeu", new MultiSkin("label"));
+        listRule = new Label(controller.getRule(), new MultiSkin("label"));
+        goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
 
         if (tamagotchi instanceof Animal) {
             priceFood = new Label(Apple.price + "$", new MultiSkin("label"));
@@ -373,6 +384,62 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 stage.clear();
                 stage.addActor(settingsTable);
+                return true;
+            }
+        });
+
+        rule.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (screen) {
+                    case (1):
+                        room1 = ScreenMenu.darkenImage(room1);
+                        break;
+
+                    case (2):
+                        room2 = ScreenMenu.darkenImage(room2);
+                        break;
+
+                    case (3):
+                        room3 = ScreenMenu.darkenImage(room3);
+                        break;
+
+                    case (4):
+                        room4 = ScreenMenu.darkenImage(room4);
+                        break;
+                }
+
+                stage.clear();
+                stage.addActor(ruleTable);
+
+                return true;
+            }
+        });
+
+        goBackFromRule.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                switch (screen) {
+                    case (1):
+                        room1 = new Texture(getImageOrTextFromTamagotchi("room1"));
+                        break;
+
+                    case (2):
+                        room2 = new Texture(getImageOrTextFromTamagotchi("room2"));
+                        break;
+
+                    case (3):
+                        room3 = new Texture(getImageOrTextFromTamagotchi("room3"));
+                        break;
+
+                    case (4):
+                        room4 = new Texture(getImageOrTextFromTamagotchi("room4"));
+                        break;
+                }
+
+                stage.clear();
+                stage.addActor(settingsTable);
+
                 return true;
             }
         });
@@ -468,10 +535,12 @@ public class View implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 priceFood.setVisible(false);
                 priceSuperFood.setVisible(false);
-                buyOrEatScreen();
+
                 // Empêche le changement d'écran lord du choix de nourriture
                 leftArrow.setVisible(false);
                 rightArrow.setVisible(false);
+
+                buyOrEatScreen();
                 return true;
             }
         });
@@ -482,10 +551,12 @@ public class View implements Screen {
                 eatOrBuy = true;
                 priceFood.setVisible(true);
                 priceSuperFood.setVisible(true);
-                buyOrEatScreen();
+
                 // Empêche le changement d'écran lord du choix de nourriture
                 leftArrow.setVisible(false);
                 rightArrow.setVisible(false);
+
+                buyOrEatScreen();
                 return true;
             }
         });
@@ -655,13 +726,35 @@ public class View implements Screen {
      */
     public void buyOrEatScreen() {
         stage.clear();
+
+        stage.addActor(settings);
+        stage.addActor(image1);
+        stage.addActor(image2);
+        stage.addActor(image3);
+        stage.addActor(image4);
+        stage.addActor(image5);
+        stage.addActor(moneyImage);
+        stage.addActor(foodImage);
+        stage.addActor(extraFoodImage);
+
+        stage.addActor(progressBar1);
+        stage.addActor(progressBar2);
+        stage.addActor(progressBar3);
+        stage.addActor(progressBar4);
+        stage.addActor(progressBar5);
+
+        stage.addActor(moneyLabel);
+        stage.addActor(foodLabel);
+        stage.addActor(extraFoodLabel);
+
+        stage.addActor(tamagotchiImage);
+
         stage.addActor(whichFood);
         stage.addActor(quitBuyEatMenu);
         stage.addActor(buyEatFoodImage);
         stage.addActor(buyEatExtraFoodImage);
         stage.addActor(priceFood);
         stage.addActor(priceSuperFood);
-        stage.addActor(settings);
     }
 
     /**
@@ -842,6 +935,10 @@ public class View implements Screen {
         home.getLabel().setFontScale(fontScale);
         menu.getLabel().setFontScale(fontScale);
         death.setFontScale(fontScale);
+
+        rule.setFontScale(fontScale);
+        listRule.setFontScale(fontScale / Modele.coefficientAffichageRegle);
+        goBackFromRule.setFontScale(fontScale);
 
         action.setFontScale(fontScale);
         action.setX(screenWidth / 2 - action.getMinWidth() / 2);

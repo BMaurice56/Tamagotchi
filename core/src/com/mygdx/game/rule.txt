@@ -1,0 +1,28 @@
+Voici les regles du jeu pour prendre soin d'un Tamagotchi :
+
+1. Naissance : Lorsque vous cree une partie, vous assistez a la naissance de votre petit animal virtuel.
+    A partir de ce moment, votre objectif principal est de veiller a son bien-etre et a son bonheur.
+
+2. Nourriture : Votre Tamagotchi a besoin de manger pour rester en bonne sante.
+    Vous devez regulierement le nourrir en allant dans la cuisine et en selectionnant l'option de manger.
+    Attention a ne pas oublier de l'alimenter, car cela peut influencer son bonheur et sa sante.
+
+3. Travail : Le Tamagotchi doit travailler afin de pouvoir remplir son porte-monnaie.
+    L'argent gagne servira a payer la nourriture necessaire a ses besoins.
+    Attention a ne pas le faire trop travailler car il se sali, perd un peu de bonheur et se fatigue a chaque fois !
+
+4. Achat : Dans la cuisine, il sera possible de pouvoir acheter ce qu'il faut pour pouvoir le nourrir.
+
+5. Toilettes : Comme de vrais animaux de compagnie, les Tamagotchis ont egalement besoin d'utiliser les toilettes,
+    notamment pour se laver.
+    Vous devrez nettoyer votre Tamagotchi dans la salle de bain pour maintenir son niveau de bonheur et de proprete.
+
+6. Dormir : Comme nous, les Tamagotchis se fatiguent.
+    Il est donc important de faire dormir votre Tamagotchi pour qu'il recupere.
+
+7. Jeu : Les Tamagotchis ont besoin de divertissement !
+    Vous pouvez le faire jouer avec votre animal. Jouer influence son bonheur.
+
+8. Sante : Surveillez la sante de votre Tamagotchi en verifiant regulierement ses indicateurs.
+
+9. La regle la plus importante de toute : Amusez-vous bien !

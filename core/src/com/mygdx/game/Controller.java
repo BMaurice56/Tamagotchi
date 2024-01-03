@@ -189,6 +189,15 @@ public class Controller {
     }
 
     /**
+     * Renvoi les règles du jeu
+     *
+     * @return String règles
+     */
+    public String getRule() {
+        return modele.getRule();
+    }
+
+    /**
      * Affichage le message de la mort du tamagotchi
      *
      * @param file FileHandle gestionnaire du fichier

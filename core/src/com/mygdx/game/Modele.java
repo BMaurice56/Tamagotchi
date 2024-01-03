@@ -145,6 +145,9 @@ public class Modele {
     // Gestionnaire du fichier de sauvegarde
     private FileHandle saveFileParty;
 
+    // Gestionnaire du fichier des règles
+    private final FileHandle rule;
+
     // Object Json pour la conversion des objets en json
     private final Json json;
 
@@ -184,6 +187,8 @@ public class Modele {
     // Temps en seconde maximum avant pluie
     public final static int tempsMaximalPluie = 60;
 
+    public final static float coefficientAffichageRegle = 1.8f;
+
     public final float upperStat_10 = tempsAttenteJeu * 10 / 1000;
 
     public final float lowerStat_10 = tempsAttenteJeu * 10 / 1000;
@@ -212,6 +217,8 @@ public class Modele {
 
         // Lecture du fichier de paramètre json
         soundBaseReader = jsonReader.parse(soundFile);
+
+        rule = Gdx.files.local("/core/src/com/mygdx/game/rule.txt");
 
         // Gestion des fichiers json
         json = new Json();
@@ -298,6 +305,15 @@ public class Modele {
             return soundBaseReader.getFloat("sound");
         }
         return 0.5f;
+    }
+
+    /**
+     * Renvoi le texte des règles du jeu
+     *
+     * @return String textes
+     */
+    public String getRule() {
+        return rule.readString();
     }
 
     /**

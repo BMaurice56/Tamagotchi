@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.files.FileHandle;
@@ -35,7 +36,7 @@ public class ScreenMenu implements Screen {
     private final SpriteBatch batch = new SpriteBatch();
 
     // Arrière-plan
-    private final Texture background = new Texture("images/background.jpg");
+    private Texture background = new Texture("images/background.jpg");
 
     // Taille de la fenêtre
     private float screenWidth, screenHeight;
@@ -54,7 +55,7 @@ public class ScreenMenu implements Screen {
     private TextButton newGameButton, saveGameButton, backButton, backButton2, backButton3;
 
     // Table qui gère le placement des objets sur la fenêtre
-    private Table homeTable, partyTable, settingsTable, saveGameTable, maxSaveTable;
+    private Table homeTable, partyTable, settingsTable, saveGameTable, maxSaveTable, ruleTable;
 
     // Modèle du jeu
     private final Modele modele;
@@ -63,7 +64,7 @@ public class ScreenMenu implements Screen {
     private static final Path currRelativePath = Paths.get(System.getProperty("user.dir") + "/core/src/com/mygdx/game/jsonFile");
 
     // Label
-    private Label noSave, columnTitleName, columnTitleDifficulty, message;
+    private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule;
 
     // Stock tous les labels de chaque sauvegarde pour l'affichage
     private final ArrayList<Label> multiLabels = new ArrayList<>();
@@ -114,7 +115,7 @@ public class ScreenMenu implements Screen {
 
         // Gestion de la partie
         newGameButton = new TextButton("Nouvelle partie", new MultiSkin("text"));
-        saveGameButton = new TextButton("partie sauvegardée", new MultiSkin("text"));
+        saveGameButton = new TextButton("Sauvegarde", new MultiSkin("text"));
         backButton = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton2 = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton3 = new TextButton("Retour en arriere", new MultiSkin("text"));
@@ -128,6 +129,9 @@ public class ScreenMenu implements Screen {
         columnTitleName = new Label("Nom du \nTamagotchi", new MultiSkin("label"));
         columnTitleDifficulty = new Label("Difficulte", new MultiSkin("label"));
         message = new Label("", new MultiSkin("label"));
+        rule = new Label("Regles du jeu", new MultiSkin("label"));
+        listRule = new Label(modele.getRule(), new MultiSkin("label"));
+        goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
     }
 
     /**
@@ -155,7 +159,14 @@ public class ScreenMenu implements Screen {
         settingsTable.setFillParent(true);
 
         settingsTable.add(volumeSlider).row();
+        settingsTable.add(rule).row();
         settingsTable.add(backButton2).row();
+
+        ruleTable = new Table();
+        ruleTable.setFillParent(true);
+
+        ruleTable.add(listRule).row();
+        ruleTable.add(goBackFromRule).row();
     }
 
     /**
@@ -322,6 +333,25 @@ public class ScreenMenu implements Screen {
             }
         });
 
+        rule.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                background = darkenImage(background);
+
+                putTable(ruleTable);
+                return true;
+            }
+        });
+
+        goBackFromRule.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                lightenImage();
+                putTable(settingsTable);
+                return true;
+            }
+        });
+
         newGameButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -407,10 +437,6 @@ public class ScreenMenu implements Screen {
     public void posAndSizeElement() {
         float fontScale = ((float) 1 / 900) * screenHeight;
 
-        if (fontScale > 1) {
-            fontScale = 1;
-        }
-
         newGameButton.getLabel().setFontScale(fontScale);
         saveGameButton.getLabel().setFontScale(fontScale);
         backButton.getLabel().setFontScale(fontScale);
@@ -420,6 +446,10 @@ public class ScreenMenu implements Screen {
         noSave.setFontScale(fontScale);
         columnTitleName.setFontScale(fontScale);
         columnTitleDifficulty.setFontScale(fontScale);
+
+        rule.setFontScale(fontScale);
+        listRule.setFontScale(fontScale / Modele.coefficientAffichageRegle);
+        goBackFromRule.setFontScale(fontScale);
 
         message.setFontScale(fontScale);
         message.setPosition(screenWidth / 2 - message.getMinWidth() / 2, screenHeight / 2);
@@ -545,6 +575,55 @@ public class ScreenMenu implements Screen {
         stage.clear();
         stage.addActor(table);
     }
+
+    /**
+     * Change la couleur de fond pour mieux voir les règles du jeu
+     *
+     * @param original Texture de base
+     * @return La nouvelle texture assombrie
+     */
+    public static Texture darkenImage(Texture original) {
+        if (!original.getTextureData().isPrepared()) {
+            original.getTextureData().prepare();
+        }
+
+        Pixmap originalPixmap = original.getTextureData().consumePixmap();
+
+        // Assombrir l'image en réduisant la luminosité de chaque pixel
+        for (int y = 0; y < originalPixmap.getHeight(); y++) {
+            for (int x = 0; x < originalPixmap.getWidth(); x++) {
+                int pixel = originalPixmap.getPixel(x, y);
+
+                // Extraire les composantes RVB
+                int r = (pixel & 0x00FF0000) >>> 16;
+                int g = (pixel & 0x0000FF00) >>> 8;
+                int b = pixel & 0x000000FF;
+
+                // Réduire la luminosité en ajustant les composantes RVB
+                r = (int) (r * 0.3f);
+                g = (int) (g * 0.3f);
+                b = (int) (b * 0.3f);
+
+                // Recréer le pixel avec les nouvelles composantes RVB
+                pixel = (r << 16) | (g << 8) | b;
+
+                originalPixmap.drawPixel(x, y, pixel);
+            }
+        }
+
+        Texture darkenedTexture = new Texture(originalPixmap);
+        originalPixmap.dispose();
+
+        return darkenedTexture;
+    }
+
+    /**
+     * Remet la texture de base
+     */
+    public void lightenImage() {
+        background = new Texture("images/background.jpg");
+    }
+
 
     /**
      * Called when the screen should render itself.
