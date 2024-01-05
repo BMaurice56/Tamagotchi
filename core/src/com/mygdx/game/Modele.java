@@ -221,16 +221,25 @@ public class Modele {
 
     public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
+    public String pathDirectory;
+
 
     /**
      * Constructeur de gestion des fichiers (menu)
      */
     public Modele() {
+        if (System.getProperty("os.name").equals("Windows")) {
+            pathDirectory = ".Tamagotchi\\jsonFile\\";
+        } else {
+            pathDirectory = ".Tamagotchi/jsonFile/";
+        }
+
+
         // Lecteur de fichier
         JsonReader jsonReader = new JsonReader();
 
         // Permet de lire et d'interagir avec le fichier
-        soundFile = new FileHandle("core/src/com/mygdx/game/jsonFile/settings.json");
+        soundFile = Gdx.files.external(pathDirectory + "settings.json");
 
         // Si le fichier n'existe pas, on le crée
         if (!soundFile.exists()) {
@@ -265,7 +274,7 @@ public class Modele {
         this.flagPluie = flagPluie;
 
         // Fichier de sauvegarde
-        saveFileParty = Gdx.files.local("/core/src/com/mygdx/game/jsonFile/save" + numSave + ".json");
+        saveFileParty = Gdx.files.external(pathDirectory + "save" + numSave + ".json");
 
         if (save) {
             String tamagotchi = saveFileParty.readString();
