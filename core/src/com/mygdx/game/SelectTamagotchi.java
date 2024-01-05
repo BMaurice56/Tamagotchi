@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -47,10 +48,14 @@ public class SelectTamagotchi implements Screen {
 
     private int tamagotchiSelection = 1, difficultyLevel = 1, skin = 1;
 
+    private final Music son;
+
     /**
      * Constructeur
      */
-    public SelectTamagotchi() {
+    public SelectTamagotchi(Music son) {
+        this.son = son;
+
         createLabel();
         createButton();
         addButtonListeners();
@@ -281,7 +286,7 @@ public class SelectTamagotchi implements Screen {
         backButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, son));
                 return true;
             }
         });
@@ -301,6 +306,7 @@ public class SelectTamagotchi implements Screen {
                         numberSave = 1;
                     }
 
+                    son.dispose();
                     new Controller(tamagotchiSelection, nomTamagotchi.getText(), difficultyLevel, false, numberSave, skin);
                 } else {
                     if (nomTamagotchi.getText().isEmpty()) {
