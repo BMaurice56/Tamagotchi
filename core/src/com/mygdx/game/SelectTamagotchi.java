@@ -178,6 +178,8 @@ public class SelectTamagotchi implements Screen {
         backButton.getLabel().setFontScale(fontScale);
         playButton.getLabel().setFontScale(fontScale);
         changeSkin.setFontScale(fontScale / 2);
+        message.setFontScale(fontScale);
+        retour.getLabel().setFontScale(fontScale);
 
         labelNomTamagotchi.setPosition(middleX - labelNomTamagotchi.getMinWidth() - ajustementXElement, middleY - tailleImage - (shift * 2.2f));
         nomTamagotchi.setPosition(middleX + (shift * 3f), labelNomTamagotchi.getY());
@@ -232,7 +234,7 @@ public class SelectTamagotchi implements Screen {
         playButton.setPosition(middleX + playButton.getMinWidth(), backButton.getY());
 
         message.setPosition(screenWidth / 2f - message.getMinWidth() / 2f, screenHeight / 2f);
-        retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f, screenHeight / 2f - message.getMinHeight() - 20);
+        retour.setPosition(screenWidth / 2f - retour.getMinWidth() / 2f  - coefficient * 15, screenHeight / 2f - message.getMinHeight() - 20);
     }
 
     /**
@@ -312,7 +314,7 @@ public class SelectTamagotchi implements Screen {
                     if (nomTamagotchi.getText().isEmpty()) {
                         message.setText("Entrer un nom pour le Tamagotchi.");
                     } else {
-                        message.setText("       Nom incorrect. \n\nN'utilisez pas de caracteres speciaux");
+                        message.setText("                 Nom incorrect. \n\nN'utilisez pas de caracteres speciaux");
                     }
 
                     posAndSizeElement();
