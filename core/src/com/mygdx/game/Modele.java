@@ -30,6 +30,10 @@ class Moteur implements Runnable {
     // Générateur de nombre aléatoire
     private final Random random = new Random();
 
+    private Robot robot = null;
+
+    private Animal animal = null;
+
     /**
      * Constructeur
      *
@@ -63,6 +67,14 @@ class Moteur implements Runnable {
             case (3):
                 durationPluie = (int) (20 * 1000 / Modele.tempsAttenteJeu);
                 break;
+        }
+
+        Tamagotchi tamagotchi = modele.getTamagotchi();
+
+        if (tamagotchi instanceof Animal) {
+            animal = (Animal) tamagotchi;
+        } else {
+            robot = (Robot) tamagotchi;
         }
 
     }
@@ -127,6 +139,15 @@ class Moteur implements Runnable {
             } else {
                 compteurPluie.set(compteurPluie.get() + 1);
             }
+
+            if (modele.getRoomTamagotchi() == 1 && flagPluie.get()) {
+                if (animal != null) {
+                    animal.setHygiene(animal.getHygiene() - modele.lowerStat_4);
+                } else {
+                    robot.setDurability(robot.getDurability() - modele.lowerStat_4);
+                }
+            }
+
         }
     }
 }
@@ -187,6 +208,7 @@ public class Modele {
     // Temps en seconde maximum avant pluie
     public final static int tempsMaximalPluie = 60;
 
+    // Coefficient qui ajuste la taille de la police des règles du jeu
     public final static float coefficientAffichageRegle = 1.8f;
 
     public final float upperStat_10 = tempsAttenteJeu * 10 / 1000;
