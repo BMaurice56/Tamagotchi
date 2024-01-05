@@ -45,7 +45,7 @@ public class ScreenMenu implements Screen {
     private final Stage stage = new Stage(new ScreenViewport());
 
     // Musique du jeu
-    private final Music musique = Gdx.audio.newMusic(Gdx.files.internal("musics/Allumer-le-feu.mp3"));
+    private final Music musique;
 
     // Slider qui gère le niveau du son
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
@@ -73,15 +73,23 @@ public class ScreenMenu implements Screen {
     /**
      * Constructeur
      */
-    public ScreenMenu() {
+    public ScreenMenu(int playMusique, Music music) {
         modele = new Modele();
 
         float son = modele.getSound();
         volumeSlider.setValue(son);
 
+        if (music != null) {
+            this.musique = music;
+        } else {
+            musique = Gdx.audio.newMusic(Gdx.files.internal("musics/Allumer-le-feu.mp3"));
+        }
+
         musique.setVolume(son);
         musique.setLooping(true);
-        musique.play();
+        if (playMusique != 0) {
+            musique.play();
+        }
 
         // Création des objets
         createButton();
@@ -99,8 +107,8 @@ public class ScreenMenu implements Screen {
     /*
      * Deuxième constructeur
      */
-    public ScreenMenu(boolean ignoredMenuGestionGame) {
-        this();
+    public ScreenMenu(boolean ignoredMenuGestionGame, Music music) {
+        this(0, music);
         putTable(partyTable);
     }
 
@@ -368,8 +376,7 @@ public class ScreenMenu implements Screen {
                     putTable(maxSaveTable);
 
                 } else {
-                    musique.dispose();
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi());
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new SelectTamagotchi(musique));
                 }
 
                 return true;
@@ -600,9 +607,9 @@ public class ScreenMenu implements Screen {
                 int b = pixel & 0x000000FF;
 
                 // Réduire la luminosité en ajustant les composantes RVB
-                r = (int) (r * 0.3f);
-                g = (int) (g * 0.3f);
-                b = (int) (b * 0.3f);
+                r = (int) (r * 0.5f);
+                g = (int) (g * 0.5f);
+                b = (int) (b * 0.5f);
 
                 // Recréer le pixel avec les nouvelles composantes RVB
                 pixel = (r << 16) | (g << 8) | b;

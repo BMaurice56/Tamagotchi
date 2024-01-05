@@ -59,7 +59,7 @@ public class View implements Screen {
     private ImageButton tamagotchiImage;
 
     // Bouton texte d'action
-    private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume, menu, backButton;
+    private TextButton sleep, work, wash, eat, buy, play, settings2, home, resume, goMenuDeath, backButton;
 
     // Barres de progressions
     private ProgressBar progressBar1, progressBar2, progressBar3, progressBar4, progressBar5, waitingBar;
@@ -83,7 +83,7 @@ public class View implements Screen {
     private final AtomicBoolean flagPluie;
 
     // Son du tamagotchi
-    private Music sound;
+    private Music soundTamagotchi;
 
     // Gestion du son
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
@@ -105,27 +105,27 @@ public class View implements Screen {
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Chien"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/dogBark.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/dogBark.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/raptorCall.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Robot"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
-                sound = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/R2D2.mp3"));
                 break;
         }
 
         volumeSlider.setValue(controller.getLevelSound());
-        sound.setVolume(controller.getLevelSound());
+        soundTamagotchi.setVolume(controller.getLevelSound());
 
         // Met à jour les variables de taille de l'écran
         updateAttributScreenSizeProgressBar();
@@ -138,7 +138,7 @@ public class View implements Screen {
         createProgressBar();
         createLabel();
         createTable();
-        ajoutListeners();
+        addListeners();
 
         // Positionne les éléments
         posAndSizeElement();
@@ -220,7 +220,7 @@ public class View implements Screen {
         play = new TextButton(getImageOrTextFromTamagotchi("play"), new MultiSkin("text"));
         resume = new TextButton("Reprise", new MultiSkin("text"));
         settings2 = new TextButton("Settings", new MultiSkin("text"));
-        menu = new TextButton("Retour au centre", new MultiSkin("text"));
+        goMenuDeath = new TextButton("Retour au centre", new MultiSkin("text"));
         backButton = new TextButton("Retour au menu", new MultiSkin("text"));
     }
 
@@ -305,7 +305,7 @@ public class View implements Screen {
         deathTamagotchi.setFillParent(true);
 
         deathTamagotchi.add(death).row();
-        deathTamagotchi.add(menu).row();
+        deathTamagotchi.add(goMenuDeath).row();
 
         settingsTable = new Table();
         settingsTable.setFillParent(true);
@@ -352,7 +352,7 @@ public class View implements Screen {
     /**
      * Ajoutes les écouteurs des boutons
      */
-    public void ajoutListeners() {
+    public void addListeners() {
         leftArrow.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -475,15 +475,17 @@ public class View implements Screen {
         home.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
+                soundTamagotchi.dispose();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(1, null));
                 return true;
             }
         });
 
-        menu.addListener(new InputListener() {
+        goMenuDeath.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
+                soundTamagotchi.dispose();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(1, null));
                 return true;
             }
         });
@@ -501,7 +503,7 @@ public class View implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = volumeSlider.getValue();
-                sound.setVolume(volume);
+                soundTamagotchi.setVolume(volume);
                 controller.setLevelSound(volume);
             }
         });
@@ -625,7 +627,7 @@ public class View implements Screen {
         tamagotchiImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                sound.play();
+                soundTamagotchi.play();
 
                 return true;
             }
@@ -933,7 +935,7 @@ public class View implements Screen {
         resume.getLabel().setFontScale(fontScale);
         settings2.getLabel().setFontScale(fontScale);
         home.getLabel().setFontScale(fontScale);
-        menu.getLabel().setFontScale(fontScale);
+        goMenuDeath.getLabel().setFontScale(fontScale);
         death.setFontScale(fontScale);
 
         rule.setFontScale(fontScale);
