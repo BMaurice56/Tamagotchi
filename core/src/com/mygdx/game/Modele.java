@@ -218,7 +218,8 @@ public class Modele {
         // Lecture du fichier de paramètre json
         soundBaseReader = jsonReader.parse(soundFile);
 
-        rule = Gdx.files.local("/core/src/com/mygdx/game/rule.txt");
+        // Règle du jeu
+        rule = Gdx.files.internal("rule.txt");
 
         // Gestion des fichiers json
         json = new Json();
