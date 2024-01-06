@@ -447,8 +447,12 @@ public class View implements Screen {
         resume.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                leftArrow.setVisible(true);
+                rightArrow.setVisible(true);
+
                 switch (screen) {
                     case (1):
+                        leftArrow.setVisible(false);
                         if (flagPluie.get()) {
                             putGameTable();
                         } else {
@@ -463,10 +467,9 @@ public class View implements Screen {
                         break;
                     case (4):
                         putTable(room4Table);
+                        rightArrow.setVisible(false);
                         break;
                 }
-                leftArrow.setVisible(true);
-                rightArrow.setVisible(true);
                 controller.startGame(); // Reprend le jeu
                 return true;
             }
@@ -830,6 +833,37 @@ public class View implements Screen {
      * Réajuste la taille de certains éléments selon la taille de l'écran
      */
     public void posAndSizeElement() {
+        float fontScale = screenHeight * (1f / 900f);
+        float ajustementLabelFood = 1 / (fontScale / 5);
+
+        moneyLabel.setFontScale(fontScale);
+        foodLabel.setFontScale(fontScale);
+        extraFoodLabel.setFontScale(fontScale);
+
+        eat.getLabel().setFontScale(fontScale);
+        buy.getLabel().setFontScale(fontScale);
+        wash.getLabel().setFontScale(fontScale);
+        play.getLabel().setFontScale(fontScale);
+        work.getLabel().setFontScale(fontScale);
+        sleep.getLabel().setFontScale(fontScale);
+        resume.getLabel().setFontScale(fontScale);
+        settings2.getLabel().setFontScale(fontScale);
+        home.getLabel().setFontScale(fontScale);
+        goMenuDeath.getLabel().setFontScale(fontScale);
+        backButton.getLabel().setFontScale(fontScale);
+        death.setFontScale(fontScale);
+
+        rule.setFontScale(fontScale);
+        listRule.setFontScale(fontScale / Modele.coefficientAffichageRegle);
+        goBackFromRule.setFontScale(fontScale);
+
+        action.setFontScale(fontScale);
+
+        // Placement affichage nourriture
+        whichFood.setFontScale(fontScale);
+        priceFood.setFontScale(fontScale);
+        priceSuperFood.setFontScale(fontScale);
+
         // Taille des barres de progression
         progressBar1.setSize(widthProgressbar, heightProgressBar);
         progressBar2.setSize(widthProgressbar, heightProgressBar);
@@ -858,6 +892,7 @@ public class View implements Screen {
         moneyImage.setSize(widthImage, heightImage);
         foodImage.setSize(widthImage, heightImage);
         extraFoodImage.setSize(widthImage, heightImage);
+        settings.setSize(widthImage, heightImage);
 
         // Tamagotchi
         float widthTamagotchi = screenHeight * (150f / 900f);
@@ -872,15 +907,11 @@ public class View implements Screen {
         float arrowYSize = screenHeight * (86.25f / 900f);
 
         leftArrow.setPosition(5, screenHeight / 2 - adjustPositionArrow);
-        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), screenHeight / 2 - adjustPositionArrow);
+        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), leftArrow.getY());
 
         leftArrow.setSize(arrowXSize, arrowYSize);
         rightArrow.setSize(arrowXSize, arrowYSize);
 
-        // Paramètre
-        float XYSettingsSize = screenHeight * (70f / 900f);
-        settings.setSize(XYSettingsSize, XYSettingsSize);
-        settings.setPosition(10, 10);
 
         // Position des tables
         room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 30);
@@ -904,6 +935,7 @@ public class View implements Screen {
         moneyImage.setPosition(X, Y - shiftY * 6);
         foodImage.setPosition(X, Y - shiftY * 7);
         extraFoodImage.setPosition(X + shiftX + adjustGoldenApple, Y - shiftY * 7);
+        settings.setPosition(10, 10);
 
         progressBar1.setPosition(X + shiftX, Y + adjustProgressBar - shiftY);
         progressBar2.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 2);
@@ -911,44 +943,13 @@ public class View implements Screen {
         progressBar4.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 4);
         progressBar5.setPosition(X + shiftX, Y + adjustProgressBar - shiftY * 5);
 
-        float fontScale = screenHeight * (1f / 900f);
-        float ajustementLabelFood = 1 / (fontScale / 5);
-
         // Action du Tamagotchi
-        waitingBar.setPosition(screenWidth / 2 - (float) widthProgressbar / 2, screenHeight / 2 - (float) heightProgressBar / 2);
-        action.setPosition(0, screenHeight / 2 + (float) heightProgressBar / 2);
+        action.setPosition(screenWidth / 2 - action.getMinWidth() / 2, screenHeight / 2 + (float) heightProgressBar / 2);
+        waitingBar.setPosition(screenWidth / 2 - (float) widthProgressbar / 2, action.getY() - heightProgressBar * 1.3f);
 
         moneyLabel.setPosition(X + shiftX, Y - shiftY * 6 - (1 / (fontScale / 4)));
         foodLabel.setPosition(X + shiftX, Y - shiftY * 7 - ajustementLabelFood);
         extraFoodLabel.setPosition(X + shiftX * 2 + adjustGoldenApple, Y - shiftY * 7 - ajustementLabelFood);
-
-        moneyLabel.setFontScale(fontScale);
-        foodLabel.setFontScale(fontScale);
-        extraFoodLabel.setFontScale(fontScale);
-
-        eat.getLabel().setFontScale(fontScale);
-        buy.getLabel().setFontScale(fontScale);
-        wash.getLabel().setFontScale(fontScale);
-        play.getLabel().setFontScale(fontScale);
-        work.getLabel().setFontScale(fontScale);
-        sleep.getLabel().setFontScale(fontScale);
-        resume.getLabel().setFontScale(fontScale);
-        settings2.getLabel().setFontScale(fontScale);
-        home.getLabel().setFontScale(fontScale);
-        goMenuDeath.getLabel().setFontScale(fontScale);
-        death.setFontScale(fontScale);
-
-        rule.setFontScale(fontScale);
-        listRule.setFontScale(fontScale / Modele.coefficientAffichageRegle);
-        goBackFromRule.setFontScale(fontScale);
-
-        action.setFontScale(fontScale);
-        action.setX(screenWidth / 2 - action.getMinWidth() / 2);
-
-        // Placement affichage nourriture
-        whichFood.setFontScale(fontScale);
-        priceFood.setFontScale(fontScale);
-        priceSuperFood.setFontScale(fontScale);
 
         quitBuyEatMenu.setSize(screenWidth * 50f / 900f, screenHeight * 50f / 900f);
 

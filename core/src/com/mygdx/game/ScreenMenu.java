@@ -61,7 +61,7 @@ public class ScreenMenu implements Screen {
     private final Modele modele;
 
     // Créez un objet Path
-    private static Path currRelativePath;
+    private static final Path currRelativePath = Paths.get(System.getProperty("user.home") + "/.Tamagotchi/jsonFile/");
 
     // Label
     private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule;
@@ -74,14 +74,6 @@ public class ScreenMenu implements Screen {
      * Constructeur
      */
     public ScreenMenu(int playMusique, Music music) {
-        if (System.getProperty("os.name").equals("Windows")) {
-            currRelativePath = Paths.get(System.getProperty("user.home") + "\\.Tamagotchi\\jsonFile\\");
-
-        } else {
-            currRelativePath = Paths.get(System.getProperty("user.home") + "/.Tamagotchi/jsonFile/");
-
-        }
-
         modele = new Modele();
 
         float son = modele.getSound();

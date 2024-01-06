@@ -80,11 +80,20 @@ class Moteur implements Runnable {
     }
 
     /**
+     * Renvoie le nombre de tours avant la prochaine pluie
+     *
+     * @return float valeur
+     */
+    private float randomTempsEntrePluie() {
+        return random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
+    }
+
+    /**
      * Méthode appelée pour exécuter le thread
      */
     public void run() {
         float nombreEntreSauvegarde = Modele.tempsEntreSauvegarde * 1000 / Modele.tempsAttenteJeu;
-        float nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
+        float nombreEntrePluie = randomTempsEntrePluie();
 
         // Tant que le drapeau n'est pas levé, on continue
         while (!flagStop.get()) {
@@ -120,7 +129,7 @@ class Moteur implements Runnable {
                 // Si pas d'action en cours, donc on peut effectuer la pluie
                 if (modele.getRoomTamagotchi() != 1 || !flagDoingAction.get()) {
                     flagPluie.set(true);
-                    nombreEntrePluie = random.nextInt(Modele.tempsMinimalPluie, Modele.tempsMaximalPluie) * 1000 / Modele.tempsAttenteJeu;
+                    nombreEntrePluie = randomTempsEntrePluie();
                     compteurPluie.set(0);
                 }
 
@@ -221,20 +230,14 @@ public class Modele {
 
     public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
-    public String pathDirectory;
+    // Emplacement des fichiers json
+    public final String pathDirectory = ".Tamagotchi/jsonFile/";
 
 
     /**
      * Constructeur de gestion des fichiers (menu)
      */
     public Modele() {
-        if (System.getProperty("os.name").equals("Windows")) {
-            pathDirectory = ".Tamagotchi\\jsonFile\\";
-        } else {
-            pathDirectory = ".Tamagotchi/jsonFile/";
-        }
-
-
         // Lecteur de fichier
         JsonReader jsonReader = new JsonReader();
 
