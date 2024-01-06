@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 class Moteur implements Runnable {
@@ -255,8 +257,13 @@ public class Modele {
         soundFile = Gdx.files.external(pathDirectory + "settings.json");
 
         // Si le fichier n'existe pas, on le crée
+        // Sinon, on vérifie qu'il est correcte
         if (!soundFile.exists()) {
             setSound(0.5f);
+        } else {
+            if (!parserSoundFile(soundFile.readString())) {
+                setSound(0.5f);
+            }
         }
 
         // Lecture du fichier de paramètre json
@@ -372,6 +379,17 @@ public class Modele {
         soundFile.writeString("{\n \"sound\":" + son + "\n}", false);
     }
 
+    /**
+     * Vérifie l'intégrité du fichier de son
+     *
+     * @param content Contenue du fichier
+     * @return Boolean true ou false si fichier valide
+     */
+    public boolean parserSoundFile(String content) {
+        Pattern p = Pattern.compile("\\{\n \"sound\":[0-1].[0-9]?[0-9]*\n}");
+        Matcher m = p.matcher(content);
+        return m.matches();
+    }
 
     /**
      * Vérifie si une clef est présent dans le fichier json
