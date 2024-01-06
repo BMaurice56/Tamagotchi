@@ -914,10 +914,10 @@ public class View implements Screen {
 
 
         // Position des tables
-        room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 30);
-        room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), 30);
-        room3Table.setPosition(screenWidth - room3Table.getMinWidth() + room3Table.getMinWidth() * (100f / 300), 30);
-        room4Table.setPosition(screenWidth - room4Table.getMinWidth() + room4Table.getMinWidth() * (40f / 123), 30);
+        room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 35);
+        room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), 35);
+        room3Table.setPosition(screenWidth - room3Table.getMinWidth() + room3Table.getMinWidth() * (100f / 300), 35);
+        room4Table.setPosition(screenWidth - room4Table.getMinWidth() + room4Table.getMinWidth() * (40f / 123), 35);
 
         // Placement des images et des labels
         float X = 10;
