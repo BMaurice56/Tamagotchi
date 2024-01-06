@@ -288,7 +288,7 @@ public class SelectTamagotchi implements Screen {
         backButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, son));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(son));
                 return true;
             }
         });

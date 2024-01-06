@@ -149,6 +149,7 @@ class Moteur implements Runnable {
                 compteurPluie.set(compteurPluie.get() + 1);
             }
 
+            // S'il pleut et tamagotchi dehors → Il se salit ou rouille
             if (modele.getRoomTamagotchi() == 1 && flagPluie.get()) {
                 if (animal != null) {
                     animal.setHygiene(animal.getHygiene() - modele.lowerStat_4);
@@ -156,7 +157,6 @@ class Moteur implements Runnable {
                     robot.setDurability(robot.getDurability() - modele.lowerStat_4);
                 }
             }
-
         }
     }
 }
@@ -220,14 +220,24 @@ public class Modele {
     // Coefficient qui ajuste la taille de la police des règles du jeu
     public final static float coefficientAffichageRegle = 1.8f;
 
+    /* Les cinq attributs suivants augmentent ou baissent les valeurs du tamagotchi
+     *  Selon la valeur dans leur nom par seconde
+     *  Les valeurs sont calculé selon la vitesse du moteur de jeu
+     * Ex : upperStat_10 augmente de 10 chaque seconde
+     * */
+    // Augmente l'attribut de 10
     public final float upperStat_10 = tempsAttenteJeu * 10 / 1000;
 
+    // Baise de 10 par seconde
     public final float lowerStat_10 = tempsAttenteJeu * 10 / 1000;
 
+    // Baisse de 4
     public final float lowerStat_4 = tempsAttenteJeu * 4 / 1000;
 
+    // Baisse de 3
     public final float lowerStat_3 = tempsAttenteJeu * 3 / 1000;
 
+    // Baisse de 2
     public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
     // Emplacement des fichiers json
@@ -279,6 +289,7 @@ public class Modele {
         // Fichier de sauvegarde
         saveFileParty = Gdx.files.external(pathDirectory + "save" + numSave + ".json");
 
+        // Crée ou restore le tamagotchi
         if (save) {
             String tamagotchi = saveFileParty.readString();
             switch (tamagotchiWished) {
@@ -318,6 +329,7 @@ public class Modele {
             }
         }
 
+        // Remet la pluie à son état précédent
         if (tamagotchiWished == 4) {
             flagPluie.set(robot.getPluie());
             compteurPluie.set(robot.getCompteurPluie());

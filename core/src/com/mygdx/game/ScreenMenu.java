@@ -72,8 +72,11 @@ public class ScreenMenu implements Screen {
 
     /**
      * Constructeur
+     *
+     * @param playMusique true → musique, false → pas de musique
+     * @param music       Objet musique pour garder le même objet selon l'écran / null pour nouvel objet
      */
-    public ScreenMenu(int playMusique, Music music) {
+    public ScreenMenu(boolean playMusique, Music music) {
         modele = new Modele();
 
         float son = modele.getSound();
@@ -87,7 +90,7 @@ public class ScreenMenu implements Screen {
 
         musique.setVolume(son);
         musique.setLooping(true);
-        if (playMusique != 0) {
+        if (playMusique) {
             musique.play();
         }
 
@@ -104,11 +107,13 @@ public class ScreenMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    /*
+    /**
      * Deuxième constructeur
+     *
+     * @param music Objet musique pour garder le même objet selon l'écran
      */
-    public ScreenMenu(boolean ignoredMenuGestionGame, Music music) {
-        this(0, music);
+    public ScreenMenu(Music music) {
+        this(false, music);
         putTable(partyTable);
     }
 
@@ -545,7 +550,6 @@ public class ScreenMenu implements Screen {
      * @return arraylist nom des sauvegarde
      */
     public static ArrayList<String> getNamesSave() {
-
         // Objet File à partir du chemin
         File repertoire = new File(currRelativePath.toString());
 
