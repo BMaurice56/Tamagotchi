@@ -918,8 +918,6 @@ public class View implements Screen {
         // Utilisez pour les petites tailles d'écran
         float coefficient = 1 + facteur * (900f - screenHeight);
 
-        System.out.println(coefficient);
-
         // Position des tables
         room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 35 - 1 * coefficient);
         room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), room1Table.getY());
