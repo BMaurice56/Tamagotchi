@@ -414,15 +414,15 @@ public class Modele {
      * @throws InvalidParameterException mauvaise valeur
      */
     public void checkSave() throws InvalidParameterException {
-        if (tamagotchi.getDifficulty() < 1 && tamagotchi.getDifficulty() > 3) {
+        if (tamagotchi.getDifficulty() < 1 || tamagotchi.getDifficulty() > 3) {
             throw new InvalidParameterException();
         }
 
-        if (tamagotchi.getNumeroSalle() < 1 && tamagotchi.getNumeroSalle() > 4) {
+        if (tamagotchi.getNumeroSalle() < 1 || tamagotchi.getNumeroSalle() > 4) {
             throw new InvalidParameterException();
         }
 
-        if (tamagotchi.getSkin() < 1 && tamagotchi.getSkin() > 2) {
+        if (tamagotchi.getSkin() < 1 || tamagotchi.getSkin() > 2) {
             throw new InvalidParameterException();
         }
 
