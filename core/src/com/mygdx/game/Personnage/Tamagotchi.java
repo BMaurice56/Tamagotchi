@@ -36,7 +36,13 @@ public abstract class Tamagotchi {
     }
 
     public void setWallet(int wallet) {
-        this.wallet = wallet;
+        if (wallet < 0) {
+            this.wallet = 0;
+        } else if (wallet > 1000) {
+            this.wallet = 1000;
+        } else {
+            this.wallet = wallet;
+        }
     }
 
     public Panier getPanier() {
