@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 
 public class TamagotchiTest {
 
+    /**
+     * Teste les fonctionnalités de la classe Dinosaure en vérifiant les valeurs des attributs après initialisation.
+     */
     @Test
     public void testDinosaure() {
         Dinosaure dino = new Dinosaure();
@@ -20,6 +23,10 @@ public class TamagotchiTest {
 
     }
 
+    /**
+     * Teste les fonctionnalités de la classe Robot en vérifiant les valeurs des attributs après initialisation,
+     * en ajustant les valeurs aux limites inférieures et supérieures.
+     */
     @Test
     public void testRobot() {
 
@@ -73,8 +80,11 @@ public class TamagotchiTest {
 
 
     //_____________FOOD_________________
+    /**
+     * Teste les méthodes buy() de la classe Animal et Robot en vérifiant le  porte-monnaie après plusieurs achats.
+     */
     @Test
-    public void testBuyApple() {
+    public void testBuy() {
         Chien chien = new Chien();
         chien.setWallet(130);
 
@@ -90,7 +100,32 @@ public class TamagotchiTest {
         chien.buyApple();
         chien.buyGoldenApple();
         assertEquals(10, chien.getWallet());
+
+        Robot robot = new Robot();
+
+
+        robot.setWallet(130);
+
+
+        robot.buyOil();
+        robot.buyOil();
+        robot.buyOil();
+
+
+        assertEquals(70, robot.getWallet());
+
+        robot.buySuperOil();
+
+
+        assertEquals(10, robot.getWallet());
+
+
+        robot.buyOil();
+        robot.buySuperOil();
+        assertEquals(10, robot.getWallet());
+
     }
+
 
     @Test
     public void testNumberApple() {
@@ -152,6 +187,10 @@ public class TamagotchiTest {
         assertEquals(0, robot.getNumberSuperOil());
     }
 
+    /**
+     * Teste le comportement de la méthode eat() sur un Dinosaure en vérifiant le nombre initial de nourriture,
+     * le résultat de la consommation, et les ajustements des attributs.
+     */
     @Test
     public void testAnimalEat() {
 
@@ -186,6 +225,10 @@ public class TamagotchiTest {
 
     }
 
+    /**
+     * Teste le comportement de la méthode fillTank() sur un Robot en vérifiant le nombre initial d'huiles et SuperHuiles,
+     * le résultat de la consommation, et les ajustements des attributs.
+     */
     @Test
     public void testRobotEating() {
         Robot robot = new Robot();
@@ -213,11 +256,11 @@ public class TamagotchiTest {
 
 
     //_____________ACTION__________
-
-    @Test
-    public void testWork() {
-        Robot robot = new Robot(1, "NomRobot", 1);
-
+    /**
+     * Vérifie le comportement de la méthode work() sur un robot en fonction de la difficulté.
+     * @param robot L'instance dr Robot sur laquelle l'action de work est effectuée.
+     */
+    public void verifyWork(Robot robot) {
         // Obtenez les valeurs initiales
         float initialHappiness = robot.getHappiness();
         float initialSoftware = robot.getSoftware();
@@ -238,8 +281,47 @@ public class TamagotchiTest {
         assertEquals(initialSoftware - robot.getDifficulty() * 43, newSoftware, 0.01);
         assertEquals(initialDurability - robot.getDifficulty() * 60, newDurability, 0.01);
 
-        // Vérifiez que le porte-monnaie n'a pas changé (car work n'ajuste pas le porte-monnaie)
+        // Vérifiez que le porte-monnaie a changé
         assertEquals(initialWallet + 50, newWallet, 0.001);
+    }
+
+    /**
+     * Vérifie le comportement de la méthode work() sur un animal en fonction de la difficulté.
+     * @param animal L'instance d'Animal sur laquelle l'action de work est effectuée.
+     */
+    public void verifyWork(Animal animal) {
+        float initialHappiness = animal.getHappiness();
+        float initialHygienne = animal.getHygiene();
+        float initialSleep = animal.getSleep();
+        float initialWallet = animal.getWallet();
+
+        animal.work();
+
+        float newHappiness = animal.getHappiness();
+        float newHygienne = animal.getHygiene();
+        float newSleep = animal.getSleep();
+        float newWallet = animal.getWallet();
+
+        assertEquals(initialHappiness-animal.getDifficulty()*100,newHappiness,0.01);
+        assertEquals(initialHygienne-animal.getDifficulty()*43,newHygienne,0.01);
+        assertEquals(initialSleep-animal.getDifficulty()*60,newSleep,0.01);
+        assertEquals(initialWallet + 50, newWallet, 0.001);
+
+
+    }
+
+    /**
+     * Teste la méthode work() sur différents robots et animaux avec différentes difficultés, en vérifiant les ajustements des valeurs.
+     */
+    @Test
+    public void testWork() {
+        verifyWork(new Robot(1, "NomRobot", 1));
+        verifyWork(new Robot(2, "NomRobot", 1));
+        verifyWork(new Robot(3, "NomRobot", 1));
+
+        verifyWork(new Chat(1, "TestAnimal", 1));
+        verifyWork(new Chat(2, "TestAnimal", 1));
+        verifyWork(new Chat(3, "TestAnimal", 1));
     }
 
     @Test
@@ -273,7 +355,11 @@ public class TamagotchiTest {
         assertEquals(expectedDurability, robot.getDurability(), 0.001);
     }
 
-
+    /**
+     * Vérifie le comportement de la méthode jouer() sur le bonheur d'un animal en fonction de la difficulté.
+     * @param origineHappiness La valeur initiale du bonheur avant l'action de jouer.
+     * @param animal L'instance de Animal sur laquelle l'action de jouer est effectuée.
+     */
     public void verifyHappinessA(float origineHappiness, Animal animal) {
 
         animal.setHappiness(origineHappiness);
@@ -294,6 +380,11 @@ public class TamagotchiTest {
         }
     }
 
+    /**
+     * Vérifie le comportement de la méthode jouer() sur le bonheur d'un robot en fonction de la difficulté.
+     * @param origineHappiness La valeur initiale du bonheur avant l'action de jouer.
+     * @param robot L'instance de Robot sur laquelle l'action de jouer est effectuée.
+     */
     public void verifyHappinessR(float origineHappiness, Robot robot) {
 
         robot.setHappiness(origineHappiness);
@@ -314,21 +405,41 @@ public class TamagotchiTest {
         }
     }
 
+    /**
+     * Teste la méthode jouer() sur différents animaux et robots, en vérifiant le bonheur après l'action de jouer.
+     */
     @Test
     public void testJouer() {
-
 
         verifyHappinessA(99, new Chat(1, "TestAnimal", 1));
         verifyHappinessA(170, new Chat(1, "TestAnimal", 1));
         verifyHappinessA(400, new Chat(1, "TestAnimal", 1));
+        verifyHappinessA(99, new Chat(2, "TestAnimal", 1));
+        verifyHappinessA(170, new Chat(2, "TestAnimal", 1));
+        verifyHappinessA(400, new Chat(2, "TestAnimal", 1));
+        verifyHappinessA(99, new Chat(3, "TestAnimal", 1));
+        verifyHappinessA(170, new Chat(3, "TestAnimal", 1));
+        verifyHappinessA(400, new Chat(3, "TestAnimal", 1));
 
         verifyHappinessR(99, new Robot(1, "test", 1));
         verifyHappinessR(199, new Robot(1, "test", 1));
         verifyHappinessR(299, new Robot(1, "test", 1));
+        verifyHappinessR(99, new Robot(2, "test", 1));
+        verifyHappinessR(199, new Robot(2, "test", 1));
+        verifyHappinessR(299, new Robot(2, "test", 1));
+        verifyHappinessR(99, new Robot(3, "test", 1));
+        verifyHappinessR(199, new Robot(3, "test", 1));
+        verifyHappinessR(299, new Robot(3, "test", 1));
     }
 
-
+    /**
+     * Vérifie le comportement du logiciel d'un robot en fonction de sa difficulté.
+     * @param origineSoftware La valeur initiale du logiciel avant l'action de mise à jour.
+     * @param robot L'instance de Robot sur laquelle l'action de mise à jour est effectuée.
+     */
     public void verifySoftware(float origineSoftware, Robot robot) {
+        robot.setSoftware(origineSoftware);
+        robot.updating();
         // Vérifier le comportement attendu en fonction de la difficulté
         if (origineSoftware <= 200) {
             // Si le logiciel est inférieur à 200, il devrait être ajusté selon la formule
@@ -338,7 +449,9 @@ public class TamagotchiTest {
             assertEquals(1000, robot.getSoftware(), 0.1);
         }
     }
-
+    /**
+     * Teste la méthode updating() sur un robot, en vérifiant le bonheur et le logiciel après la mise à jour.
+     */
     @Test
     public void testUpdating() {
 
@@ -347,9 +460,7 @@ public class TamagotchiTest {
 
         // Définir le bonheur et le logiciel à des valeurs spécifiques pour le test
         float origine_happiness = 900;
-        float origine_software = 150;
         robot.setHappiness(origine_happiness);
-        robot.setSoftware(origine_software);
 
         // Appeler la méthode updating
         robot.updating();
@@ -358,41 +469,47 @@ public class TamagotchiTest {
         assertEquals(1000, robot.getHappiness(), 0.1);
 
         // Appeler la fonction de vérification du logiciel
-        verifySoftware(origine_software, robot);
+        verifySoftware(200, new Robot(1,"Test",1));
+        verifySoftware(201, new Robot(1,"Test",1));
 
+        verifySoftware(200, new Robot(2,"Test",1));
+        verifySoftware(201, new Robot(2,"Test",1));
 
-        // Créer une instance de Robot avec une difficulté spécifique pour le test
-        Robot robot2 = new Robot(1, "NomRobot", 1);
-
-        // Définir le bonheur et le logiciel à des valeurs spécifiques pour le test
-        float origine_happiness2 = 900;
-        float origine_software2 = 150;
-        robot2.setHappiness(origine_happiness2);
-        robot2.setSoftware(origine_software2);
-
-        // Appeler la méthode updating
-        robot2.updating();
-
-        // Vérifier le comportement attendu pour le bonheur
-        assertEquals(1000, robot2.getHappiness(), 0.1);
-
-        // Appeler la fonction de vérification du logiciel
-        verifySoftware(origine_software2, robot2);
-
+        verifySoftware(200, new Robot(3,"Test",1));
+        verifySoftware(201, new Robot(3,"Test",1));
 
     }
 
+    /**
+     * Vérifie le comportement de la méthode wash() sur l'hygiène d'un animal en fonction de la difficulté.
+     * @param origineHygiene La valeur initiale de l'hygiène avant l'action de se laver.
+     * @param animal L'instance de Animal sur laquelle l'action de se laver est effectuée.
+     */
+    public void verifyHygiene(float origineHygiene, Animal animal) {
+        animal.setHygiene(origineHygiene);  // Mettez une valeur initiale pour tester
+        animal.wash();
+        // Vérifier le comportement attendu en fonction de la difficulté
+        if (origineHygiene <= 200) {
+            // Si l'hygiène est inférieure à 200, elle devrait être ajustée selon la formule
+            assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
+        } else {
+            // Si l'hygiène est supérieure à 200, elle devrait être ajustée au maximum (1000)
+            assertEquals(1000, animal.getHygiene(), 0.1);
+        }
+    }
+
+    /**
+     * Teste la fonction wash() sur l'hygiène d'un chien en fonction de sa difficulté.
+     */
     @Test
     public void testWash() {
-        Animal animal = new Dinosaure(1, "TestAnimal", 1);
-        float hygiene_origine = 100;
+        verifyHygiene(150,new Chien(1, "TestAnimal", 1));
+        verifyHygiene(250,new Chien(1, "TestAnimal", 1));
 
-        animal.setHygiene(hygiene_origine);  // Mettez une valeur initiale pour tester
+        verifyHygiene(150,new Chien(2, "TestAnimal", 1));
+        verifyHygiene(250,new Chien(2, "TestAnimal", 1));
 
-        // Effectuer l'action de se laver
-        animal.wash();
-
-        // Vérifier que l'hygiène est correctement ajustée
-        assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
+        verifyHygiene(150,new Chien(3, "TestAnimal", 1));
+        verifyHygiene(250,new Chien(3, "TestAnimal", 1));
     }
 }
