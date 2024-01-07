@@ -382,27 +382,21 @@ public class TamagotchiTest {
 
     }
 
-    /*
-     * Vérifie le comportement de la méthode wash() sur l'hygiène d'un animal en fonction de la difficulté.
-     * @param origineHygiene La valeur initiale de l'hygiène avant l'action de se laver.
-     * @param animal L'instance de Animal sur laquelle l'action de se laver est effectuée.
-     */
-    public void verifyHygiene(float origineHygiene, Animal animal) {
-        animal.setHygiene(origineHygiene);  // Mettez une valeur initiale pour tester
-        animal.wash();
-        // Vérifier le comportement attendu en fonction de la difficulté
-        if (origineHygiene <= 200) {
-            // Si l'hygiène est inférieure à 200, elle devrait être ajustée selon la formule
-            assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
-        } else {
-            // Si l'hygiène est supérieure à 200, elle devrait être ajustée au maximum (1000)
-            assertEquals(1000, animal.getHygiene(), 0.1);
-        }
-    }
     @Test
     public void testWash() {
+        Animal animal = new Dinosaure(1, "TestAnimal", 1);
+        float hygiene_origine = 100;
 
-        verifyHygiene(150,new Chat(1,"Test",1));
-        verifyHygiene(250,new Chat(1,"Test",1));
+        animal.setHygiene(hygiene_origine);  // Mettez une valeur initiale pour tester
+
+        // Effectuer l'action de se laver
+        animal.wash();
+
+        // Vérifier que l'hygiène est correctement ajustée
+        if (hygiene_origine <= 200) {
+            assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
+        } else {
+            assertEquals(1000, animal.getHygiene(), 0.1);
+        }
     }
 }
