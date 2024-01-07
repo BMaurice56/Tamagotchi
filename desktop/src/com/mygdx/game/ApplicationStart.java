@@ -10,7 +10,7 @@ public class ApplicationStart {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
         config.setTitle("Tamagotchi");
-        config.setWindowedMode(900,900);
+        config.setWindowedMode(900,700);
         //config.setWindowedMode(Lwjgl3ApplicationConfiguration.getDisplayMode().width, Lwjgl3ApplicationConfiguration.getDisplayMode().height);
 
         GameStart myGdxGame = new GameStart();
