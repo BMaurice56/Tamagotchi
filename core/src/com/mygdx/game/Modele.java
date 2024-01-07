@@ -137,7 +137,7 @@ class Moteur implements Runnable {
                 }
 
                 // Enlève la pluie au bout de 10/15/20 secondes
-            } else if (compteurPluie.get() == durationPluie) {
+            } else if (compteurPluie.get() >= durationPluie) {
                 // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
@@ -201,6 +201,9 @@ public class Modele {
 
     // Tamagotchi robot
     private Robot robot;
+
+    // Attribut tamagotchi
+    private Tamagotchi tamagotchi = null;
 
     // Sauvegarde valide ou non
     private boolean saveValide = true;
@@ -325,12 +328,17 @@ public class Modele {
                         throw new InvalidParameterException();
                 }
 
+                if (animal != null) {
+                    this.tamagotchi = animal;
+                } else if (robot != null) {
+                    this.tamagotchi = robot;
+                } else {
+                    throw new InvalidParameterException();
+                }
+
                 checkSave();
 
             } catch (Exception e) {
-                saveValide = false;
-            }
-            if (animal == null && robot == null) {
                 saveValide = false;
             }
 
@@ -406,50 +414,30 @@ public class Modele {
      * @throws InvalidParameterException mauvaise valeur
      */
     public void checkSave() throws InvalidParameterException {
-        if (animal != null) {
-            switch (animal.getNumberTamagotchi()) {
-                case (1):
-                    if (!(animal instanceof Chat)) {
-                        throw new InvalidParameterException();
-                    }
-                    break;
+        if (tamagotchi.getDifficulty() < 1 && tamagotchi.getDifficulty() > 3) {
+            throw new InvalidParameterException();
+        }
 
-                case (2):
-                    if (!(animal instanceof Chien)) {
-                        throw new InvalidParameterException();
-                    }
-                    break;
+        if (tamagotchi.getNumeroSalle() < 1 && tamagotchi.getNumeroSalle() > 4) {
+            throw new InvalidParameterException();
+        }
 
-                case (3):
-                    if (!(animal instanceof Dinosaure)) {
-                        throw new InvalidParameterException();
-                    }
-                    break;
+        if (tamagotchi.getSkin() < 1 && tamagotchi.getSkin() > 2) {
+            throw new InvalidParameterException();
+        }
 
-                default:
-                    throw new InvalidParameterException();
-            }
+        if (tamagotchi.getWallet() < 0) {
+            throw new InvalidParameterException();
+        }
 
-            if (animal.getDifficulty() < 1 && animal.getDifficulty() > 3) {
-                throw new InvalidParameterException();
-            }
+        Pattern p = Pattern.compile("[a-zA-Z0-9-_.]+");
+        Matcher m = p.matcher(tamagotchi.getName());
+        if (!m.matches()) {
+            throw new InvalidParameterException();
+        }
 
-            if (animal.getNumeroSalle() < 1 && animal.getNumeroSalle() > 4) {
-                throw new InvalidParameterException();
-            }
-
-        } else if (robot != null) {
-            if (robot.getNumberTamagotchi() != 4) {
-                throw new InvalidParameterException();
-            }
-
-            if (robot.getDifficulty() < 1 && robot.getDifficulty() > 3) {
-                throw new InvalidParameterException();
-            }
-
-            if (robot.getNumeroSalle() < 1 && robot.getNumeroSalle() > 4) {
-                throw new InvalidParameterException();
-            }
+        if (tamagotchi.getCompteurPluie() < 0) {
+            throw new InvalidParameterException();
         }
     }
 

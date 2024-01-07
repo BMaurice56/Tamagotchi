@@ -155,7 +155,7 @@ public class ScreenMenu implements Screen {
         rule = new Label("Regles du jeu", new MultiSkin("label"));
         listRule = new Label(modele.getRule(), new MultiSkin("label"));
         goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
-        badSave = new Label("Le fichier de sauvegarde etant non valide\n              (du a une modification)\n                celui-ci a ete supprime", new MultiSkin("label"));
+        badSave = new Label("Le fichier de sauvegarde etant non valide\n              (du a une modification)\n               celui-ci a ete supprime", new MultiSkin("label"));
         goBackFromBadSave = new Label("Retour au centre", new MultiSkin("label"));
 
         // Gestion de la partie
