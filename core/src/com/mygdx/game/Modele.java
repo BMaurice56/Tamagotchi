@@ -342,7 +342,7 @@ public class Modele {
                 saveValide = false;
             }
 
-        } else {
+        } else  {
             switch (tamagotchiWished) {
                 case (1):
                     animal = new Chat(difficulty, nomTamagotchi, skin);
