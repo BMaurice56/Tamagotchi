@@ -40,37 +40,49 @@ public class Controller {
 
         modele = new Modele(tamagotchiWished, nomTamagotchi, difficulty, save, numberSave, this, skin, flagPluie);
 
-        view = new View(this, modele.getTamagotchi(), flagPluie);
+        if (modele.getSaveValide()) {
+            view = new View(this, modele.getTamagotchi(), flagPluie);
 
-        // Définit l'écran de jeu
-        ((Game) Gdx.app.getApplicationListener()).setScreen(view);
 
-        // Permet de savoir si l'utilisateur quitte le jeu pour stopper la partie
-        Gdx.app.addLifecycleListener(new LifecycleListener() {
-            @Override
-            public void pause() {
-            }
+            // Définit l'écran de jeu
+            ((Game) Gdx.app.getApplicationListener()).setScreen(view);
 
-            @Override
-            public void resume() {
-            }
-
-            @Override
-            public void dispose() {
-                Tamagotchi tamagotchi = modele.getTamagotchi();
-
-                if (tamagotchi instanceof Animal) {
-                    Animal animal = (Animal) tamagotchi;
-                    stopGame(!(animal.getLife() <= 0));
-                } else {
-                    Robot robot = (Robot) tamagotchi;
-                    stopGame(!(robot.getBattery() <= 0));
+            // Permet de savoir si l'utilisateur quitte le jeu pour stopper la partie
+            Gdx.app.addLifecycleListener(new LifecycleListener() {
+                @Override
+                public void pause() {
                 }
 
-            }
-        });
+                @Override
+                public void resume() {
+                }
 
-        startGame();
+                @Override
+                public void dispose() {
+                    Tamagotchi tamagotchi = modele.getTamagotchi();
+
+                    if (tamagotchi instanceof Animal) {
+                        Animal animal = (Animal) tamagotchi;
+                        stopGame(!(animal.getLife() <= 0));
+                    } else {
+                        Robot robot = (Robot) tamagotchi;
+                        stopGame(!(robot.getBattery() <= 0));
+                    }
+
+                }
+            });
+
+            startGame();
+        } else {
+            view = null;
+
+            FileHandle saveFileParty = Gdx.files.external(Modele.pathDirectory + "save" + numberSave + ".json");
+
+            Controller.deleteSave(saveFileParty);
+
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
+
+        }
     }
 
     /**

@@ -201,6 +201,9 @@ public class Modele {
     // Tamagotchi robot
     private Robot robot;
 
+    // Sauvegarde valide ou non
+    private boolean saveValide = true;
+
     // String d'action à effecteur
     private String attente;
 
@@ -243,7 +246,7 @@ public class Modele {
     public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
     // Emplacement des fichiers json
-    public final String pathDirectory = ".Tamagotchi/jsonFile/";
+    public static final String pathDirectory = ".Tamagotchi/jsonFile/";
 
 
     /**
@@ -316,6 +319,10 @@ public class Modele {
                     robot = json.fromJson(Robot.class, tamagotchi);
                     break;
             }
+            if (animal == null && robot == null) {
+                saveValide = false;
+            }
+
         } else {
             switch (tamagotchiWished) {
                 case (1):
@@ -336,13 +343,15 @@ public class Modele {
             }
         }
 
-        // Remet la pluie à son état précédent
-        if (tamagotchiWished == 4) {
-            flagPluie.set(robot.getPluie());
-            compteurPluie.set(robot.getCompteurPluie());
-        } else {
-            flagPluie.set(animal.getPluie());
-            compteurPluie.set(animal.getCompteurPluie());
+        if (saveValide) {
+            // Remet la pluie à son état précédent
+            if (tamagotchiWished == 4) {
+                flagPluie.set(robot.getPluie());
+                compteurPluie.set(robot.getCompteurPluie());
+            } else {
+                flagPluie.set(animal.getPluie());
+                compteurPluie.set(animal.getCompteurPluie());
+            }
         }
     }
 
@@ -368,6 +377,15 @@ public class Modele {
      */
     public String getRule() {
         return rule.readString();
+    }
+
+    /**
+     * Renvoie le boolean si la save est valide ou non
+     *
+     * @return boolean true ou false si valide
+     */
+    public boolean getSaveValide() {
+        return saveValide;
     }
 
     /**

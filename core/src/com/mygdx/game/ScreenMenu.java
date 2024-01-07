@@ -64,7 +64,7 @@ public class ScreenMenu implements Screen {
     private static final Path currRelativePath = Paths.get(System.getProperty("user.home") + "/.Tamagotchi/jsonFile/");
 
     // Label
-    private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule;
+    private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule, badSave, goBackFromBadSave;
 
     // Stock tous les labels de chaque sauvegarde pour l'affichage
     private final ArrayList<Label> multiLabels = new ArrayList<>();
@@ -118,6 +118,22 @@ public class ScreenMenu implements Screen {
     }
 
     /**
+     * Constructeur en cas de sauvegarde non valide
+     */
+    public ScreenMenu() {
+        this(true, null);
+
+        stage.clear();
+
+        Table table = new Table();
+        table.setFillParent(true);
+
+        table.add(badSave).row();
+        table.add(new Label(" ", new MultiSkin("label"))).row();
+        table.add(goBackFromBadSave).row();
+    }
+
+    /**
      * Instancie les boutons
      */
     public void createButton() {
@@ -145,6 +161,8 @@ public class ScreenMenu implements Screen {
         rule = new Label("Regles du jeu", new MultiSkin("label"));
         listRule = new Label(modele.getRule(), new MultiSkin("label"));
         goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
+        badSave = new Label("Le fichier de sauvegarde étant non valide (du a une modification),\ncelui-ci a ete supprime", new MultiSkin("label"));
+        goBackFromBadSave = new Label("Retour au centre", new MultiSkin("label"));
     }
 
     /**
@@ -207,105 +225,124 @@ public class ScreenMenu implements Screen {
             // Lecteur de json
             JsonReader jsonReader = new JsonReader();
 
+            int compteur = 0;
+
             // Pour toutes les sauvegardes trouvées
             for (String save : sauvegarde) {
                 // Permet de lire et d'interagir avec le fichier
                 final FileHandle saveFile = new FileHandle(currRelativePath + "/" + save);
 
-                // Lecture du fichier de paramètre json
-                final JsonValue saveFileReader = jsonReader.parse(saveFile);
+                try {
+                    // Lecture du fichier de paramètre json
+                    final JsonValue saveFileReader = jsonReader.parse(saveFile);
 
-                // Création d'un label avec le nom du Tamagotchi
-                final Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
+                    // Création d'un label avec le nom du Tamagotchi
+                    final Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
 
-                // Récupération du numéro de sauvegarde
-                String[] values = save.split("save");
-                final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
+                    // Récupération du numéro de sauvegarde
+                    String[] values = save.split("save");
+                    final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
 
-                Label difficulty = null;
+                    Label difficulty = null;
 
-                switch (contains(saveFileReader, "difficulty")) {
-                    case (1):
-                        difficulty = new Label("Facile", new MultiSkin("label"));
-                        break;
+                    switch (contains(saveFileReader, "difficulty")) {
+                        case (1):
+                            difficulty = new Label("Facile", new MultiSkin("label"));
+                            break;
 
-                    case (2):
-                        difficulty = new Label("Moyen", new MultiSkin("label"));
-                        break;
+                        case (2):
+                            difficulty = new Label("Moyen", new MultiSkin("label"));
+                            break;
 
-                    case (3):
-                        difficulty = new Label("Difficile", new MultiSkin("label"));
-                        break;
+                        case (3):
+                            difficulty = new Label("Difficile", new MultiSkin("label"));
+                            break;
+                    }
+
+                    // Ajout des labels à la table
+                    saveGameTable.add(nomTamagotchi);
+                    saveGameTable.add(difficulty);
+
+                    // Bouton Jouer et supprimer
+                    Label jouer = new Label(" Jouer ", new MultiSkin("label"));
+                    Label supprimer = new Label("  Supprimer", new MultiSkin("label"));
+
+                    jouer.addListener(new InputListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            musique.dispose();
+                            new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave, contains(saveFileReader, "skin"));
+                            return true;
+                        }
+                    });
+
+                    supprimer.addListener(new InputListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            message.setText("Etes vous sur de vouloir supprimer : " + nomTamagotchi.getText());
+
+                            Label oui = new Label("Oui", new MultiSkin("label"));
+                            Label non = new Label("Non", new MultiSkin("label"));
+
+                            multiLabels.add(oui);
+                            multiLabels.add(non);
+
+                            // Place les éléments de l'affichage
+                            posAndSizeElement();
+
+                            // Affichage du message de confirmation
+                            stage.clear();
+                            stage.addActor(message);
+                            stage.addActor(oui);
+                            stage.addActor(non);
+
+                            oui.addListener(new InputListener() {
+                                @Override
+                                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                    Controller.deleteSave(saveFile);
+
+                                    putSaveTable();
+                                    return true;
+                                }
+                            });
+
+                            non.addListener(new InputListener() {
+                                @Override
+                                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                    putSaveTable();
+                                    return true;
+                                }
+                            });
+
+                            return true;
+                        }
+                    });
+
+                    // Sauvegarde des labels
+                    multiLabels.add(nomTamagotchi);
+                    multiLabels.add(difficulty);
+                    multiLabels.add(jouer);
+                    multiLabels.add(supprimer);
+
+                    saveGameTable.add(jouer);
+                    saveGameTable.add(supprimer).row();
+
+                    compteur++;
+
+                } catch (Exception e) {
+                    Controller.deleteSave(saveFile);
                 }
-
-                // Ajout des labels à la table
-                saveGameTable.add(nomTamagotchi);
-                saveGameTable.add(difficulty);
-
-                // Bouton Jouer et supprimer
-                Label jouer = new Label(" Jouer ", new MultiSkin("label"));
-                Label supprimer = new Label("  Supprimer", new MultiSkin("label"));
-
-                jouer.addListener(new InputListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        musique.dispose();
-                        new Controller(contains(saveFileReader, "numberTamagotchi"), "", contains(saveFileReader, "difficulty"), true, numberSave, contains(saveFileReader, "skin"));
-                        return true;
-                    }
-                });
-
-                supprimer.addListener(new InputListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        message.setText("Etes vous sur de vouloir supprimer : " + nomTamagotchi.getText());
-
-                        Label oui = new Label("Oui", new MultiSkin("label"));
-                        Label non = new Label("Non", new MultiSkin("label"));
-
-                        multiLabels.add(oui);
-                        multiLabels.add(non);
-
-                        // Place les éléments de l'affichage
-                        posAndSizeElement();
-
-                        // Affichage du message de confirmation
-                        stage.clear();
-                        stage.addActor(message);
-                        stage.addActor(oui);
-                        stage.addActor(non);
-
-                        oui.addListener(new InputListener() {
-                            @Override
-                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                Controller.deleteSave(saveFile);
-
-                                putSaveTable();
-                                return true;
-                            }
-                        });
-
-                        non.addListener(new InputListener() {
-                            @Override
-                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                putSaveTable();
-                                return true;
-                            }
-                        });
-
-                        return true;
-                    }
-                });
-
-                // Sauvegarde des labels
-                multiLabels.add(nomTamagotchi);
-                multiLabels.add(difficulty);
-                multiLabels.add(jouer);
-                multiLabels.add(supprimer);
-
-                saveGameTable.add(jouer);
-                saveGameTable.add(supprimer).row();
             }
+
+            if (compteur == 0) {
+                saveGameTable = new Table();
+                saveGameTable.setFillParent(true);
+                saveGameTable.center();
+
+                saveGameTable.add(new Label("", new MultiSkin("label")));
+                saveGameTable.add(noSave).row();
+            }
+
         }
         saveGameTable.add(new Label("", new MultiSkin("label"))).row();
         // Ajout d'un espace et d'un bouton retour
@@ -404,6 +441,14 @@ public class ScreenMenu implements Screen {
             }
         });
 
+        goBackFromBadSave.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                putTable(homeTable);
+                return true;
+            }
+        });
+
         backButton2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -465,6 +510,9 @@ public class ScreenMenu implements Screen {
 
         message.setFontScale(fontScale);
         message.setPosition(screenWidth / 2 - message.getMinWidth() / 2, screenHeight / 2);
+
+        badSave.setFontScale(fontScale);
+        goBackFromBadSave.setFontScale(fontScale);
 
         for (Label label : multiLabels) {
             label.setFontScale(fontScale);
