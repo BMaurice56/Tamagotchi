@@ -43,7 +43,6 @@ public class Controller {
         if (modele.getSaveValide()) {
             view = new View(this, modele.getTamagotchi(), flagPluie);
 
-
             // Définit l'écran de jeu
             ((Game) Gdx.app.getApplicationListener()).setScreen(view);
 
@@ -81,7 +80,6 @@ public class Controller {
             Controller.deleteSave(saveFileParty);
 
             ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu());
-
         }
     }
 

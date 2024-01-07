@@ -131,6 +131,8 @@ public class ScreenMenu implements Screen {
         table.add(badSave).row();
         table.add(new Label(" ", new MultiSkin("label"))).row();
         table.add(goBackFromBadSave).row();
+
+        stage.addActor(table);
     }
 
     /**
@@ -161,7 +163,7 @@ public class ScreenMenu implements Screen {
         rule = new Label("Regles du jeu", new MultiSkin("label"));
         listRule = new Label(modele.getRule(), new MultiSkin("label"));
         goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
-        badSave = new Label("Le fichier de sauvegarde étant non valide (du a une modification),\ncelui-ci a ete supprime", new MultiSkin("label"));
+        badSave = new Label("Le fichier de sauvegarde etant non valide\n              (du a une modification)\n                celui-ci a ete supprime", new MultiSkin("label"));
         goBackFromBadSave = new Label("Retour au centre", new MultiSkin("label"));
     }
 
@@ -225,6 +227,7 @@ public class ScreenMenu implements Screen {
             // Lecteur de json
             JsonReader jsonReader = new JsonReader();
 
+            // Compteur du nombre de sauvegardes valide
             int compteur = 0;
 
             // Pour toutes les sauvegardes trouvées
@@ -334,6 +337,7 @@ public class ScreenMenu implements Screen {
                 }
             }
 
+            // Si aucune sauvegarde valide, alors on affiche la table comme s'il n'y avait aucune sauvegarde
             if (compteur == 0) {
                 saveGameTable = new Table();
                 saveGameTable.setFillParent(true);

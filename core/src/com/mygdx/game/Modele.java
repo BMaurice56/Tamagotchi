@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -301,23 +302,33 @@ public class Modele {
 
         // Crée ou restore le tamagotchi
         if (save) {
-            String tamagotchi = saveFileParty.readString();
-            switch (tamagotchiWished) {
-                case (1):
-                    animal = json.fromJson(Chat.class, tamagotchi);
-                    break;
+            try {
+                String tamagotchi = saveFileParty.readString();
+                switch (tamagotchiWished) {
+                    case (1):
+                        animal = json.fromJson(Chat.class, tamagotchi);
+                        break;
 
-                case (2):
-                    animal = json.fromJson(Chien.class, tamagotchi);
-                    break;
+                    case (2):
+                        animal = json.fromJson(Chien.class, tamagotchi);
+                        break;
 
-                case (3):
-                    animal = json.fromJson(Dinosaure.class, tamagotchi);
-                    break;
+                    case (3):
+                        animal = json.fromJson(Dinosaure.class, tamagotchi);
+                        break;
 
-                case (4):
-                    robot = json.fromJson(Robot.class, tamagotchi);
-                    break;
+                    case (4):
+                        robot = json.fromJson(Robot.class, tamagotchi);
+                        break;
+
+                    default:
+                        throw new InvalidParameterException();
+                }
+
+                checkSave();
+
+            } catch (Exception e) {
+                saveValide = false;
             }
             if (animal == null && robot == null) {
                 saveValide = false;
@@ -349,6 +360,7 @@ public class Modele {
                 flagPluie.set(robot.getPluie());
                 compteurPluie.set(robot.getCompteurPluie());
             } else {
+                assert animal != null;
                 flagPluie.set(animal.getPluie());
                 compteurPluie.set(animal.getCompteurPluie());
             }
@@ -386,6 +398,59 @@ public class Modele {
      */
     public boolean getSaveValide() {
         return saveValide;
+    }
+
+    /**
+     * Vérifie les données du tamagotchi
+     *
+     * @throws InvalidParameterException mauvaise valeur
+     */
+    public void checkSave() throws InvalidParameterException {
+        if (animal != null) {
+            switch (animal.getNumberTamagotchi()) {
+                case (1):
+                    if (!(animal instanceof Chat)) {
+                        throw new InvalidParameterException();
+                    }
+                    break;
+
+                case (2):
+                    if (!(animal instanceof Chien)) {
+                        throw new InvalidParameterException();
+                    }
+                    break;
+
+                case (3):
+                    if (!(animal instanceof Dinosaure)) {
+                        throw new InvalidParameterException();
+                    }
+                    break;
+
+                default:
+                    throw new InvalidParameterException();
+            }
+
+            if (animal.getDifficulty() < 1 && animal.getDifficulty() > 3) {
+                throw new InvalidParameterException();
+            }
+
+            if (animal.getNumeroSalle() < 1 && animal.getNumeroSalle() > 4) {
+                throw new InvalidParameterException();
+            }
+
+        } else if (robot != null) {
+            if (robot.getNumberTamagotchi() != 4) {
+                throw new InvalidParameterException();
+            }
+
+            if (robot.getDifficulty() < 1 && robot.getDifficulty() > 3) {
+                throw new InvalidParameterException();
+            }
+
+            if (robot.getNumeroSalle() < 1 && robot.getNumeroSalle() > 4) {
+                throw new InvalidParameterException();
+            }
+        }
     }
 
     /**
