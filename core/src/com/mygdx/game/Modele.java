@@ -9,8 +9,11 @@ import com.badlogic.gdx.utils.JsonReader;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 class Moteur implements Runnable {
@@ -134,7 +137,7 @@ class Moteur implements Runnable {
                 }
 
                 // Enlève la pluie au bout de 10/15/20 secondes
-            } else if (compteurPluie.get() == durationPluie) {
+            } else if (compteurPluie.get() >= durationPluie) {
                 // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
@@ -149,6 +152,7 @@ class Moteur implements Runnable {
                 compteurPluie.set(compteurPluie.get() + 1);
             }
 
+            // S'il pleut et tamagotchi dehors → Il se salit ou rouille
             if (modele.getRoomTamagotchi() == 1 && flagPluie.get()) {
                 if (animal != null) {
                     animal.setHygiene(animal.getHygiene() - modele.lowerStat_4);
@@ -156,7 +160,6 @@ class Moteur implements Runnable {
                     robot.setDurability(robot.getDurability() - modele.lowerStat_4);
                 }
             }
-
         }
     }
 }
@@ -199,6 +202,12 @@ public class Modele {
     // Tamagotchi robot
     private Robot robot;
 
+    // Attribut tamagotchi
+    private Tamagotchi tamagotchi = null;
+
+    // Sauvegarde valide ou non
+    private boolean saveValide = true;
+
     // String d'action à effecteur
     private String attente;
 
@@ -220,18 +229,28 @@ public class Modele {
     // Coefficient qui ajuste la taille de la police des règles du jeu
     public final static float coefficientAffichageRegle = 1.8f;
 
+    /* Les cinq attributs suivants augmentent ou baissent les valeurs du tamagotchi
+     *  Selon la valeur dans leur nom par seconde
+     *  Les valeurs sont calculé selon la vitesse du moteur de jeu
+     * Ex : upperStat_10 augmente de 10 chaque seconde
+     * */
+    // Augmente l'attribut de 10
     public final float upperStat_10 = tempsAttenteJeu * 10 / 1000;
 
+    // Baise de 10 par seconde
     public final float lowerStat_10 = tempsAttenteJeu * 10 / 1000;
 
+    // Baisse de 4
     public final float lowerStat_4 = tempsAttenteJeu * 4 / 1000;
 
+    // Baisse de 3
     public final float lowerStat_3 = tempsAttenteJeu * 3 / 1000;
 
+    // Baisse de 2
     public final float lowerStat_2 = tempsAttenteJeu * 2 / 1000;
 
     // Emplacement des fichiers json
-    public final String pathDirectory = ".Tamagotchi/jsonFile/";
+    public static final String pathDirectory = ".Tamagotchi/jsonFile/";
 
 
     /**
@@ -245,8 +264,13 @@ public class Modele {
         soundFile = Gdx.files.external(pathDirectory + "settings.json");
 
         // Si le fichier n'existe pas, on le crée
+        // Sinon, on vérifie qu'il est correcte
         if (!soundFile.exists()) {
             setSound(0.5f);
+        } else {
+            if (!parserSoundFile(soundFile.readString())) {
+                setSound(0.5f);
+            }
         }
 
         // Lecture du fichier de paramètre json
@@ -279,26 +303,46 @@ public class Modele {
         // Fichier de sauvegarde
         saveFileParty = Gdx.files.external(pathDirectory + "save" + numSave + ".json");
 
+        // Crée ou restore le tamagotchi
         if (save) {
-            String tamagotchi = saveFileParty.readString();
-            switch (tamagotchiWished) {
-                case (1):
-                    animal = json.fromJson(Chat.class, tamagotchi);
-                    break;
+            try {
+                String tamagotchi = saveFileParty.readString();
+                switch (tamagotchiWished) {
+                    case (1):
+                        animal = json.fromJson(Chat.class, tamagotchi);
+                        break;
 
-                case (2):
-                    animal = json.fromJson(Chien.class, tamagotchi);
-                    break;
+                    case (2):
+                        animal = json.fromJson(Chien.class, tamagotchi);
+                        break;
 
-                case (3):
-                    animal = json.fromJson(Dinosaure.class, tamagotchi);
-                    break;
+                    case (3):
+                        animal = json.fromJson(Dinosaure.class, tamagotchi);
+                        break;
 
-                case (4):
-                    robot = json.fromJson(Robot.class, tamagotchi);
-                    break;
+                    case (4):
+                        robot = json.fromJson(Robot.class, tamagotchi);
+                        break;
+
+                    default:
+                        throw new InvalidParameterException();
+                }
+
+                if (animal != null) {
+                    this.tamagotchi = animal;
+                } else if (robot != null) {
+                    this.tamagotchi = robot;
+                } else {
+                    throw new InvalidParameterException();
+                }
+
+                checkSave();
+
+            } catch (Exception e) {
+                saveValide = false;
             }
-        } else {
+
+        } else  {
             switch (tamagotchiWished) {
                 case (1):
                     animal = new Chat(difficulty, nomTamagotchi, skin);
@@ -318,12 +362,16 @@ public class Modele {
             }
         }
 
-        if (tamagotchiWished == 4) {
-            flagPluie.set(robot.getPluie());
-            compteurPluie.set(robot.getCompteurPluie());
-        } else {
-            flagPluie.set(animal.getPluie());
-            compteurPluie.set(animal.getCompteurPluie());
+        if (saveValide) {
+            // Remet la pluie à son état précédent
+            if (tamagotchiWished == 4) {
+                flagPluie.set(robot.getPluie());
+                compteurPluie.set(robot.getCompteurPluie());
+            } else {
+                assert animal != null;
+                flagPluie.set(animal.getPluie());
+                compteurPluie.set(animal.getCompteurPluie());
+            }
         }
     }
 
@@ -352,6 +400,48 @@ public class Modele {
     }
 
     /**
+     * Renvoie le boolean si la save est valide ou non
+     *
+     * @return boolean true ou false si valide
+     */
+    public boolean getSaveValide() {
+        return saveValide;
+    }
+
+    /**
+     * Vérifie les données du tamagotchi
+     *
+     * @throws InvalidParameterException mauvaise valeur
+     */
+    public void checkSave() throws InvalidParameterException {
+        if (tamagotchi.getDifficulty() < 1 || tamagotchi.getDifficulty() > 3) {
+            throw new InvalidParameterException();
+        }
+
+        if (tamagotchi.getNumeroSalle() < 1 || tamagotchi.getNumeroSalle() > 4) {
+            throw new InvalidParameterException();
+        }
+
+        if (tamagotchi.getSkin() < 1 || tamagotchi.getSkin() > 2) {
+            throw new InvalidParameterException();
+        }
+
+        if (tamagotchi.getWallet() < 0) {
+            throw new InvalidParameterException();
+        }
+
+        Pattern p = Pattern.compile("[a-zA-Z0-9-_.]+");
+        Matcher m = p.matcher(tamagotchi.getName());
+        if (!m.matches()) {
+            throw new InvalidParameterException();
+        }
+
+        if (tamagotchi.getCompteurPluie() < 0) {
+            throw new InvalidParameterException();
+        }
+    }
+
+    /**
      * Enregistre le niveau de son du jeu
      *
      * @param son float son
@@ -360,6 +450,17 @@ public class Modele {
         soundFile.writeString("{\n \"sound\":" + son + "\n}", false);
     }
 
+    /**
+     * Vérifie l'intégrité du fichier de son
+     *
+     * @param content Contenue du fichier
+     * @return Boolean true ou false si fichier valide
+     */
+    public boolean parserSoundFile(String content) {
+        Pattern p = Pattern.compile("\\{\n \"sound\":[0-1].[0-9]?[0-9]*\n}");
+        Matcher m = p.matcher(content);
+        return m.matches();
+    }
 
     /**
      * Vérifie si une clef est présent dans le fichier json

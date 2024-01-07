@@ -81,6 +81,15 @@ public abstract class Tamagotchi {
     }
 
     /**
+     * Assesseur nom
+     *
+     * @return String nom
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Renvoi le nombre de nourritures selon son nom
      *
      * @param food String nom de la nourriture

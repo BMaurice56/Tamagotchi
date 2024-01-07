@@ -10,8 +10,11 @@ public class Robot extends Tamagotchi {
     private float software;
     private float happiness;
 
-    private Random random;
+    private final Random random = new Random();
 
+    /**
+     * Constructeur pour la sauvegarde
+     */
     public Robot() {
         super(1, "", 4, 1);
     }
@@ -31,8 +34,6 @@ public class Robot extends Tamagotchi {
         software = 1000;
         durability = 1000;
         happiness = 1000;
-
-        random = new Random();
     }
 
     /**

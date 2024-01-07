@@ -479,7 +479,7 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 soundTamagotchi.dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(1, null));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, null));
                 return true;
             }
         });
@@ -488,7 +488,7 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 soundTamagotchi.dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(1, null));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, null));
                 return true;
             }
         });
@@ -906,18 +906,23 @@ public class View implements Screen {
         float arrowXSize = screenHeight * (115f / 900f);
         float arrowYSize = screenHeight * (86.25f / 900f);
 
-        leftArrow.setPosition(5, screenHeight / 2 - adjustPositionArrow);
-        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), leftArrow.getY());
-
         leftArrow.setSize(arrowXSize, arrowYSize);
         rightArrow.setSize(arrowXSize, arrowYSize);
 
+        leftArrow.setPosition(5, screenHeight / 2 - (adjustPositionArrow - 50));
+        rightArrow.setPosition(screenWidth - 5 - rightArrow.getWidth(), leftArrow.getY());
+
+        float facteur = 0.03f;
+
+        // Calculer le coefficient en fonction de la hauteur de la fenêtre
+        // Utilisez pour les petites tailles d'écran
+        float coefficient = 1 + facteur * (900f - screenHeight);
 
         // Position des tables
-        room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 35);
-        room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), 35);
-        room3Table.setPosition(screenWidth - room3Table.getMinWidth() + room3Table.getMinWidth() * (100f / 300), 35);
-        room4Table.setPosition(screenWidth - room4Table.getMinWidth() + room4Table.getMinWidth() * (40f / 123), 35);
+        room1Table.setPosition(screenWidth - room1Table.getMinWidth(), 35 - 1 * coefficient);
+        room2Table.setPosition(screenWidth - room2Table.getMinWidth() + room2Table.getMinWidth() * (100f / 263), room1Table.getY());
+        room3Table.setPosition(screenWidth - room3Table.getMinWidth() + room3Table.getMinWidth() * (100f / 300), room1Table.getY());
+        room4Table.setPosition(screenWidth - room4Table.getMinWidth() + room4Table.getMinWidth() * (40f / 123), room1Table.getY());
 
         // Placement des images et des labels
         float X = 10;
@@ -962,11 +967,11 @@ public class View implements Screen {
         float middleX = screenWidth / 2;
         float middleY = screenHeight / 2;
 
-        float facteur = 0.023f;
+        facteur = 0.023f;
 
         // Calculer le coefficient en fonction de la hauteur de la fenêtre
         // Utilisez pour les petites tailles d'écran
-        float coefficient = 1 + facteur * (900f - screenHeight);
+        coefficient = 1 + facteur * (900f - screenHeight);
 
         whichFood.setPosition(middleX - whichFood.getMinWidth() / 2f - 10f, middleY);
         quitBuyEatMenu.setPosition(whichFood.getX() + whichFood.getMinWidth(), whichFood.getY() + 1 * coefficient);
