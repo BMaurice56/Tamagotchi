@@ -825,28 +825,25 @@ public class Modele {
     public void save() {
         while (!flagSave.get()) {
             try {
-                TimeUnit.MILLISECONDS.sleep(50);
+                TimeUnit.MILLISECONDS.sleep(10);
             } catch (Exception ignored) {
 
             }
         }
+        // String contenant les informations pour le fichier json
+        String tamagotchi;
 
         if (animal != null) {
             animal.setCompteurPluie(compteurPluie.get());
             animal.setNumeroSalle(controller.getRoomTamagotchi());
             animal.setPluie(flagPluie.get());
+
+            tamagotchi = "{numberTamagotchi:" + animal.getNumberTamagotchi() + "," + json.toJson(animal).substring(1);
         } else {
             robot.setCompteurPluie(compteurPluie.get());
             robot.setNumeroSalle(controller.getRoomTamagotchi());
             robot.setPluie(flagPluie.get());
-        }
 
-        // String contenant les informations pour le fichier json
-        String tamagotchi;
-
-        if (animal != null) {
-            tamagotchi = "{numberTamagotchi:" + animal.getNumberTamagotchi() + "," + json.toJson(animal).substring(1);
-        } else {
             tamagotchi = "{numberTamagotchi:" + robot.getNumberTamagotchi() + "," + json.toJson(robot).substring(1);
         }
 
