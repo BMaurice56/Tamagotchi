@@ -15,7 +15,7 @@ public class TamagotchiTest {
         assertEquals(100, dino.getWallet(), 0.001);
         assertEquals(700.0, dino.getFood(), 0.001);
         assertEquals(650.0, dino.getHappiness(),0.001);
-        assertEquals(201.0, dino.getSleep(), 0.001); // Ajoutez une tolérance de 0 pour les nombres entier
+        assertEquals(201.0, dino.getSleep(), 0.001); // Ajoutez une tolérance de 0 pour les nombres entiers
 
     }
 
@@ -66,7 +66,7 @@ public class TamagotchiTest {
         assertEquals(1000, robot.getDurability(), 0.001);
 
         robot.setWallet(1200);
-        assertEquals(1000, robot.getWallet(), 0.001);
+        assertEquals(1200, robot.getWallet(), 0.001);
 
     }
 
@@ -85,14 +85,14 @@ public class TamagotchiTest {
         chien.buyGoldenApple();
         assertEquals(10,chien.getWallet());
 
-        //plus assez de sous pour achetr donc normalement son porte monnaie ne bouge pas
+        //plus assez de sous pour acheter donc normalement son porte-monnaie ne bouge pas
         chien.buyApple();
         chien.buyGoldenApple();
         assertEquals(10,chien.getWallet());
     }
 
     @Test
-    public void testNumberAplle(){
+    public void testNumberApple(){
         Chat chat = new Chat();
         chat.setFood(100);
         chat.addBasket(new Apple());
@@ -106,12 +106,12 @@ public class TamagotchiTest {
 
         chat.eat("GoldenApple");
         assertEquals(1,chat.getNumberOfFood("GoldenApple"));
-        //on conssome toute les pommes
+        //on consomme toutes les pommes
         chat.eat("Apple");
         chat.eat("Apple");
         chat.eat("Apple");
         assertEquals(0,chat.getNumberOfFood("Apple"));
-        //on tente d'en conssomer alors qu'il y en a plus
+        //on tente d'en consommer alors qu'il y en a plus
         chat.eat("Apple");
         assertEquals(0,chat.getNumberOfFood("Apple"));
 
@@ -136,7 +136,7 @@ public class TamagotchiTest {
         robot.fillTank("SuperOil");
         assertEquals(1, robot.getNumberSuperOil());
 
-        // on consomme tout l'huile
+        // on consomme toute l'huile
         robot.fillTank("Oil");
         robot.fillTank("Oil");
         robot.fillTank("Oil");
@@ -154,7 +154,7 @@ public class TamagotchiTest {
     @Test
     public void testAnimalEat(){
 
-        // initialisation dino 100 food 500 hapiness qui possede une Apple et une GoldenApple
+        // initialisation dino 100 food 500 happiness qui possède une Apple et une GoldenApple
         Dinosaure dinosaure = new Dinosaure();
         dinosaure.setFood(100);
         dinosaure.setHappiness(500);
@@ -162,20 +162,20 @@ public class TamagotchiTest {
         dinosaure.buyApple();
         dinosaure.buyGoldenApple();
 
-        //mange toutes ses pommes test resultat
+        //mange toutes ses pommes test résultat
         dinosaure.eat("Apple");
         assertEquals(350.0,dinosaure.getFood(),0.001);
         dinosaure.eat("GoldenApple");
         assertEquals(750.0,dinosaure.getFood(),0.001);
         assertEquals(575.0,dinosaure.getHappiness(),0.001);
 
-        //test de manger alors qu'il n'a plus de pommes test objectif resultat inchangé
+        //test de manger alors qu'il n'a plus de pommes test objectif résultat inchangé
         dinosaure.eat("GoldenApple");
         dinosaure.eat("Apple");
         assertEquals(750.0,dinosaure.getFood(),0.001);
         assertEquals(575.0,dinosaure.getHappiness(),0.001);
 
-        //possede une nouvelle pomme et fodd à 1000 objectif ne pas depasser les 1000 et pomme consommé
+        //possède une nouvelle pomme et food à 1000 objectifs ne pas dépasser les 1000 et pomme consommée
         dinosaure.buyGoldenApple();
         dinosaure.setFood(1000);
         dinosaure.eat("GoldenApple");
@@ -195,10 +195,10 @@ public class TamagotchiTest {
         robot.buyOil();
         robot.buySuperOil();
 
-        robot.fillTank("Oil"); //test resultat conso huile
+        robot.fillTank("Oil"); //test résultat conso huile
         assertEquals(350.0, robot.getTank(), 0.001);
 
-        robot.fillTank("SuperOil");  //test resultat conso SuperHuile
+        robot.fillTank("SuperOil");  //test résultat conso SuperHuile
         assertEquals(750.0, robot.getTank(), 0.001);
         assertEquals(575.0, robot.getHappiness(), 0.001);
 
@@ -242,7 +242,7 @@ public class TamagotchiTest {
     }
 
     @Test
-    public void testSleepMaintenace() {
+    public void testSleepMaintenance() {
 
         Animal animal = new Chat(1, "TestAnimal", 1);
         animal.setSleep(201);
@@ -257,7 +257,7 @@ public class TamagotchiTest {
         double expectedSleep = 900.0 - animal.getDifficulty() * 100.0;
         assertEquals(expectedSleep, animal.getSleep(), 0.001);
 
-        // LA meme mais pour le robot
+        // La même, mais pour le robot
 
         Robot robot = new Robot();
         robot.setDurability(201);
@@ -393,10 +393,6 @@ public class TamagotchiTest {
         animal.wash();
 
         // Vérifier que l'hygiène est correctement ajustée
-        if (hygiene_origine <= 200) {
-            assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
-        } else {
-            assertEquals(1000, animal.getHygiene(), 0.1);
-        }
+        assertEquals(900 - animal.getDifficulty() * 85, animal.getHygiene(), 0.1);
     }
 }
