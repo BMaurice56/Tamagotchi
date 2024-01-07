@@ -8,12 +8,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 class Moteur implements Runnable {
@@ -342,7 +342,7 @@ public class Modele {
                 saveValide = false;
             }
 
-        } else  {
+        } else {
             switch (tamagotchiWished) {
                 case (1):
                     animal = new Chat(difficulty, nomTamagotchi, skin);
@@ -575,8 +575,13 @@ public class Modele {
             if (animal.getLife() <= 0) {
                 stopGame(false);
                 // On attend que le thread wait se termine complètement (Sinon elle change l'écran)
+
                 while (!flagWait.get()) {
-                    continue;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (Exception ignored) {
+
+                    }
                 }
                 controller.mortTamagotchi(saveFileParty);
             }
@@ -603,7 +608,11 @@ public class Modele {
                 stopGame(false);
                 // On attend que la fonction wait se termine complètement (Sinon elle change l'écran)
                 while (!flagWait.get()) {
-                    continue;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (Exception ignored) {
+
+                    }
                 }
                 controller.mortTamagotchi(saveFileParty);
             }
