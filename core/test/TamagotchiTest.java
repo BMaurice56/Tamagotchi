@@ -81,7 +81,7 @@ public class TamagotchiTest {
 
     //_____________FOOD_________________
     /**
-     * Teste les méthodes buy() de la classe Animal et Robot en vérifiant le  porte-monnaie après plusieurs achats.
+     * Teste les méthodes buy() de la classe Animal et Robot en vérifiant le porte-monnaie après plusieurs achats.
      */
     @Test
     public void testBuy() {
@@ -188,7 +188,7 @@ public class TamagotchiTest {
     }
 
     /**
-     * Teste le comportement de la méthode eat() sur un Dinosaure en vérifiant le nombre initial de nourriture,
+     * Teste le comportement de la méthode eat() sur un Dinosaure en vérifiant le nombre initial de nourritures,
      * le résultat de la consommation, et les ajustements des attributs.
      */
     @Test
@@ -358,7 +358,7 @@ public class TamagotchiTest {
     /**
      * Vérifie le comportement de la méthode jouer() sur le bonheur d'un animal en fonction de la difficulté.
      * @param origineHappiness La valeur initiale du bonheur avant l'action de jouer.
-     * @param animal L'instance de Animal sur laquelle l'action de jouer est effectuée.
+     * @param animal L'instance d'Animal sur laquelle l'action de jouer est effectuée.
      */
     public void verifyHappinessA(float origineHappiness, Animal animal) {
 
@@ -483,7 +483,7 @@ public class TamagotchiTest {
     /**
      * Vérifie le comportement de la méthode wash() sur l'hygiène d'un animal en fonction de la difficulté.
      * @param origineHygiene La valeur initiale de l'hygiène avant l'action de se laver.
-     * @param animal L'instance de Animal sur laquelle l'action de se laver est effectuée.
+     * @param animal L'instance d'Animal sur laquelle l'action de se laver est effectuée.
      */
     public void verifyHygiene(float origineHygiene, Animal animal) {
         animal.setHygiene(origineHygiene);  // Mettez une valeur initiale pour tester
