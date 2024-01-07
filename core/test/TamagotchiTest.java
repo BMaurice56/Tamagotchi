@@ -152,7 +152,9 @@ public class TamagotchiTest {
     }
 
     @Test
-    public void testEat(){
+    public void testAnimalEat(){
+
+        // initialisation dino 100 food 500 hapiness qui possede une Apple et une GoldenApple
         Dinosaure dinosaure = new Dinosaure();
         dinosaure.setFood(100);
         dinosaure.setHappiness(500);
@@ -160,24 +162,61 @@ public class TamagotchiTest {
         dinosaure.buyApple();
         dinosaure.buyGoldenApple();
 
+        //mange toutes ses pommes test resultat
         dinosaure.eat("Apple");
         assertEquals(350.0,dinosaure.getFood(),0.001);
         dinosaure.eat("GoldenApple");
         assertEquals(750.0,dinosaure.getFood(),0.001);
         assertEquals(575.0,dinosaure.getHappiness(),0.001);
 
+        //test de manger alors qu'il n'a plus de pommes test objectif resultat inchangé
         dinosaure.eat("GoldenApple");
         dinosaure.eat("Apple");
         assertEquals(750.0,dinosaure.getFood(),0.001);
         assertEquals(575.0,dinosaure.getHappiness(),0.001);
+
+        //possede une nouvelle pomme et fodd à 1000 objectif ne pas depasser les 1000 et pomme consommé
+        dinosaure.buyGoldenApple();
+        dinosaure.setFood(1000);
+        dinosaure.eat("GoldenApple");
+        assertEquals(1000.0,dinosaure.getFood(),0.01);
+        assertEquals(650.0,dinosaure.getHappiness(),0.001);
+        assertEquals(0,dinosaure.getNumberGoldenApple());
+
     }
+
+    @Test
+    public void testRobotEating() {
+        Robot robot = new Robot();
+        robot.setTank(100);
+        robot.setHappiness(500);
+        robot.setWallet(999);
+
+        robot.buyOil();
+        robot.buySuperOil();
+
+        robot.fillTank("Oil"); //test resultat conso huile
+        assertEquals(350.0, robot.getTank(), 0.001);
+
+        robot.fillTank("SuperOil");  //test resultat conso SuperHuile
+        assertEquals(750.0, robot.getTank(), 0.001);
+        assertEquals(575.0, robot.getHappiness(), 0.001);
+
+
+        robot.fillTank("SuperOil"); //test manger sans avoir d'huile dans le basket
+        assertEquals(750.0, robot.getTank(), 0.001);
+        assertEquals(575.0, robot.getHappiness(), 0.001);
+
+
+    }
+
 
     //_____________ACTION__________
 
     @Test
     public void testWork(){
         Robot robot = new Robot(1, "NomRobot", 1);
-        robot.getDifficulty();
+
         // Obtenez les valeurs initiales
         float initialHappiness = robot.getHappiness();
         float initialSoftware = robot.getSoftware();
@@ -233,57 +272,76 @@ public class TamagotchiTest {
         assertEquals(expectedDurability, robot.getDurability(), 0.001);
     }
 
-    @Test
-    public void testJouer() {
-        float origine_happiness = 150;
 
+    public void verifyHappinessA(float origineHappiness,Animal animal) {
 
-        Animal animal = new Chat(1, "TestAnimal", 1);
-        animal.setHappiness(origine_happiness);
+        animal.setHappiness(origineHappiness);
         animal.play();
 
         assertTrue(800 < animal.getHygiene() && animal.getHygiene() <= 925);
 
         // Vérifier le comportement attendu en fonction de la difficulté
-        if (origine_happiness < 100) {
+        if (origineHappiness < 100) {
             // Si la joie est inférieure à 100, elle devrait être ajustée selon la formule
-            assertEquals(750 - 2 * 100, animal.getHappiness(), 0.1);
-        } else if (origine_happiness <= 200) {
+            assertEquals(750 - animal.getDifficulty() * 100, animal.getHappiness(), 0.1);
+        } else if (origineHappiness <= 200) {
             // Si la joie est entre 100 et 200, elle devrait être ajustée selon la formule
             assertEquals(900 - animal.getDifficulty() * 100, animal.getHappiness(), 0.1);
         } else {
             // Si la joie est supérieure à 200, elle devrait être ajustée au maximum (1000)
             assertEquals(1000, animal.getHappiness(), 0.1);
+        }
+    }
+    public void verifyHappinessR(float origineHappiness,Robot robot) {
 
-            Robot robot = new Robot(1, "TestRobot", 1);
+        robot.setHappiness(origineHappiness);
+        robot.jouer();
+
+        assertTrue(800 < robot.getSoftware() && robot.getSoftware() <= 925);
+
+        // Vérifier le comportement attendu en fonction de la difficulté
+        if (origineHappiness < 100) {
+            // Si la joie est inférieure à 100, elle devrait être ajustée selon la formule
+            assertEquals(750 - robot.getDifficulty() * 100, robot.getHappiness(), 0.1);
+        } else if (origineHappiness <= 200) {
+            // Si la joie est entre 100 et 200, elle devrait être ajustée selon la formule
+            assertEquals(900 - robot.getDifficulty() * 100, robot.getHappiness(), 0.1);
+        } else {
+            // Si la joie est supérieure à 200, elle devrait être ajustée au maximum (1000)
+            assertEquals(1000, robot.getHappiness(), 0.1);
+        }
+    }
+
+    @Test
+    public void testJouer() {
 
 
-            robot.setHappiness(origine_happiness);
-            robot.jouer();
+        verifyHappinessA(99,new Chat(1, "TestAnimal", 1));
+        verifyHappinessA(170,new Chat(1, "TestAnimal", 1));
+        verifyHappinessA(400,new Chat(1, "TestAnimal", 1));
 
-
-            // Vérifier le comportement attendu en fonction de la difficulté
-            if (origine_happiness < 100) {
-                // Si la joie est inférieure à 100, elle devrait être ajustée selon la formule
-                assertEquals(750 - 2 * 100, robot.getHappiness(), 0.1);
-            } else if (origine_happiness <= 200) {
-                // Si la joie est entre 100 et 200, elle devrait être ajustée selon la formule
-                assertEquals(900 - robot.getDifficulty() * 100, robot.getHappiness(), 0.1);
-            } else {
-                // Si la joie est supérieure à 200, elle devrait être ajustée au maximum (1000)
-                assertEquals(1000, robot.getHappiness(), 0.1);
-            }
-
-
-            assertTrue(800 < robot.getSoftware() & robot.getSoftware() <= 925);
+        verifyHappinessR(99,new Robot(1,"test",1));
+        verifyHappinessR(199,new Robot(1,"test",1));
+        verifyHappinessR(299,new Robot(1,"test",1));
         }
 
+
+    public void verifySoftware(float origineSoftware, Robot robot) {
+        // Vérifier le comportement attendu en fonction de la difficulté
+        if (origineSoftware <= 200) {
+            // Si le logiciel est inférieur à 200, il devrait être ajusté selon la formule
+            assertEquals(900 - robot.getDifficulty() * 85, robot.getSoftware(), 0.1);
+        } else {
+            // Si le logiciel est supérieur à 200, il devrait être ajusté au maximum (1000)
+            assertEquals(1000, robot.getSoftware(), 0.1);
+        }
     }
 
     @Test
     public void testUpdating() {
+
         // Créer une instance de Robot avec une difficulté spécifique pour le test
-        Robot robot = new Robot(2, "NomRobot", 1);
+        Robot robot = new Robot(1, "NomRobot", 1);
 
         // Définir le bonheur et le logiciel à des valeurs spécifiques pour le test
         float origine_happiness = 900;
@@ -297,14 +355,31 @@ public class TamagotchiTest {
         // Vérifier le comportement attendu pour le bonheur
         assertEquals(1000, robot.getHappiness(), 0.1);
 
-        // Vérifier le comportement attendu pour le logiciel
-        if (origine_software <= 200) {
-            // Si le logiciel est inférieur à 200, il devrait être ajusté selon la formule
-            assertEquals(900 - robot.getDifficulty() * 85, robot.getSoftware(), 0.1);
-        } else {
-            // Si le logiciel est supérieur à 200, il devrait être ajusté au maximum (1000)
-            assertEquals(1000, robot.getSoftware(), 0.1);
-        }
+        // Appeler la fonction de vérification du logiciel
+        verifySoftware(origine_software, robot);
+
+
+
+
+        // Créer une instance de Robot avec une difficulté spécifique pour le test
+        Robot robot2 = new Robot(1, "NomRobot", 1);
+
+        // Définir le bonheur et le logiciel à des valeurs spécifiques pour le test
+        float origine_happiness2 = 900;
+        float origine_software2 = 150;
+        robot2.setHappiness(origine_happiness2);
+        robot2.setSoftware(origine_software2);
+
+        // Appeler la méthode updating
+        robot2.updating();
+
+        // Vérifier le comportement attendu pour le bonheur
+        assertEquals(1000, robot2.getHappiness(), 0.1);
+
+        // Appeler la fonction de vérification du logiciel
+        verifySoftware(origine_software2, robot2);
+
+
     }
 
     @Test

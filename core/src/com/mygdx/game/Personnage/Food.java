@@ -5,6 +5,7 @@ public abstract class Food {
     private final String name;
     private final int point;
 
+
     /**
      * Constructeur de la classe Food
      * @param name Nom de la nourriture
