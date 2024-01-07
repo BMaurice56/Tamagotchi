@@ -823,6 +823,14 @@ public class Modele {
      * Sauvegarde la partie dans un fichier
      */
     public void save() {
+        while (!flagSave.get()) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(50);
+            } catch (Exception ignored) {
+
+            }
+        }
+
         if (animal != null) {
             animal.setCompteurPluie(compteurPluie.get());
             animal.setNumeroSalle(controller.getRoomTamagotchi());
