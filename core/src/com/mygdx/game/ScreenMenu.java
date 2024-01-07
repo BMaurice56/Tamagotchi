@@ -52,8 +52,6 @@ public class ScreenMenu implements Screen {
 
     private BoutonImage playButton, settingsButton, quitButton;
 
-    private TextButton newGameButton, saveGameButton, backButton, backButton2, backButton3;
-
     // Table qui gère le placement des objets sur la fenêtre
     private Table homeTable, partyTable, settingsTable, saveGameTable, maxSaveTable, ruleTable;
 
@@ -64,10 +62,11 @@ public class ScreenMenu implements Screen {
     private static final Path currRelativePath = Paths.get(System.getProperty("user.home") + "/.Tamagotchi/jsonFile/");
 
     // Label
-    private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule, badSave, goBackFromBadSave;
+    private Label noSave, columnTitleName, columnTitleDifficulty, message, rule, listRule, goBackFromRule, badSave, goBackFromBadSave,
+            newGameButton, saveGameButton, backButton, backButton2, backButton3;
 
     // Stock tous les labels de chaque sauvegarde pour l'affichage
-    private final ArrayList<Label> multiLabels = new ArrayList<>();
+    private final ArrayList<Label> yesNoLabels = new ArrayList<>();
 
 
     /**
@@ -143,13 +142,6 @@ public class ScreenMenu implements Screen {
         playButton = new BoutonImage(new MultiSkin("image"), "images/play.png", 200, 50);
         settingsButton = new BoutonImage(new MultiSkin("image"), "images/settings.png", 200, 50);
         quitButton = new BoutonImage(new MultiSkin("image"), "images/quit.png", 200, 50);
-
-        // Gestion de la partie
-        newGameButton = new TextButton("Nouvelle partie", new MultiSkin("text"));
-        saveGameButton = new TextButton("Sauvegarde", new MultiSkin("text"));
-        backButton = new TextButton("Retour au centre", new MultiSkin("text"));
-        backButton2 = new TextButton("Retour au centre", new MultiSkin("text"));
-        backButton3 = new TextButton("Retour en arriere", new MultiSkin("text"));
     }
 
     /**
@@ -165,6 +157,13 @@ public class ScreenMenu implements Screen {
         goBackFromRule = new Label("Retour en arriere", new MultiSkin("label"));
         badSave = new Label("Le fichier de sauvegarde etant non valide\n              (du a une modification)\n                celui-ci a ete supprime", new MultiSkin("label"));
         goBackFromBadSave = new Label("Retour au centre", new MultiSkin("label"));
+
+        // Gestion de la partie
+        newGameButton = new Label("Nouvelle partie", new MultiSkin("label"));
+        saveGameButton = new Label("Sauvegarde", new MultiSkin("label"));
+        backButton = new Label("Retour au centre", new MultiSkin("label"));
+        backButton2 = new Label("Retour au centre", new MultiSkin("label"));
+        backButton3 = new Label("Retour en arriere", new MultiSkin("label"));
     }
 
     /**
@@ -241,12 +240,11 @@ public class ScreenMenu implements Screen {
 
                     // Création d'un label avec le nom du Tamagotchi
                     final Label nomTamagotchi = new Label(saveFileReader.getString("name"), new MultiSkin("label"));
+                    Label difficulty = null;
 
                     // Récupération du numéro de sauvegarde
                     String[] values = save.split("save");
                     final int numberSave = Integer.parseInt(values[1].split(".json")[0]);
-
-                    Label difficulty = null;
 
                     switch (contains(saveFileReader, "difficulty")) {
                         case (1):
@@ -261,10 +259,6 @@ public class ScreenMenu implements Screen {
                             difficulty = new Label("Difficile", new MultiSkin("label"));
                             break;
                     }
-
-                    // Ajout des labels à la table
-                    saveGameTable.add(nomTamagotchi);
-                    saveGameTable.add(difficulty);
 
                     // Bouton Jouer et supprimer
                     Label jouer = new Label(" Jouer ", new MultiSkin("label"));
@@ -287,8 +281,8 @@ public class ScreenMenu implements Screen {
                             Label oui = new Label("Oui", new MultiSkin("label"));
                             Label non = new Label("Non", new MultiSkin("label"));
 
-                            multiLabels.add(oui);
-                            multiLabels.add(non);
+                            yesNoLabels.add(oui);
+                            yesNoLabels.add(non);
 
                             // Place les éléments de l'affichage
                             posAndSizeElement();
@@ -321,12 +315,9 @@ public class ScreenMenu implements Screen {
                         }
                     });
 
-                    // Sauvegarde des labels
-                    multiLabels.add(nomTamagotchi);
-                    multiLabels.add(difficulty);
-                    multiLabels.add(jouer);
-                    multiLabels.add(supprimer);
-
+                    // Ajout des labels à la table
+                    saveGameTable.add(nomTamagotchi);
+                    saveGameTable.add(difficulty);
                     saveGameTable.add(jouer);
                     saveGameTable.add(supprimer).row();
 
@@ -339,12 +330,7 @@ public class ScreenMenu implements Screen {
 
             // Si aucune sauvegarde valide, alors on affiche la table comme s'il n'y avait aucune sauvegarde
             if (compteur == 0) {
-                saveGameTable = new Table();
-                saveGameTable.setFillParent(true);
-                saveGameTable.center();
-
-                saveGameTable.add(new Label("", new MultiSkin("label")));
-                saveGameTable.add(noSave).row();
+                createSaveTable();
             }
 
         }
@@ -498,11 +484,11 @@ public class ScreenMenu implements Screen {
     public void posAndSizeElement() {
         float fontScale = ((float) 1 / 900) * screenHeight;
 
-        newGameButton.getLabel().setFontScale(fontScale);
-        saveGameButton.getLabel().setFontScale(fontScale);
-        backButton.getLabel().setFontScale(fontScale);
-        backButton2.getLabel().setFontScale(fontScale);
-        backButton3.getLabel().setFontScale(fontScale);
+        newGameButton.setFontScale(fontScale);
+        saveGameButton.setFontScale(fontScale);
+        backButton.setFontScale(fontScale);
+        backButton2.setFontScale(fontScale);
+        backButton3.setFontScale(fontScale);
 
         noSave.setFontScale(fontScale);
         columnTitleName.setFontScale(fontScale);
@@ -518,30 +504,21 @@ public class ScreenMenu implements Screen {
         badSave.setFontScale(fontScale);
         goBackFromBadSave.setFontScale(fontScale);
 
-        for (Label label : multiLabels) {
-            label.setFontScale(fontScale);
-
-            if (label.getText().toString().equals("Oui")) {
-                label.setPosition(screenWidth / 2 - label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
-            } else if (label.getText().toString().equals("Non")) {
-                label.setPosition(screenWidth / 2 + label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
-            }
-        }
-
-
         // Si la table n'est pas null, alors on redimensionne les polices d'écriture
         if (saveGameTable != null) {
-            for (Cell<?> cell : saveGameTable.getCells()) {
-                Actor actor = cell.getActor();
+            for (Label label : yesNoLabels) {
+                label.setFontScale(fontScale);
 
-                if (actor instanceof Label) {
-                    Label label = (Label) actor;
-                    label.setFontScale(fontScale);
-
+                if (label.getText().toString().equals("Oui")) {
+                    label.setPosition(screenWidth / 2 - label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
                 } else {
-                    TextButton textButton = (TextButton) actor;
-                    textButton.getLabel().setFontScale(fontScale);
+                    label.setPosition(screenWidth / 2 + label.getMinWidth(), screenHeight / 2 - message.getMinHeight() * 2);
                 }
+            }
+
+            for (Cell<?> cell : saveGameTable.getCells()) {
+                Label label = (Label) cell.getActor();
+                label.setFontScale(fontScale);
             }
         }
     }
