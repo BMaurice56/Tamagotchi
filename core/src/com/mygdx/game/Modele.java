@@ -137,7 +137,7 @@ class Moteur implements Runnable {
                 }
 
                 // Enlève la pluie au bout de 10/15/20 secondes
-            } else if (compteurPluie.get() >= durationPluie) {
+            } else if (compteurPluie.get() == durationPluie) {
                 // Si présence de pluie, alors on l'arrête
                 if (flagPluie.get()) {
                     flagPluie.set(false);
@@ -391,6 +391,27 @@ public class Modele {
     }
 
     /**
+     * Enregistre le niveau de son du jeu
+     *
+     * @param son float son
+     */
+    public void setSound(float son) {
+        soundFile.writeString("{\n \"sound\":" + son + "\n}", false);
+    }
+
+    /**
+     * Vérifie l'intégrité du fichier de son
+     *
+     * @param content Contenue du fichier
+     * @return Boolean true ou false si fichier valide
+     */
+    public boolean parserSoundFile(String content) {
+        Pattern p = Pattern.compile("\\{\n \"sound\":[0-1].[0-9]?[0-9]*\n}");
+        Matcher m = p.matcher(content);
+        return m.matches();
+    }
+
+    /**
      * Renvoi le texte des règles du jeu
      *
      * @return String textes
@@ -439,27 +460,6 @@ public class Modele {
         if (tamagotchi.getCompteurPluie() < 0) {
             throw new InvalidParameterException();
         }
-    }
-
-    /**
-     * Enregistre le niveau de son du jeu
-     *
-     * @param son float son
-     */
-    public void setSound(float son) {
-        soundFile.writeString("{\n \"sound\":" + son + "\n}", false);
-    }
-
-    /**
-     * Vérifie l'intégrité du fichier de son
-     *
-     * @param content Contenue du fichier
-     * @return Boolean true ou false si fichier valide
-     */
-    public boolean parserSoundFile(String content) {
-        Pattern p = Pattern.compile("\\{\n \"sound\":[0-1].[0-9]?[0-9]*\n}");
-        Matcher m = p.matcher(content);
-        return m.matches();
     }
 
     /**
