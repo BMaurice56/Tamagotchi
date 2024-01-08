@@ -33,8 +33,10 @@ class Moteur implements Runnable {
     // Générateur de nombre aléatoire
     private final Random random = new Random();
 
+    // Animal du jeu
     private Robot robot = null;
 
+    // Ou Robot
     private Animal animal = null;
 
     /**

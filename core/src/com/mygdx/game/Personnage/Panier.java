@@ -1,7 +1,10 @@
 package com.mygdx.game.Personnage;
+
 import java.util.ArrayList;
+
 public class Panier {
 
+    // Panier de nourriture du tamagotchi
     private final ArrayList<Food> basket = new ArrayList<>();
 
     public Panier() {
@@ -11,7 +14,8 @@ public class Panier {
 
     /**
      * Methode qui ajoute en fin de liste la Food
-     * @param nourriture   Food Objet
+     *
+     * @param nourriture Food Objet
      */
     public void addBasket(Food nourriture) {
         basket.add(nourriture);

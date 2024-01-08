@@ -162,6 +162,7 @@ public class SelectTamagotchi implements Screen {
         float middleX = screenWidth / 2f;
         float middleY = screenHeight / 2f;
 
+        // Correction de bug windows
         if (fontScale <= 0) {
             fontScale = 1;
         }

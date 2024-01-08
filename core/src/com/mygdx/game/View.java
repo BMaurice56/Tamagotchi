@@ -836,6 +836,7 @@ public class View implements Screen {
         float fontScale = screenHeight * (1f / 900f);
         float ajustementLabelFood = 1 / (fontScale / 5);
 
+        // Correction de bug windows
         if (fontScale <= 0) {
             fontScale = 1;
         }

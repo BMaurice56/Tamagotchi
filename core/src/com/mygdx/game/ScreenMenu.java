@@ -484,6 +484,7 @@ public class ScreenMenu implements Screen {
     public void posAndSizeElement() {
         float fontScale = ((float) 1 / 900) * screenHeight;
 
+        // Correction de bug windows
         if (fontScale <= 0) {
             fontScale = 1;
         }
