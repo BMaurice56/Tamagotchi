@@ -484,6 +484,10 @@ public class ScreenMenu implements Screen {
     public void posAndSizeElement() {
         float fontScale = ((float) 1 / 900) * screenHeight;
 
+        if (fontScale <= 0) {
+            fontScale = 1;
+        }
+
         newGameButton.setFontScale(fontScale);
         saveGameButton.setFontScale(fontScale);
         backButton.setFontScale(fontScale);
