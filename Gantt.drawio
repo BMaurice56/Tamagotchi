@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2024-01-07T20:05:19.690Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0" etag="bmytoQyZn9hAaPTsNz2C" version="22.1.17" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-08T21:17:09.241Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0" etag="TPD9iOIlQX_6W0q7rit1" version="22.1.17" type="github">
   <diagram name="Page-1" id="2c4490ee-f0b8-94ab-5012-d5dc3445f7a3">
-    <mxGraphModel dx="1766" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+    <mxGraphModel dx="2472" dy="1050" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" style=";html=1;" />
         <mxCell id="1" style=";html=1;" parent="0" />
-        <mxCell id="GvmEf_9hCkaW8rQPe4q8-1" value="" style="align=left;strokeColor=#CCCCCC;html=1;" vertex="1" parent="1">
+        <mxCell id="GvmEf_9hCkaW8rQPe4q8-1" value="" style="align=left;strokeColor=#CCCCCC;html=1;" parent="1" vertex="1">
           <mxGeometry x="690" y="620" width="80" height="20" as="geometry" />
         </mxCell>
         <mxCell id="67c90442a009f359-279" value="Novembre" style="strokeWidth=1;fontStyle=0;html=1;" parent="1" vertex="1">
@@ -1120,14 +1120,17 @@
         <mxCell id="Xc61JS4KRZvFrqE5hFFe-1" value="Révision&lt;br&gt;de l&#39;ensemble&lt;br&gt;du projet" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1250" y="480" width="80" height="300" as="geometry" />
         </mxCell>
-        <mxCell id="GvmEf_9hCkaW8rQPe4q8-2" value="Tests de&lt;br&gt;l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="GvmEf_9hCkaW8rQPe4q8-2" value="Tests de&lt;br&gt;l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1410" y="720" width="80" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GvmEf_9hCkaW8rQPe4q8-3" value="Tests de&lt;br&gt;l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="GvmEf_9hCkaW8rQPe4q8-3" value="Tests de&lt;br&gt;l&#39;application" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1410" y="560" width="80" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="GvmEf_9hCkaW8rQPe4q8-4" value="Design&lt;br&gt;de l&#39;application&lt;br&gt;et de ces&lt;br&gt;composants" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+        <mxCell id="GvmEf_9hCkaW8rQPe4q8-4" value="Design&lt;br&gt;de l&#39;application&lt;br&gt;et de ces&lt;br&gt;composants" style="align=left;strokeColor=#6c8ebf;html=1;fillColor=#dae8fc;" parent="1" vertex="1">
           <mxGeometry x="1330" y="560" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ovf5yxKw_VYhyGTSIwcd-1" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;Annexe 4 : Diagramme de Gantt&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="312" y="260" width="1130" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
