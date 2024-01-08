@@ -465,6 +465,16 @@ public class Modele {
     }
 
     /**
+     * Renvoi l'objet de gestion du son
+     *
+     * @param pathMusique Chemin de la musique
+     * @return FileHandle gestionnaire du fichier
+     */
+    public FileHandle getSoundFile(String pathMusique) {
+        return Gdx.files.internal(pathMusique);
+    }
+
+    /**
      * Vérifie si une clef est présent dans le fichier json
      *
      * @param name nom

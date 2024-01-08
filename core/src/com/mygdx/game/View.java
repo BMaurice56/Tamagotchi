@@ -85,6 +85,9 @@ public class View implements Screen {
     // Son du tamagotchi
     private Music soundTamagotchi;
 
+    // Musique du jeu
+    private final Music gameMusique;
+
     // Gestion du son
     private final Slider volumeSlider = new Slider(0f, 1f, 0.01f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
 
@@ -105,27 +108,33 @@ public class View implements Screen {
         switch (tamagotchi.getClass().getName()) {
             case ("com.mygdx.game.Personnage.Chat"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelCat" + skin + ".png", 500, 500);
-                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/catMeow.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(controller.getSoundFile("musics/catMeow.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Chien"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDog" + skin + ".png", 500, 500);
-                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/dogBark.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(controller.getSoundFile("musics/dogBark.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Dinosaure"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelDinosaur" + skin + ".png", 500, 500);
-                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/raptorCall.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(controller.getSoundFile("musics/raptorCall.mp3"));
                 break;
 
             case ("com.mygdx.game.Personnage.Robot"):
                 tamagotchiImage = new BoutonImage(new MultiSkin("image"), "images/pixelRobot" + skin + ".png", 500, 500);
-                soundTamagotchi = Gdx.audio.newMusic(Gdx.files.internal("musics/R2D2.mp3"));
+                soundTamagotchi = Gdx.audio.newMusic(controller.getSoundFile("musics/R2D2.mp3"));
                 break;
         }
 
+        gameMusique = Gdx.audio.newMusic(controller.getSoundFile("musics/BeautifulSong.wav"));
+        gameMusique.setLooping(true);
+
         volumeSlider.setValue(controller.getLevelSound());
         soundTamagotchi.setVolume(controller.getLevelSound());
+        gameMusique.setVolume(controller.getLevelSound());
+
+        gameMusique.play();
 
         // Met à jour les variables de taille de l'écran
         updateAttributScreenSizeProgressBar();
@@ -479,6 +488,7 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 soundTamagotchi.dispose();
+                gameMusique.dispose();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, null));
                 return true;
             }
@@ -488,6 +498,7 @@ public class View implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 soundTamagotchi.dispose();
+                gameMusique.dispose();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenMenu(true, null));
                 return true;
             }
@@ -507,6 +518,7 @@ public class View implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = volumeSlider.getValue();
                 soundTamagotchi.setVolume(volume);
+                gameMusique.setVolume(volume);
                 controller.setLevelSound(volume);
             }
         });

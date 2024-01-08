@@ -84,7 +84,7 @@ public class ScreenMenu implements Screen {
         if (music != null) {
             this.musique = music;
         } else {
-            musique = Gdx.audio.newMusic(Gdx.files.internal("musics/Allumer-le-feu.mp3"));
+            musique = Gdx.audio.newMusic(modele.getSoundFile("musics/Sunflow.wav"));
         }
 
         musique.setVolume(son);

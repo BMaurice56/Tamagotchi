@@ -199,6 +199,16 @@ public class Controller {
     }
 
     /**
+     * Renvoi l'objet de gestion du son
+     *
+     * @param pathMusique Chemin de la musique
+     * @return FileHandle gestionnaire du fichier
+     */
+    public FileHandle getSoundFile(String pathMusique) {
+        return modele.getSoundFile(pathMusique);
+    }
+
+    /**
      * Renvoi les règles du jeu
      *
      * @return String règles
