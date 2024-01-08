@@ -836,6 +836,10 @@ public class View implements Screen {
         float fontScale = screenHeight * (1f / 900f);
         float ajustementLabelFood = 1 / (fontScale / 5);
 
+        if (fontScale <= 0) {
+            fontScale = 1;
+        }
+
         moneyLabel.setFontScale(fontScale);
         foodLabel.setFontScale(fontScale);
         extraFoodLabel.setFontScale(fontScale);
