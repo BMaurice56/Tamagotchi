@@ -2,7 +2,8 @@
 
 Tamagotchi project
 
-Voici le dépot github pour le projet de Monsieur Kessler pour le Tamagotchi.
+Projet réalisé en Java avec la libraire Libgdx dédié pour le jeu vidéo.
+Ce projet consistait en la création d'un jeu vidéo similaire au premier tamagotchi de 1996.
 
 Pour modifier le projet avec Intellij, il faut ouvrir le fichier build.gradle en faisant :
 File → open → sélectionner le fichier → Open As project
